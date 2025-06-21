@@ -1,5 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Agrega aquí tus estilos globales personalizados si lo deseas */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}

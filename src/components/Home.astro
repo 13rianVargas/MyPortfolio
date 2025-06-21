@@ -1,8 +1,28 @@
 ---
-// Componente Home: sección principal de bienvenida
+import "../styles/home.css";
+
+const { t } = Astro.props;
 ---
-<section id="home" class="min-h-screen flex flex-col items-center justify-center">
-  <h2 class="text-4xl font-bold mb-4">Bienvenido a mi portafolio</h2>
-  <p class="text-lg text-gray-400 mb-6">Aquí puedes conocer más sobre mí, mis proyectos y tecnologías favoritas.</p>
-  <!-- Agrega aquí contenido introductorio o una imagen/avatar si lo deseas -->
+
+<section class="home-center-box">
+  <div class="home-photo">
+    <img
+      src="/src/assets/13rianPhoto.JPG"
+      alt={`Foto de perfil de Brian Vargas`}
+    />
+  </div>
+  <div class="home-name">
+    <h1>{t('home').name}</h1>
+  </div>
+  <div class="home-role">
+    <h2>{t('home').role}</h2>
+  </div>
+  <div class="home-links">
+    <a class="home-link-btn" href="#" target="_blank" aria-label="LinkedIn">
+      <img src="/linkedin.svg" alt="LinkedIn" />LinkedIn
+    </a>
+    <a class="home-link-btn" href="#" target="_blank" aria-label="GitHub">
+      <img src="/github.svg" alt="GitHub" />GitHub
+    </a>
+  </div>
 </section>

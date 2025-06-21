@@ -1,53 +1,89 @@
 ---
-const { title = "Portfolio | 13rian Vargas" } = Astro.props;
+import "../styles/layout.css";
+
+const { t, lang } = Astro.props;
 ---
+
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/src/styles/global.css" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body class="bg-gray-950 text-white font-sans" x-data="{ dark: true, lang: 'es' }" :class="dark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'">
-    <header class="p-4 bg-gray-900 border-b border-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <h1 class="text-2xl font-bold">13rian Vargas</h1>
-      <nav>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="stylesheet" href="/src/styles/global.css" />
+		<link rel="stylesheet" href="/src/styles/layout.css" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Portfolio | 13rian</title>
+	</head>
+	<body
+		class="bg-gray-950 text-white font-sans"
+		x-data="{ dark: true, lang: 'es' }"
+		:class="dark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'"
+	>
+		<header class="header fixed top-0 left-0 w-full z-50 glass">
+			<h1 class="header-title">13rian</h1>
+			<nav class="header-nav">
+				<ul>
+					<li><a href="#home" class="hover:underline">{t('layout').home}</a></li>
+					<li>
+						<a href="#aboutme" class="hover:underline">{t('layout').about}</a>
+					</li>
+					<li>
+						<a href="#projects" class="hover:underline"
+							>{t('layout').projects}</a
+						>
+					</li>
+					<li>
+						<a href="#technologies" class="hover:underline"
+							>{t('layout').technologies}</a
+						>
+					</li>
+					<li>
+						<a href="#contactme" class="hover:underline"
+							>{t('layout').contact}</a
+						>
+					</li>
+				</ul>
+			</nav>
+			<div class="header-actions">
+				<!-- Log visual para depuración de idioma -->
+				<span
+					style="
+						color: #f87171;
+						font-size: 0.9rem;
+						margin-right: 1rem;
+					"
+					>[lang prop: {lang}]</span
+				>
+				<!-- Botón modo oscuro/claro -->
+				<button
+					id="toggle-dark"
+					class="px-3 py-1 rounded glass bg-gray-800 hover:bg-gray-700 border border-gray-600 transition-colors"
+					style="backdrop-filter:url(#frosted);-webkit-backdrop-filter:url(#frosted);"
+				>
+					<span id="dark-label">🌙</span>
+				</button>
+				<!-- Botón idioma -->
+				<button
+					id="toggle-lang"
+					class="px-3 py-1 rounded glass bg-gray-800 hover:bg-gray-700 border border-gray-600 transition-colors"
+					style="backdrop-filter:url(#frosted);-webkit-backdrop-filter:url(#frosted);"
+				>
+					<span id="lang-label">{lang.toUpperCase()}</span>
+				</button>
+			</div>
+		</header>
 
-        <ul class="flex gap-6 text-lg font-medium">
-          <li><a href="#home" class="hover:underline">Home</a></li>
-          <li><a href="#sobremi" class="hover:underline">Sobre mí</a></li>
-          <li><a href="#proyectos" class="hover:underline">Proyectos</a></li>
-          <li><a href="#tecnologias" class="hover:underline">Tecnologías</a></li>
-          <li><a href="#contactame" class="hover:underline">Contáctame</a></li>
-        </ul>
-		
-      </nav>
-      <div class="flex gap-2 mt-2 md:mt-0">
+		<script type="module" src="/Layout.js" is:inline></script>
 
-        <!-- Botón modo oscuro/claro -->
-        <button id="toggle-dark" class="px-3 py-1 rounded bg-gray-800 hover:bg-gray-700 border border-gray-600 transition-colors" onclick="toggleDark()">
-          <span id="dark-label">🌙</span>
-        </button>
+		<main class="p-8">
+			<slot />
+		</main>
 
-        <!-- Botón idioma -->
-        <button id="toggle-lang" class="px-3 py-1 rounded bg-gray-800 hover:bg-gray-700 border border-gray-600 transition-colors" onclick="toggleLang()">
-          <span id="lang-label">ES</span>
-        </button>
-
-      </div>
-    </header>
-	
-    <script src="/Layout.js" is:inline></script>
-
-    <main class="p-8">
-      <slot />
-    </main>
-
-    <footer class="p-4 mt-10 border-t border-gray-700 text-sm text-gray-400 text-center">
-      Hecho con 💻 por Bri — {new Date().getFullYear()}
-    </footer>
-  </body>
+		<footer
+			class="p-4 mt-10 border-t border-gray-700 text-sm text-gray-400 text-center"
+		>
+			Hecho con 💻 por Bri — {new Date().getFullYear()}
+		</footer>
+	</body>
 </html>

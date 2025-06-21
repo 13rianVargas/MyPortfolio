@@ -1,12 +1,15 @@
 ---
-// Technologies section component
+import "../styles/technologies.css";
+
+const { t } = Astro.props;
 ---
-<section id="technologies" class="min-h-screen flex flex-col items-center justify-center">
-  <h2 class="text-3xl font-bold mb-4">Technologies</h2>
-  <ul class="flex flex-wrap gap-6 justify-center">
-    <li class="bg-gray-800 px-4 py-2 rounded">Astro</li>
-    <li class="bg-gray-800 px-4 py-2 rounded">Tailwind CSS</li>
-    <li class="bg-gray-800 px-4 py-2 rounded">JavaScript</li>
-    <!-- Add more technologies here -->
-  </ul>
+
+<section class="technologies-center-box" id="technologies">
+  <div class="technologies-title">
+    <h2>{t('technologies').title}</h2>
+  </div>
+  <ul class="technologies-list">
+    <li class="technology-item">Astro</li>
+        <!-- Add more technologies here -->
+    </ul>
 </section>

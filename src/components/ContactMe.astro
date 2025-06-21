@@ -1,12 +1,35 @@
 ---
-// Contact Me section component
+import "../styles/contactme.css";
+
+const { t } = Astro.props;
 ---
-<section id="contactme" class="min-h-screen flex flex-col items-center justify-center">
-  <h2 class="text-3xl font-bold mb-4">Contact Me</h2>
-  <form class="flex flex-col gap-4 w-full max-w-md">
-    <input type="text" placeholder="Name" class="p-2 rounded border border-gray-700 bg-gray-800 text-white" required />
-    <input type="email" placeholder="Email" class="p-2 rounded border border-gray-700 bg-gray-800 text-white" required />
-    <textarea placeholder="Message" class="p-2 rounded border border-gray-700 bg-gray-800 text-white" required></textarea>
-    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Send</button>
-  </form>
+
+<section
+    id="contactme"
+    class="min-h-screen flex flex-col items-center justify-center"
+>
+    <h2 class="text-3xl font-bold mb-4">{t("contactMe")}</h2>
+    <form class="flex flex-col gap-4 w-full max-w-md">
+        <input
+            type="text"
+            placeholder={t("name")}
+            class="p-2 rounded border border-gray-700 bg-gray-800 text-white"
+            required
+        />
+        <input
+            type="email"
+            placeholder={t("email")}
+            class="p-2 rounded border border-gray-700 bg-gray-800 text-white"
+            required
+        />
+        <textarea
+            placeholder={t("message")}
+            class="p-2 rounded border border-gray-700 bg-gray-800 text-white"
+            required></textarea>
+        <button
+            type="submit"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+            >{t("send")}</button
+        >
+    </form>
 </section>
