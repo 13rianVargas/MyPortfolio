@@ -1,19 +1,33 @@
-function toggleLang() {
-  const label = document.getElementById('lang-label');
-  if (label.textContent === 'ES') {
-    label.textContent = 'EN';
-  } else {
-    label.textContent = 'ES';
-  }
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleLangButton = document.getElementById('toggle-lang');
+    const langLabel = document.getElementById('lang-label');
+    const translationsData = document.getElementById('translations-data');
+    const translations = JSON.parse(translationsData.textContent);
 
-function toggleDark() {
-  document.body.classList.toggle('dark');
-  document.body.classList.toggle('bg-gray-950');
-  document.body.classList.toggle('text-white');
-  document.body.classList.toggle('bg-white');
-  document.body.classList.toggle('text-gray-900');
-}
+    let currentLang = document.documentElement.lang;
 
-window.toggleLang = toggleLang;
-window.toggleDark = toggleDark;
+    const updateTexts = (lang) => {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const keys = key.split('.');
+            let translation = translations[lang];
+            for (const k of keys) {
+                if (translation && typeof translation === 'object' && k in translation) {
+                    translation = translation[k];
+                } else {
+                    translation = key; // Fallback to key if not found
+                    break;
+                }
+            }
+            el.textContent = translation;
+        });
+        document.title = translations[lang].head.title;
+    };
+
+    toggleLangButton.addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'es' : 'en';
+        document.documentElement.lang = currentLang;
+        langLabel.textContent = currentLang === 'en' ? 'ES' : 'EN';
+        updateTexts(currentLang);
+    });
+});
