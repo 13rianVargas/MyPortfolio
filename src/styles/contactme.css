@@ -1,9 +1,0 @@
-/* Estilos específicos para el componente ContactMe */
-
-.contactme-title {
-  @apply text-3xl font-bold mb-4;
-}
-
-.contactme-form {
-  @apply flex flex-col gap-4 w-full max-w-md;
-}
