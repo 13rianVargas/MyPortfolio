@@ -1,0 +1,178 @@
+---
+
+---
+
+<button
+  type="button"
+  aria-label="Toggle dark mode"
+  data-tooltip="Toggle dark mode"
+  data-side="bottom"
+  id="theme-toggle"
+  class="theme-toggle-btn relative p-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+>
+  <!-- Icono de sol (se muestra en modo oscuro para cambiar a claro) -->
+  <span class="sun-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </svg>
+  </span>
+  <!-- Icono de luna (se muestra en modo claro para cambiar a oscuro) -->
+  <span class="moon-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </svg>
+  </span>
+</button>
+
+<style>
+  .theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Importante para el posicionamiento absoluto de los iconos */
+    
+    /* Tema claro por defecto - fondo claro con borde */
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+  }
+  
+  .theme-toggle-btn:hover {
+    background-color: #f3f4f6;
+    transform: scale(1.05);
+  }
+  
+  /* Cuando está en modo oscuro - fondo oscuro */
+  :global(.dark) .theme-toggle-btn {
+    background-color: #1f2937;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  :global(.dark) .theme-toggle-btn:hover {
+    background-color: #374151;
+  }
+  
+  /* Control de iconos - método alternativo más robusto */
+  .theme-toggle-btn .sun-icon {
+    display: none;
+  }
+  
+  .theme-toggle-btn .moon-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Cuando está en modo oscuro - mostrar sol */
+  :global(.dark) .theme-toggle-btn .sun-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  :global(.dark) .theme-toggle-btn .moon-icon {
+    display: none;
+  }
+  
+  /* Transiciones suaves para los iconos */
+  .sun-icon,
+  .moon-icon {
+    transition: all 0.3s ease;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .sun-icon svg,
+  .moon-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+</style>
+
+<script>
+  console.log('ThemeToggle script loaded');
+  
+  // Función para actualizar los iconos y estilos del botón
+  function updateThemeIcons() {
+    const sunIcon = document.querySelector('.sun-icon') as HTMLElement;
+    const moonIcon = document.querySelector('.moon-icon') as HTMLElement;
+    const button = document.getElementById('theme-toggle') as HTMLElement;
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    if (sunIcon && moonIcon && button) {
+      if (isDark) {
+        // En modo oscuro: mostrar sol, fondo oscuro
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+        console.log('Updated to dark mode - showing sun icon');
+      } else {
+        // En modo claro: mostrar luna, fondo claro
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+        console.log('Updated to light mode - showing moon icon');
+      }
+    }
+  }
+  
+  // Script para manejar el click del botón de tema
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, looking for theme toggle button');
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // Actualizar iconos inicialmente
+    updateThemeIcons();
+    
+    if (themeToggle) {
+      console.log('Theme toggle button found!');
+      themeToggle.addEventListener('click', (e) => {
+        console.log('Theme toggle clicked!');
+        e.preventDefault();
+        
+        // Verificar estado actual
+        const isDark = document.documentElement.classList.contains('dark');
+        console.log('Current theme is dark:', isDark);
+        
+        // Disparar el evento personalizado para cambiar el tema
+        const event = new CustomEvent('basecoat:theme', {
+          detail: { mode: 'toggle' }
+        });
+        console.log('Dispatching theme event:', event);
+        document.dispatchEvent(event);
+        
+        // Actualizar iconos después del cambio
+        setTimeout(() => {
+          updateThemeIcons();
+          const newIsDark = document.documentElement.classList.contains('dark');
+          console.log('New theme is dark:', newIsDark);
+        }, 50);
+      });
+    } else {
+      console.error('Theme toggle button not found!');
+    }
+    
+    // Observer para detectar cambios en el tema y actualizar iconos
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          updateThemeIcons();
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  });
+</script>

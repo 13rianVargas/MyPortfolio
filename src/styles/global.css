@@ -1,5 +1,59 @@
+/* Base styles */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Root variables for light theme */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+}
+
+/* Root variables for dark theme */
+.dark {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+}
+
+/* Apply theme variables */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
 main {
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Header styles */
+header {
+  background-color: rgba(248, 250, 252, 0.8);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark header {
+  background-color: rgba(26, 26, 26, 0.8);
+}
+
+/* Footer styles */
+footer {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+  text-align: center;
 }
