@@ -1,0 +1,63 @@
+---
+import { languages } from '../../i18n/ui';
+import { getLangFromUrl, useTranslatedPath } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+---
+
+<select 
+  id="language-picker" 
+  class="language-select px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+>
+  {Object.entries(languages).map(([langCode, label]) => (
+    <option 
+      value={translatePath('/', langCode)} 
+      selected={lang === langCode}
+    >
+      {label}
+    </option>
+  ))}
+</select>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const languagePicker = document.getElementById('language-picker') as HTMLSelectElement;
+    
+    if (languagePicker) {
+      languagePicker.addEventListener('change', (event) => {
+        const target = event.target as HTMLSelectElement;
+        const selectedUrl = target.value;
+        
+        if (selectedUrl) {
+          window.location.href = selectedUrl;
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .language-select {
+    min-width: 120px;
+    cursor: pointer;
+  }
+  
+  .language-select:hover {
+    background-color: #f3f4f6;
+  }
+  
+  :global(.dark) .language-select:hover {
+    background-color: #374151;
+  }
+  
+  .language-select option {
+    background-color: white;
+    color: #374151;
+  }
+  
+  :global(.dark) .language-select option {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+</style>

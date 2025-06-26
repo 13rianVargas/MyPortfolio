@@ -1,6 +1,4 @@
 ---
-import "../styles/home.css";
-
 const { t } = Astro.props;
 ---
 
@@ -12,10 +10,10 @@ const { t } = Astro.props;
     />
   </div>
   <div class="home-name">
-    <h1>{t('home').name}</h1>
+    <h1>{t('home.name')}</h1>
   </div>
   <div class="home-role">
-    <h2>{t('home').role}</h2>
+    <h2>{t('home.role')}</h2>
   </div>
   <div class="home-links">
     <a class="home-link-btn" href="#" target="_blank" aria-label="LinkedIn">

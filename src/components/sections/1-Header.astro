@@ -1,0 +1,36 @@
+---
+const { t } = Astro.props;
+const currentLang = Astro.currentLocale || 'es';
+
+import LanguagePicker from '../../components/tools/LanguageSelect.astro';
+import ThemeToggleButton from '../../components/tools/ThemeToggleButton.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+---
+
+<header class="header bg-base-50/50 dark:bg-base-950/50 backdrop-blur-xl">
+			<h1 class="header-title">13rian</h1>
+			<nav class="header-nav">
+				<ul>
+					<li>
+						<a href={getRelativeLocaleUrl(currentLang,"#home")}>{t("layout.home")}</a>
+					</li>
+					<li>
+						<a href={getRelativeLocaleUrl(currentLang,"#aboutme")}>{t("layout.about")}</a>
+					</li>
+					<li>
+						<a href={getRelativeLocaleUrl(currentLang,"#projects")}>{t("layout.projects")}</a>
+					</li>
+					<li>
+						<a href={getRelativeLocaleUrl(currentLang,"#technologies")}>{t("layout.technologies")}</a>
+					</li>
+					<li>
+						<a href={getRelativeLocaleUrl(currentLang,"#contactme")}>{t("layout.contact")}</a>
+					</li>
+				</ul>
+			</nav>
+			<div class="header-actions">
+				<ThemeToggleButton />
+				<LanguagePicker />
+			</div>
+		</header>
