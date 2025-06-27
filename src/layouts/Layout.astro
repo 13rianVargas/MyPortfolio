@@ -12,18 +12,19 @@ const currentLang = Astro.currentLocale || 'es';
 <!doctype html>
 <html lang={lang}>
 	<head>
-		<!-- Script de tema - cargado de forma inline para evitar flash -->
 		<script src="/Theme.js" is:inline></script>
+		<script src="/Layout.js" is:inline></script>
+		<script id="translations-data" type="application/json" is:inline>{JSON.stringify(ui)}</script>
+		
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- TODO: Cambiar a favicon.ico -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="stylesheet" href="/src/styles/global.css" />
-		<meta name="generator" content={Astro.generator} />
+		
 		<title>{t("head.title")}</title>
-		<script id="translations-data" type="application/json" is:inline>
-			{JSON.stringify(ui)}
-		</script>
-		<script src="/Layout.js" is:inline></script>
 	</head>
 	<body>
 		<Header t={t} />
