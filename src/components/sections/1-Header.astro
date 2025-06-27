@@ -1,36 +1,795 @@
 ---
 const { t } = Astro.props;
 const currentLang = Astro.currentLocale || 'es';
+const currentPath = Astro.url.pathname;
 
 import LanguagePicker from '../../components/tools/LanguageSelect.astro';
 import ThemeToggleButton from '../../components/tools/ThemeToggleButton.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+
+// Navigation sections configuration
+const navSections = [
+	{ id: 'home', labelKey: 'layout.home' },
+	{ id: 'aboutme', labelKey: 'layout.about' },
+	{ id: 'projects', labelKey: 'layout.projects' },
+	{ id: 'technologies', labelKey: 'layout.technologies' },
+	{ id: 'contactme', labelKey: 'layout.contact' }
+];
+
+// Function to check if current section is active
+function isActiveSection(sectionId: string): boolean {
+	return currentPath.includes(sectionId) || 
+		   (sectionId === 'home' && (currentPath === '/' || currentPath === `/${currentLang}/`));
+}
 ---
 
-<header class="header bg-base-50/50 dark:bg-base-950/50 backdrop-blur-xl">
-			<h1 class="header-title">13rian</h1>
-			<nav class="header-nav">
-				<ul>
-					<li>
-						<a href={getRelativeLocaleUrl(currentLang,"#home")}>{t("layout.home")}</a>
-					</li>
-					<li>
-						<a href={getRelativeLocaleUrl(currentLang,"#aboutme")}>{t("layout.about")}</a>
-					</li>
-					<li>
-						<a href={getRelativeLocaleUrl(currentLang,"#projects")}>{t("layout.projects")}</a>
-					</li>
-					<li>
-						<a href={getRelativeLocaleUrl(currentLang,"#technologies")}>{t("layout.technologies")}</a>
-					</li>
-					<li>
-						<a href={getRelativeLocaleUrl(currentLang,"#contactme")}>{t("layout.contact")}</a>
-					</li>
+<style>
+	:root {
+		scroll-behavior: smooth;
+		scroll-padding-top: 5rem;
+		
+		/* CSS Custom Properties para reutilización */
+		--header-blur: blur(8px) saturate(140%);
+		--header-border-radius: 50px;
+		--header-padding-vertical: 0.25rem;
+		--header-padding-horizontal: 2rem;
+		--header-margin-top: 0.5rem;
+		--header-gap: 1rem;
+		--nav-indicator-height: 28px;
+		--nav-indicator-border-radius: 14px;
+		--amber-color: #fbbf24;
+		--glass-bg-light: rgba(255, 255, 255, 0.1);
+		--glass-bg-dark: rgba(15, 23, 42, 0.1);
+		--glass-border-light: rgba(255, 255, 255, 0.2);
+		--glass-border-dark: rgba(255, 255, 255, 0.1);
+		--transition-smooth: all 0.3s ease;
+	}
+	
+	/* Header glassmorphism base styles */
+	.header {
+		position: relative;
+		width: calc(100vw - 2rem);
+		max-width: none;
+		margin: var(--header-margin-top) 0 0 0;
+		background: var(--glass-bg-light);
+		backdrop-filter: var(--header-blur);
+		-webkit-backdrop-filter: var(--header-blur);
+		border: 1px solid var(--glass-border-light);
+		border-radius: var(--header-border-radius);
+		transition: var(--transition-smooth);
+		padding: var(--header-padding-vertical) var(--header-padding-horizontal);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+	}
+	
+	.dark .header {
+		background: var(--glass-bg-dark);
+		border-color: var(--glass-border-dark);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+	}
+	
+	/* Navigation styles */
+	.header-nav {
+		display: flex !important;
+		margin: 0 var(--header-gap);
+		position: relative;
+	}
+	
+	.header-nav ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		gap: 0;
+	}
+	
+	.header-nav li {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: auto;
+		text-align: center;
+	}
+	
+	/* Header layout containers */
+	.header-title-container {
+		margin-right: var(--header-gap);
+	}
+	
+	.header-actions {
+		margin-left: var(--header-gap);
+		gap: 0.75rem !important;
+		display: flex;
+		align-items: center;
+	}
+	
+	/* Navigation links - unified styles */
+	.nav-link {
+		color: rgb(55, 65, 81);
+		transition: var(--transition-smooth);
+		padding: 0.75rem 1rem;
+		margin: 0;
+		border-radius: 0.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		white-space: nowrap;
+		text-decoration: none;
+	}
+	
+	.dark .nav-link {
+		color: rgb(209, 213, 219);
+	}
+	
+	.nav-link:hover {
+		color: var(--amber-color);
+		background-color: rgba(251, 191, 36, 0.1);
+	}
+	
+	/* Mobile menu styles */
+	.mobile-menu {
+		position: absolute;
+		top: 100%;
+		left: 1rem;
+		right: 1rem;
+		background: rgba(255, 255, 255, 0.15);
+		-webkit-backdrop-filter: var(--header-blur);
+		backdrop-filter: var(--header-blur);
+		border: 1px solid var(--glass-border-light);
+		border-radius: 0 0 30px 30px;
+		width: calc(100% - 2rem);
+		margin: 0;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+		z-index: 50;
+	}
+	
+	.dark .mobile-menu {
+		background: rgba(15, 23, 42, 0.15);
+		border-color: var(--glass-border-dark);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+	}
+	
+	.mobile-menu.active {
+		display: block !important;
+	}
+	
+	/* Common list reset */
+	.header-nav ul,
+	.mobile-menu ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	
+	.header-nav li,
+	.mobile-menu li {
+		margin: 0;
+	}
+	
+	/* Hide mobile menu on larger screens */
+	@media (min-width: 481px) {
+		.mobile-menu,
+		.mobile-menu.active {
+			display: none !important;
+		}
+	}
+	
+	/* Hamburger menu */
+	.hamburger {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 24px;
+		height: 18px;
+		cursor: pointer;
+		padding: 0;
+		margin: 0;
+	}
+	
+	/* Show hamburger button on mobile */
+	.mobile-menu-button {
+		display: flex;
+		align-items: center;
+	}
+	
+	@media (min-width: 481px) {
+		.mobile-menu-button {
+			display: none !important;
+		}
+	}
+	
+	.hamburger span {
+		width: 100%;
+		height: 2px;
+		background-color: currentColor;
+		transition: var(--transition-smooth);
+		transform-origin: center;
+		display: block;
+	}
+	
+	.hamburger span:not(:last-child) {
+		margin-bottom: 0;
+	}
+	
+	.hamburger.active span:nth-child(1) {
+		transform: rotate(45deg) translate(5px, 5px);
+	}
+	
+	.hamburger.active span:nth-child(2) {
+		opacity: 0;
+	}
+	
+	.hamburger.active span:nth-child(3) {
+		transform: rotate(-45deg) translate(7px, -6px);
+	}
+	
+	/* Oval indicator styles */
+	.nav-oval-indicator {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		min-width: 60px;
+		height: var(--nav-indicator-height);
+		background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.3));
+		border: 2px solid rgba(251, 191, 36, 0.4);
+		border-radius: var(--nav-indicator-border-radius);
+		transform: translateY(-50%);
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		pointer-events: none;
+		z-index: -1;
+		opacity: 0;
+		backdrop-filter: blur(6px);
+	}
+	
+	/* Oval indicator animation states */
+	.nav-oval-indicator.full-width,
+	.nav-oval-indicator.contracting {
+		height: var(--nav-indicator-height);
+		border-radius: var(--nav-indicator-border-radius);
+		transform: translateY(-50%);
+		opacity: 1;
+	}
+	
+	.nav-oval-indicator.full-width {
+		transition: none;
+	}
+	
+	.nav-oval-indicator.contracting {
+		transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+	}
+	
+	.nav-oval-indicator.scrolling {
+		height: calc(var(--nav-indicator-height) / 2);
+		border-radius: 20px;
+		transition: all 0.2s ease-out;
+	}
+	
+	.nav-oval-indicator.crashed {
+		height: calc(var(--nav-indicator-height) * 1.4);
+		border-radius: 10px;
+		transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+	
+	.nav-oval-indicator.recovering {
+		transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+	}
+	
+	.nav-oval-indicator.active {
+		opacity: 1;
+	}
+	
+	/* Active navigation link styles */
+	.nav-link-active {
+		color: var(--amber-color) !important;
+		font-weight: 600;
+		position: relative;
+		z-index: 1;
+	}
+	
+	/* Hide initial server-side active states to prevent flash */
+	.nav-links-hidden .nav-link-active {
+		color: rgb(55, 65, 81) !important;
+		font-weight: normal !important;
+	}
+	
+	.dark .nav-links-hidden .nav-link-active {
+		color: rgb(209, 213, 219) !important;
+		font-weight: normal !important;
+	}
+	
+	/* Responsive Design - Mobile First Approach */
+	@media (max-width: 480px) {
+		:root {
+			--header-border-radius: 20px;
+			--header-padding-horizontal: 0.5rem;
+			--header-margin-top: 0.25rem;
+		}
+		
+		.header {
+			width: calc(100vw - 0.5rem);
+		}
+		
+		.mobile-menu {
+			border-radius: 0 0 20px 20px;
+			left: 0.25rem;
+			right: 0.25rem;
+			width: calc(100% - 0.5rem);
+		}
+		
+		.header-nav {
+			display: none !important;
+		}
+	}
+	
+	@media (min-width: 481px) and (max-width: 768px) {
+		:root {
+			--header-border-radius: 25px;
+			--header-padding-horizontal: 1rem;
+			--header-margin-top: 0.25rem;
+		}
+		
+		.header {
+			width: calc(100vw - 1rem);
+			padding: 0.25rem var(--header-padding-horizontal);
+		}
+		
+		.mobile-menu {
+			border-radius: 0 0 25px 25px;
+			left: 0.5rem;
+			right: 0.5rem;
+			width: calc(100% - 1rem);
+		}
+	}
+	
+	@media (min-width: 769px) and (max-width: 1024px) {
+		:root {
+			--header-border-radius: 40px;
+			--header-padding-horizontal: 1.5rem;
+			--header-margin-top: 0.5rem;
+		}
+		
+		.header {
+			width: calc(100vw - 1.5rem);
+			padding: 0.5rem var(--header-padding-horizontal);
+		}
+		
+		.mobile-menu {
+			left: 0.75rem;
+			right: 0.75rem;
+			width: calc(100% - 1.5rem);
+		}
+	}
+	
+	@media (min-width: 481px) {
+		.hamburger,
+		button[aria-label="Toggle mobile menu"],
+		.mobile-menu-button,
+		.mobile-menu,
+		.mobile-menu.active {
+			display: none !important;
+		}
+		
+		.header-nav {
+			display: flex !important;
+		}
+	}
+</style>
+
+<header class="fixed top-0 w-full z-50 flex justify-center">
+	<div class="header">
+		<div class="flex items-center justify-between h-10 gap-4">
+			<!-- Header Title - Left -->
+			<div class="header-title-container flex-shrink-0">
+				<h1 class="header-title text-xl font-bold text-gray-900 dark:text-white">13rian</h1>
+			</div>
+			
+			<!-- Header Nav - Center (Desktop) -->
+			<nav class="header-nav flex-1 flex justify-center nav-links-hidden" id="headerNav" style="display: none;">
+				<!-- Oval indicator -->
+				<div class="nav-oval-indicator" id="navOvalIndicator"></div>
+				<ul class="flex gap-0">
+					{navSections.map(section => (
+						<li>
+							<a href={getRelativeLocaleUrl(currentLang, `#${section.id}`)} 
+							   class={`nav-link ${isActiveSection(section.id) ? 'nav-link-active' : ''}`}
+							   data-section={section.id}>
+								{t(section.labelKey)}
+							</a>
+						</li>
+					))}
 				</ul>
 			</nav>
-			<div class="header-actions">
-				<ThemeToggleButton />
-				<LanguagePicker />
+			
+			<!-- Mobile Menu Button + Header Actions - Right -->
+			<div class="flex items-center flex-shrink-0 gap-3">
+				<!-- Mobile Menu Button -->
+				<button 
+					class="mobile-menu-button text-gray-700 dark:text-gray-300 p-2"
+					onclick="toggleMobileMenu()"
+					aria-label="Toggle mobile menu"
+					type="button">
+					<div class="hamburger" id="hamburger">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</button>
+				
+				<!-- Header Actions -->
+				<div class="header-actions flex items-center gap-3">
+					<ThemeToggleButton />
+					<!-- <LanguagePicker /> -->
+				</div>
 			</div>
-		</header>
+		</div>
+		
+		<!-- Mobile Menu (Hidden by default) -->
+		<div class="mobile-menu" id="mobileMenu" style="display: none;">
+			<nav class="px-4 py-4">
+				<ul class="space-y-3">
+					{navSections.map(section => (
+						<li>
+							<a href={getRelativeLocaleUrl(currentLang, `#${section.id}`)} 
+							   class={`nav-link block px-3 py-2 text-base font-medium transition-colors duration-200 ${isActiveSection(section.id) ? 'nav-link-active' : ''}`}
+							   onclick="closeMobileMenu()">
+								{t(section.labelKey)}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+
+<script>
+	// Constants and configuration
+	const SECTIONS = ['home', 'aboutme', 'projects', 'technologies', 'contactme'];
+	const SCROLL_THRESHOLD = 20;
+	const TIMINGS = {
+		recovery: 100,
+		crash: 200,
+		entryDelay: 500,
+		contractionEnd: 700
+	};
+	
+	// State variables
+	let scrollTimeout: number | null = null;
+	let crashTimeout: number | null = null;
+	let isScrolling = false;
+	let lastScrollY = 0;
+	let currentActiveSection = '';
+	let entryAnimationInProgress = true;
+	
+	// Wait for DOM to be ready
+	document.addEventListener('DOMContentLoaded', function() {
+		initializeEventListeners();
+		initializeOvalAnimation();
+	});
+	
+	// Initialize all event listeners
+	function initializeEventListeners() {
+		// Mobile menu functionality
+		setupMobileMenu();
+		
+		// Desktop navigation
+		setupDesktopNavigation();
+		
+		// Scroll and resize events
+		window.addEventListener('scroll', updateActiveSection);
+		window.addEventListener('resize', handleResize);
+		
+		// Close mobile menu when clicking outside
+		document.addEventListener('click', handleOutsideClick);
+	}
+	
+	// Mobile menu setup
+	function setupMobileMenu() {
+		const hamburgerButton = document.querySelector('[onclick="toggleMobileMenu()"]');
+		if (hamburgerButton) {
+			hamburgerButton.removeAttribute('onclick');
+			hamburgerButton.addEventListener('click', toggleMobileMenu);
+		}
+		
+		const mobileMenuLinks = document.querySelectorAll('#mobileMenu a[onclick="closeMobileMenu()"]');
+		mobileMenuLinks.forEach(link => {
+			link.removeAttribute('onclick');
+			link.addEventListener('click', closeMobileMenu);
+		});
+	}
+	
+	// Desktop navigation setup
+	function setupDesktopNavigation() {
+		const desktopNavLinks = document.querySelectorAll('.header-nav a[data-section]');
+		desktopNavLinks.forEach(link => {
+			link.addEventListener('click', handleNavClick);
+		});
+	}
+	
+	// Mobile menu functions
+	function toggleMobileMenu() {
+		const mobileMenu = document.getElementById('mobileMenu');
+		const hamburger = document.getElementById('hamburger');
+		
+		if (mobileMenu && hamburger) {
+			mobileMenu.classList.toggle('active');
+			hamburger.classList.toggle('active');
+		}
+	}
+	
+	function closeMobileMenu() {
+		const mobileMenu = document.getElementById('mobileMenu');
+		const hamburger = document.getElementById('hamburger');
+		
+		if (mobileMenu && hamburger) {
+			mobileMenu.classList.remove('active');
+			hamburger.classList.remove('active');
+		}
+	}
+	
+	// Navigation click handler
+	function handleNavClick(e: Event) {
+		const target = e.currentTarget as HTMLAnchorElement;
+		const sectionId = target.getAttribute('data-section');
+		if (sectionId) {
+			updateActiveLink(sectionId);
+			moveOvalToActiveLink(sectionId, true);
+			currentActiveSection = sectionId;
+		}
+	}
+	
+	// Update active link styles
+	function updateActiveLink(sectionId: string) {
+		document.querySelectorAll('.nav-link').forEach(link => {
+			link.classList.remove('nav-link-active');
+		});
+		
+		const activeLinks = document.querySelectorAll(`a[href*="#${sectionId}"]`);
+		activeLinks.forEach(link => {
+			link.classList.add('nav-link-active');
+		});
+	}
+	
+	// Handle clicks outside mobile menu
+	function handleOutsideClick(event: Event) {
+		const mobileMenu = document.getElementById('mobileMenu');
+		const header = document.querySelector('header');
+		const target = event.target as Node;
+		
+		if (mobileMenu && header && target && 
+			!header.contains(target) && 
+			mobileMenu.classList.contains('active')) {
+			closeMobileMenu();
+		}
+	}
+	
+	// Handle window resize
+	function handleResize() {
+		const currentSection = getCurrentSection();
+		if (currentSection) {
+			moveOvalToActiveLink(currentSection, false);
+		}
+	}
+	
+	// Active section detection on scroll
+	function updateActiveSection() {
+		if (entryAnimationInProgress) return;
+		
+		const newSection = getCurrentSection();
+		
+		if (newSection !== currentActiveSection) {
+			updateActiveLink(newSection);
+			moveOvalToActiveLink(newSection);
+			handleScrollSquish();
+			currentActiveSection = newSection;
+		}
+	}
+	
+	// Scroll squish effect handler
+	function handleScrollSquish() {
+		const ovalIndicator = document.getElementById('navOvalIndicator');
+		const currentScrollY = window.scrollY;
+		const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+		
+		if (ovalIndicator && scrollDelta > SCROLL_THRESHOLD) {
+			ovalIndicator.classList.add('scrolling');
+			ovalIndicator.classList.remove('crashed', 'recovering');
+			isScrolling = true;
+			checkForCrash();
+		}
+		
+		if (scrollTimeout !== null) {
+			window.clearTimeout(scrollTimeout);
+		}
+		scrollTimeout = window.setTimeout(recoverOval, TIMINGS.recovery);
+		lastScrollY = currentScrollY;
+	}
+	
+	// Check if oval should crash against edges
+	function checkForCrash() {
+		const ovalIndicator = document.getElementById('navOvalIndicator');
+		const nav = document.querySelector('.header-nav ul');
+		
+		if (ovalIndicator && nav) {
+			const ovalRect = ovalIndicator.getBoundingClientRect();
+			const navRect = nav.getBoundingClientRect();
+			
+			const nearLeftEdge = ovalRect.left <= navRect.left + 20;
+			const nearRightEdge = ovalRect.right >= navRect.right - 20;
+			
+			if (nearLeftEdge || nearRightEdge) {
+				ovalIndicator.classList.remove('scrolling');
+				ovalIndicator.classList.add('crashed');
+				
+				if (crashTimeout !== null) {
+					window.clearTimeout(crashTimeout);
+				}
+				crashTimeout = window.setTimeout(recoverOval, TIMINGS.crash);
+			}
+		}
+	}
+	
+	// Recover oval from effects
+	function recoverOval() {
+		const ovalIndicator = document.getElementById('navOvalIndicator');
+		if (ovalIndicator) {
+			ovalIndicator.classList.remove('scrolling', 'crashed');
+			ovalIndicator.classList.add('recovering');
+			isScrolling = false;
+			
+			setTimeout(() => {
+				ovalIndicator.classList.remove('recovering');
+			}, 600);
+		}
+	}
+		
+	
+	// Move oval to active link
+	function moveOvalToActiveLink(sectionId: string, forceMove = false) {
+		const ovalIndicator = document.getElementById('navOvalIndicator');
+		const activeLink = document.querySelector(`a[data-section="${sectionId}"]`) as HTMLElement;
+		
+		if (ovalIndicator && activeLink && (forceMove || !ovalIndicator.classList.contains('crashed'))) {
+			const nav = activeLink.closest('.header-nav') as HTMLElement;
+			if (nav) {
+				const navRect = nav.getBoundingClientRect();
+				const linkRect = activeLink.getBoundingClientRect();
+				
+				// Add 5px padding on each side for the oval to extend beyond the link
+				const ovalWidth = linkRect.width + 10; // +10px total (5px each side)
+				const leftPosition = linkRect.left - navRect.left - 5; // -5px to center the extra width
+				
+				if (forceMove) {
+					ovalIndicator.classList.remove('scrolling', 'crashed', 'recovering');
+					if (scrollTimeout !== null) {
+						window.clearTimeout(scrollTimeout);
+						scrollTimeout = null;
+					}
+					if (crashTimeout !== null) {
+						window.clearTimeout(crashTimeout);
+						crashTimeout = null;
+					}
+				}
+				
+				ovalIndicator.style.width = `${ovalWidth}px`;
+				ovalIndicator.style.left = `${leftPosition}px`;
+				ovalIndicator.classList.add('active');
+			}
+		}
+	}
+	
+	// Get current section based on scroll position
+	function getCurrentSection() {
+		const scrollPosition = window.scrollY + 100;
+		
+		for (const section of SECTIONS.slice().reverse()) {
+			const element = document.getElementById(section);
+			if (element && element.offsetTop <= scrollPosition) {
+				return section;
+			}
+		}
+		
+		return 'home';
+	}
+	
+	// Get current section from URL hash
+	function getCurrentSectionFromURL() {
+		const hash = window.location.hash;
+		if (hash && hash.startsWith('#')) {
+			const sectionFromHash = hash.substring(1);
+			if (SECTIONS.includes(sectionFromHash)) {
+				return sectionFromHash;
+			}
+		}
+		return null;
+	}
+	
+	// Initialize oval animation
+	function initializeOvalAnimation() {
+		// Get the initial active section
+		const initialActiveSection = getCurrentSectionFromURL() || getCurrentSection();
+		currentActiveSection = initialActiveSection;
+		
+		// Remove nav-links-hidden class to prevent flash
+		const headerNav = document.getElementById('headerNav');
+		if (headerNav) {
+			headerNav.classList.remove('nav-links-hidden');
+		}
+		
+		// Update active link state
+		updateActiveLink(initialActiveSection);
+		
+		// Initialize oval with entry animation
+		initializeOvalWithFullWidthAnimation();
+	}
+	
+	// Entry animation with full-width effect
+	function initializeOvalWithFullWidthAnimation() {
+		const ovalIndicator = document.getElementById('navOvalIndicator');
+		const nav = document.querySelector('.header-nav') as HTMLElement;
+		
+		if (ovalIndicator && nav) {
+			const navItems = nav.querySelectorAll('li');
+			if (navItems.length > 0) {
+				const firstItem = navItems[0];
+				const lastItem = navItems[navItems.length - 1];
+				const navRect = nav.getBoundingClientRect();
+				const firstRect = firstItem.getBoundingClientRect();
+				const lastRect = lastItem.getBoundingClientRect();
+				
+				const startPosition = firstRect.left - navRect.left;
+				const endPosition = lastRect.right - navRect.left;
+				const calculatedWidth = endPosition - startPosition;
+				
+				ovalIndicator.className = 'nav-oval-indicator full-width';
+				ovalIndicator.style.left = `${startPosition}px`;
+				ovalIndicator.style.width = `${calculatedWidth}px`;
+				ovalIndicator.style.opacity = '1';
+			} else {
+				ovalIndicator.className = 'nav-oval-indicator full-width';
+				ovalIndicator.style.opacity = '1';
+			}
+			
+			window.setTimeout(startFullWidthAnimation, TIMINGS.entryDelay);
+		}
+	}
+	
+	// Full-width animation sequence
+	function startFullWidthAnimation() {
+		const ovalIndicator = document.getElementById('navOvalIndicator');
+		const nav = document.querySelector('.header-nav') as HTMLElement;
+		
+		if (ovalIndicator && nav) {
+			const targetLink = document.querySelector(`a[data-section="${currentActiveSection}"]`) as HTMLElement;
+			
+			if (targetLink) {
+				const linkRect = targetLink.getBoundingClientRect();
+				const navRect = nav.getBoundingClientRect();
+				
+				ovalIndicator.className = 'nav-oval-indicator contracting';
+				
+				// Add 5px padding on each side for the oval to extend beyond the link
+				const ovalWidth = linkRect.width + 10; // +10px total (5px each side)
+				const leftPosition = linkRect.left - navRect.left - 5; // -5px to center the extra width
+				
+				ovalIndicator.style.left = `${leftPosition}px`;
+				ovalIndicator.style.width = `${ovalWidth}px`;
+				
+				setTimeout(() => {
+					ovalIndicator.className = 'nav-oval-indicator active';
+					entryAnimationInProgress = false;
+				}, TIMINGS.contractionEnd);
+			}
+		}
+	}
+	
+	// Make functions globally accessible for legacy support
+	(window as any).toggleMobileMenu = toggleMobileMenu;
+	(window as any).closeMobileMenu = closeMobileMenu;
+</script>
