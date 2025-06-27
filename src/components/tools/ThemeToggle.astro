@@ -54,9 +54,9 @@
   
   /* Cuando está en modo oscuro - fondo oscuro */
   :global(.dark) .theme-toggle-btn {
-    background-color: #1f2937;
-    border-color: #4b5563;
-    color: #f9fafb;
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
   }
   
   :global(.dark) .theme-toggle-btn:hover {
@@ -101,71 +101,82 @@
 </style>
 
 <script>
-  console.log('ThemeToggle script loaded');
-  
-  // Función para actualizar los iconos y estilos del botón
-  function updateThemeIcons() {
+  // Declarar tipos para el themeManager global
+  declare global {
+    interface Window {
+      themeManager?: {
+        setTheme: (theme: string) => void;
+        getCurrentTheme: () => string;
+        getSavedTheme: () => string | null;
+        getSystemPreference: () => boolean;
+      };
+    }
+  }
+
+  // Función para actualizar iconos basada en el sistema existente
+  function updateIcons() {
     const sunIcon = document.querySelector('.sun-icon') as HTMLElement;
     const moonIcon = document.querySelector('.moon-icon') as HTMLElement;
-    const button = document.getElementById('theme-toggle') as HTMLElement;
     const isDark = document.documentElement.classList.contains('dark');
     
-    if (sunIcon && moonIcon && button) {
+    if (sunIcon && moonIcon) {
       if (isDark) {
-        // En modo oscuro: mostrar sol, fondo oscuro
-        sunIcon.style.display = 'block';
+        sunIcon.style.display = 'flex';
         moonIcon.style.display = 'none';
-        console.log('Updated to dark mode - showing sun icon');
       } else {
-        // En modo claro: mostrar luna, fondo claro
         sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
-        console.log('Updated to light mode - showing moon icon');
+        moonIcon.style.display = 'flex';
       }
     }
   }
   
-  // Script para manejar el click del botón de tema
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, looking for theme toggle button');
-    const themeToggle = document.getElementById('theme-toggle');
+  // Función para alternar tema usando el sistema existente
+  function toggleTheme() {
+    console.log('Toggle theme clicked');
     
-    // Actualizar iconos inicialmente
-    updateThemeIcons();
-    
-    if (themeToggle) {
-      console.log('Theme toggle button found!');
-      themeToggle.addEventListener('click', (e) => {
-        console.log('Theme toggle clicked!');
-        e.preventDefault();
-        
-        // Verificar estado actual
-        const isDark = document.documentElement.classList.contains('dark');
-        console.log('Current theme is dark:', isDark);
-        
-        // Disparar el evento personalizado para cambiar el tema
-        const event = new CustomEvent('basecoat:theme', {
-          detail: { mode: 'toggle' }
-        });
-        console.log('Dispatching theme event:', event);
-        document.dispatchEvent(event);
-        
-        // Actualizar iconos después del cambio
-        setTimeout(() => {
-          updateThemeIcons();
-          const newIsDark = document.documentElement.classList.contains('dark');
-          console.log('New theme is dark:', newIsDark);
-        }, 50);
-      });
+    // Usar el sistema existente de Theme.js
+    if (window.themeManager) {
+      const currentTheme = window.themeManager.getCurrentTheme();
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      console.log('Switching from', currentTheme, 'to', newTheme);
+      window.themeManager.setTheme(newTheme);
     } else {
-      console.error('Theme toggle button not found!');
+      // Fallback si themeManager no está disponible
+      console.log('Using fallback theme toggle');
+      const event = new CustomEvent('basecoat:theme', {
+        detail: { mode: 'toggle' }
+      });
+      document.dispatchEvent(event);
     }
     
-    // Observer para detectar cambios en el tema y actualizar iconos
+    // Actualizar iconos
+    setTimeout(updateIcons, 50);
+  }
+  
+  // Inicializar cuando el DOM esté listo
+  function initTheme() {
+    console.log('Initializing theme toggle...');
+    
+    // Actualizar iconos inicialmente
+    updateIcons();
+    
+    // Agregar event listener al botón
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleTheme();
+      });
+      console.log('Theme toggle button initialized');
+    } else {
+      console.error('Theme toggle button not found');
+    }
+    
+    // Escuchar cambios en el tema para actualizar iconos
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          updateThemeIcons();
+          updateIcons();
         }
       });
     });
@@ -174,5 +185,12 @@
       attributes: true,
       attributeFilter: ['class']
     });
-  });
+  }
+  
+  // Ejecutar cuando el documento esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTheme);
+  } else {
+    initTheme();
+  }
 </script>
