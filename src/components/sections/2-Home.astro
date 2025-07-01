@@ -452,27 +452,28 @@ const { t } = Astro.props;
   
   /* ========================================
    * 3D CARD COMPONENT
-   * Main business card with flip functionality and WebKit compatibility
+   * Main business card with enhanced flip functionality for Safari/iOS
    * ======================================== */
   .business-card {
     width: var(--card-width);
     height: var(--card-height);
     position: relative;
     transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d; /* WebKit specific */
+    -webkit-transform-style: preserve-3d;
     transition: var(--transition-card);
     cursor: pointer;
     transform: perspective(var(--card-perspective)) 
                rotateY(var(--card-idle-rotate-y)) 
                rotateX(var(--card-idle-rotate-x));
-    /* Additional WebKit/Safari fixes for iOS */
     -webkit-transform: perspective(var(--card-perspective)) 
                       rotateY(var(--card-idle-rotate-y)) 
                       rotateX(var(--card-idle-rotate-x));
-    /* Force hardware acceleration for better performance on iOS */
+    /* Enhanced hardware acceleration for iOS */
     will-change: transform;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Ensure proper z-index layering */
+    z-index: 1;
   }
   
   .business-card:hover {
@@ -508,31 +509,44 @@ const { t } = Astro.props;
   
   /* ========================================
    * CARD SIDES - FRONT & BACK
-   * Common styles for both card faces with WebKit fix
+   * Common styles for both card faces with enhanced Safari/iOS support
    * ======================================== */
   .card-front,
   .card-back {
     position: absolute;
     width: 100%;
     height: 100%;
+    /* Critical: backface-visibility for proper 3D flip on Safari/iOS */
     backface-visibility: hidden;
-    -webkit-backface-visibility: hidden; /* WebKit specific fix */
+    -webkit-backface-visibility: hidden;
     border-radius: var(--card-border-radius);
     box-shadow: var(--shadow-card);
     background: var(--color-bg-primary);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    /* Additional WebKit/Safari fixes for iOS */
+    /* Safari/iOS specific 3D rendering fixes */
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
+    /* Force hardware acceleration */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Improve rendering on iOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
+  /* Front face - default position */
+  .card-front {
+    z-index: 2;
+  }
+  
+  /* Back face - rotated 180 degrees */
   .card-back {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) translateZ(0);
+    -webkit-transform: rotateY(180deg) translateZ(0);
     background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    z-index: 1;
   }
   
   /* ========================================
@@ -1333,20 +1347,75 @@ const { t } = Astro.props;
     }
   }
   
-  /* Additional iOS Safari specific fixes */
-  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+  /* ========================================
+   * SAFARI/IOS SPECIFIC FIXES
+   * Critical 3D flip bug fixes for WebKit browsers
+   * ======================================== */
+  
+  /* Safari-specific 3D transform fixes */
+  @supports (-webkit-appearance: none) {
     .business-card {
-      /* Force GPU acceleration on high-DPI iOS devices */
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
+      /* Force proper 3D context on Safari */
+      -webkit-transform-style: preserve-3d !important;
+      transform-style: preserve-3d !important;
+      /* Ensure hardware acceleration */
+      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x)) translateZ(0);
+    }
+    
+    .business-card.flipped {
+      /* Explicit 3D transform for flipped state on Safari */
+      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x)) translateZ(0);
     }
     
     .card-front,
     .card-back {
-      /* Prevent content bleeding on iOS */
+      /* Force backface-visibility on Safari */
+      -webkit-backface-visibility: hidden !important;
+      backface-visibility: hidden !important;
+      /* Ensure proper layer compositing */
       -webkit-transform: translateZ(0);
       transform: translateZ(0);
+      /* Prevent Safari from hiding elements during flip */
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .card-back {
+      /* Explicit back face transform for Safari */
+      -webkit-transform: rotateY(180deg) translateZ(0) !important;
+      transform: rotateY(180deg) translateZ(0) !important;
+    }
+  }
+  
+  /* iOS specific fixes for touch devices */
+  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+    .business-card {
+      /* Enhanced GPU acceleration on iOS */
+      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x)) translate3d(0,0,0);
+      /* Prevent iOS from auto-hiding elements */
+      -webkit-backface-visibility: visible;
+    }
+    
+    .business-card.flipped {
+      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x)) translate3d(0,0,0);
+    }
+    
+    .card-front,
+    .card-back {
+      /* Force visibility on iOS during transitions */
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translate3d(0,0,0);
+      transform: translate3d(0,0,0);
+      /* Prevent iOS rendering bugs */
       isolation: isolate;
+      contain: layout style paint;
+    }
+    
+    .card-back {
+      /* iOS-specific back face positioning */
+      -webkit-transform: rotateY(180deg) translate3d(0,0,0);
+      transform: rotateY(180deg) translate3d(0,0,0);
     }
   }
 </style>
