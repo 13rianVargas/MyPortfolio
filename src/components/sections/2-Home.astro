@@ -1,19 +1,17 @@
 ---
+import profilePhoto from '../../assets/13rianPhoto.svg';
 const { t } = Astro.props;
 ---
 
 <section class="home-center-box">
   <div class="home-photo">
-    <img
-      src="/src/assets/13rianPhoto.svg"
-      alt={`Foto de perfil de Brian Vargas`}
-    />
+    <img src={profilePhoto.src} alt={`Foto de perfil de Brian Vargas`} />
   </div>
   <div class="home-name">
-    <h1>{t('home.name')}</h1>
+    <h1>{t("home.name")}</h1>
   </div>
   <div class="home-role">
-    <h2>{t('home.role')}</h2>
+    <h2>{t("home.role")}</h2>
   </div>
   <div class="home-links">
     <a class="home-link-btn" href="#" target="_blank" aria-label="LinkedIn">
