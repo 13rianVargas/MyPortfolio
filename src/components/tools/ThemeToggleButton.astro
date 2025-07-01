@@ -1,5 +1,6 @@
 ---
-
+// Theme Toggle Button Component
+// Provides a circular button to toggle between light and dark themes
 ---
 
 <button
@@ -8,11 +9,11 @@
   data-tooltip="Toggle dark mode"
   data-side="bottom"
   id="theme-toggle"
-  class="theme-toggle-btn relative p-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  class="theme-toggle-btn"
 >
-  <!-- Icono de sol (se muestra en modo oscuro para cambiar a claro) -->
-  <span class="sun-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Sun icon (shown in dark mode to switch to light) -->
+  <span class="theme-icon sun-icon" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2" />
       <path d="M12 20v2" />
@@ -24,144 +25,242 @@
       <path d="m19.07 4.93-1.41 1.41" />
     </svg>
   </span>
-  <!-- Icono de luna (se muestra en modo claro para cambiar a oscuro) -->
-  <span class="moon-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Moon icon (shown in light mode to switch to dark) -->
+  <span class="theme-icon moon-icon" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
     </svg>
   </span>
 </button>
 
 <style>
+  /* CSS Custom Properties (Variables) */
   .theme-toggle-btn {
-    width: 40px;
-    height: 40px;
+    /* Size variables */
+    --btn-size: 40px;
+    --icon-size: 20px;
+    
+    /* Glass morphism effects - Light mode */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+    --glass-hover-bg: rgba(255, 255, 255, 0.25);
+    
+    /* Icon colors */
+    --sun-color: #fbbf24;
+    --moon-color: #6366f1;
+    
+    /* Animation properties */
+    --transition-duration: 0.3s;
+    --hover-scale: 1.05;
+    --blur-effect: blur(8px) saturate(140%);
+    
+    /* Button styling with glass effect */
+    width: var(--btn-size);
+    height: var(--btn-size);
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative; /* Importante para el posicionamiento absoluto de los iconos */
+    position: relative;
+    border-radius: 50%;
+    padding: 0;
     
-    /* Tema claro por defecto - fondo claro con borde */
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    color: #374151;
+    /* Glass morphism styling */
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    
+    cursor: pointer;
+    transition: all var(--transition-duration) ease;
+    will-change: backdrop-filter, transform, background;
+    
+    /* Focus and accessibility */
+    outline: none;
   }
   
   .theme-toggle-btn:hover {
-    background-color: #f3f4f6;
-    transform: scale(1.05);
+    background: var(--glass-hover-bg);
+    transform: scale(var(--hover-scale));
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.15), 
+      0 6px 20px rgba(0, 0, 0, 0.08);
   }
   
-  /* Cuando está en modo oscuro - fondo oscuro */
+  .theme-toggle-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  .theme-toggle-btn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Dark theme glass morphism overrides */
   :global(.dark) .theme-toggle-btn {
-    background-color: #1f2937;
-    border-color: #4b5563;
-    color: #f9fafb;
+    --glass-bg: rgba(15, 23, 42, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+    --glass-hover-bg: rgba(15, 23, 42, 0.25);
   }
   
   :global(.dark) .theme-toggle-btn:hover {
-    background-color: #374151;
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.4), 
+      0 6px 20px rgba(0, 0, 0, 0.25);
   }
   
-  /* Control de iconos - método alternativo más robusto */
-  .theme-toggle-btn .sun-icon {
-    display: none;
-  }
-  
-  .theme-toggle-btn .moon-icon {
+  /* Icon base styles */
+  .theme-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    transition: all var(--transition-duration) ease;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
   }
   
-  /* Cuando está en modo oscuro - mostrar sol */
-  :global(.dark) .theme-toggle-btn .sun-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .theme-icon svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
   }
   
-  :global(.dark) .theme-toggle-btn .moon-icon {
+  /* Icon visibility control */
+  .sun-icon {
     display: none;
+    color: var(--sun-color);
   }
   
-  /* Transiciones suaves para los iconos */
-  .sun-icon,
   .moon-icon {
-    transition: all 0.3s ease;
-    width: 20px;
-    height: 20px;
+    display: flex;
+    color: var(--moon-color);
   }
   
-  .sun-icon svg,
-  .moon-icon svg {
-    width: 20px;
-    height: 20px;
+  /* Dark mode icon visibility */
+  :global(.dark) .sun-icon {
+    display: flex;
+  }
+  
+  :global(.dark) .moon-icon {
+    display: none;
+  }
+  
+  /* Enhanced icon animations */
+  .theme-toggle-btn:hover .theme-icon {
+    transform: rotate(15deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+  
+  /* Smooth icon transition when switching themes */
+  .theme-icon {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8) rotate(-15deg);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
   }
 </style>
 
 <script>
-  console.log('ThemeToggle script loaded');
+  // Theme Toggle Button Script
+  // Handles theme switching functionality and icon updates
   
-  // Función para actualizar los iconos y estilos del botón
-  function updateThemeIcons() {
-    const sunIcon = document.querySelector('.sun-icon') as HTMLElement;
-    const moonIcon = document.querySelector('.moon-icon') as HTMLElement;
-    const button = document.getElementById('theme-toggle') as HTMLElement;
-    const isDark = document.documentElement.classList.contains('dark');
+  // Constants
+  const THEME_TOGGLE_ID = 'theme-toggle';
+  const THEME_EVENT_NAME = 'basecoat:theme';
+  const DARK_CLASS = 'dark';
+  const UPDATE_DELAY = 50; // ms delay for icon updates after theme change
+  
+  // Selectors
+  const SELECTORS = {
+    sunIcon: '.sun-icon',
+    moonIcon: '.moon-icon',
+    themeToggle: `#${THEME_TOGGLE_ID}`
+  } as const;
+  
+  /**
+   * Updates the visibility of theme icons based on current theme
+   */
+  function updateThemeIcons(): void {
+    const sunIcon = document.querySelector(SELECTORS.sunIcon) as HTMLElement;
+    const moonIcon = document.querySelector(SELECTORS.moonIcon) as HTMLElement;
     
-    if (sunIcon && moonIcon && button) {
-      if (isDark) {
-        // En modo oscuro: mostrar sol, fondo oscuro
-        sunIcon.style.display = 'block';
-        moonIcon.style.display = 'none';
-        console.log('Updated to dark mode - showing sun icon');
-      } else {
-        // En modo claro: mostrar luna, fondo claro
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
-        console.log('Updated to light mode - showing moon icon');
-      }
+    if (!sunIcon || !moonIcon) {
+      console.warn('Theme icons not found');
+      return;
     }
+    
+    const isDarkMode = document.documentElement.classList.contains(DARK_CLASS);
+    
+    // In dark mode: show sun icon (to switch to light)
+    // In light mode: show moon icon (to switch to dark)
+    sunIcon.style.display = isDarkMode ? 'flex' : 'none';
+    moonIcon.style.display = isDarkMode ? 'none' : 'flex';
+    
+    console.log(`Theme icons updated - Dark mode: ${isDarkMode}`);
   }
   
-  // Script para manejar el click del botón de tema
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, looking for theme toggle button');
-    const themeToggle = document.getElementById('theme-toggle');
+  /**
+   * Dispatches a custom theme toggle event
+   */
+  function dispatchThemeToggleEvent(): void {
+    const themeEvent = new CustomEvent(THEME_EVENT_NAME, {
+      detail: { mode: 'toggle' }
+    });
     
-    // Actualizar iconos inicialmente
-    updateThemeIcons();
+    document.dispatchEvent(themeEvent);
+    console.log('Theme toggle event dispatched');
+  }
+  
+  /**
+   * Handles the theme toggle button click
+   */
+  function handleThemeToggleClick(event: Event): void {
+    event.preventDefault();
     
-    if (themeToggle) {
-      console.log('Theme toggle button found!');
-      themeToggle.addEventListener('click', (e) => {
-        console.log('Theme toggle clicked!');
-        e.preventDefault();
-        
-        // Verificar estado actual
-        const isDark = document.documentElement.classList.contains('dark');
-        console.log('Current theme is dark:', isDark);
-        
-        // Disparar el evento personalizado para cambiar el tema
-        const event = new CustomEvent('basecoat:theme', {
-          detail: { mode: 'toggle' }
-        });
-        console.log('Dispatching theme event:', event);
-        document.dispatchEvent(event);
-        
-        // Actualizar iconos después del cambio
-        setTimeout(() => {
-          updateThemeIcons();
-          const newIsDark = document.documentElement.classList.contains('dark');
-          console.log('New theme is dark:', newIsDark);
-        }, 50);
-      });
-    } else {
-      console.error('Theme toggle button not found!');
+    const currentIsDark = document.documentElement.classList.contains(DARK_CLASS);
+    console.log(`Theme toggle clicked - Current mode: ${currentIsDark ? 'dark' : 'light'}`);
+    
+    // Dispatch theme change event
+    dispatchThemeToggleEvent();
+    
+    // Update icons after a brief delay to ensure theme change has been applied
+    setTimeout(() => {
+      updateThemeIcons();
+      const newIsDark = document.documentElement.classList.contains(DARK_CLASS);
+      console.log(`Theme changed - New mode: ${newIsDark ? 'dark' : 'light'}`);
+    }, UPDATE_DELAY);
+  }
+  
+  /**
+   * Sets up the theme toggle button event listener
+   */
+  function initializeThemeToggle(): void {
+    const themeToggleButton = document.querySelector(SELECTORS.themeToggle) as HTMLButtonElement;
+    
+    if (!themeToggleButton) {
+      console.error('Theme toggle button not found');
+      return;
     }
     
-    // Observer para detectar cambios en el tema y actualizar iconos
+    // Add click event listener
+    themeToggleButton.addEventListener('click', handleThemeToggleClick);
+    console.log('Theme toggle button initialized');
+  }
+  
+  /**
+   * Sets up a MutationObserver to watch for theme class changes
+   */
+  function setupThemeObserver(): void {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
@@ -174,5 +273,30 @@
       attributes: true,
       attributeFilter: ['class']
     });
-  });
+    
+    console.log('Theme observer initialized');
+  }
+  
+  /**
+   * Main initialization function
+   */
+  function init(): void {
+    console.log('Initializing theme toggle component');
+    
+    // Update icons based on current theme
+    updateThemeIcons();
+    
+    // Initialize button functionality
+    initializeThemeToggle();
+    
+    // Setup theme change observer
+    setupThemeObserver();
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
