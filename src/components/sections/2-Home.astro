@@ -443,22 +443,36 @@ const { t } = Astro.props;
   
   .card-container {
     position: relative;
+    /* iOS Safari 3D context fix */
+    -webkit-perspective: var(--card-perspective);
+    perspective: var(--card-perspective);
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
   }
   
   /* ========================================
    * 3D CARD COMPONENT
-   * Main business card with flip functionality
+   * Main business card with flip functionality and WebKit compatibility
    * ======================================== */
   .business-card {
     width: var(--card-width);
     height: var(--card-height);
     position: relative;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d; /* WebKit specific */
     transition: var(--transition-card);
     cursor: pointer;
     transform: perspective(var(--card-perspective)) 
                rotateY(var(--card-idle-rotate-y)) 
                rotateX(var(--card-idle-rotate-x));
+    /* Additional WebKit/Safari fixes for iOS */
+    -webkit-transform: perspective(var(--card-perspective)) 
+                      rotateY(var(--card-idle-rotate-y)) 
+                      rotateX(var(--card-idle-rotate-x));
+    /* Force hardware acceleration for better performance on iOS */
+    will-change: transform;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   .business-card:hover {
@@ -466,12 +480,19 @@ const { t } = Astro.props;
                rotateY(var(--card-hover-rotate-y)) 
                rotateX(var(--card-hover-rotate-x)) 
                scale(var(--card-hover-scale));
+    -webkit-transform: perspective(var(--card-perspective)) 
+                      rotateY(var(--card-hover-rotate-y)) 
+                      rotateX(var(--card-hover-rotate-x)) 
+                      scale(var(--card-hover-scale));
   }
   
   .business-card.flipped {
     transform: perspective(var(--card-perspective)) 
                rotateY(var(--card-flipped-rotate-y)) 
                rotateX(var(--card-idle-rotate-x));
+    -webkit-transform: perspective(var(--card-perspective)) 
+                      rotateY(var(--card-flipped-rotate-y)) 
+                      rotateX(var(--card-idle-rotate-x));
   }
   
   .business-card.flipped:hover {
@@ -479,11 +500,15 @@ const { t } = Astro.props;
                rotateY(var(--card-flipped-hover-rotate-y)) 
                rotateX(var(--card-hover-rotate-x)) 
                scale(var(--card-hover-scale));
+    -webkit-transform: perspective(var(--card-perspective)) 
+                      rotateY(var(--card-flipped-hover-rotate-y)) 
+                      rotateX(var(--card-hover-rotate-x)) 
+                      scale(var(--card-hover-scale));
   }
   
   /* ========================================
    * CARD SIDES - FRONT & BACK
-   * Common styles for both card faces
+   * Common styles for both card faces with WebKit fix
    * ======================================== */
   .card-front,
   .card-back {
@@ -491,12 +516,18 @@ const { t } = Astro.props;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden; /* WebKit specific fix */
     border-radius: var(--card-border-radius);
     box-shadow: var(--shadow-card);
     background: var(--color-bg-primary);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    /* Additional WebKit/Safari fixes for iOS */
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
   }
   
   .card-back {
@@ -1272,5 +1303,50 @@ const { t } = Astro.props;
       0 20px 40px rgba(0, 0, 0, 0.4),
       0 0 0 1px var(--color-border),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  /* ========================================
+   * WEBKIT/SAFARI iOS SPECIFIC FIXES
+   * Fixes for 3D transform bugs on mobile Safari
+   * ======================================== */
+  
+  /* Force proper layering and backface visibility on WebKit */
+  @supports (-webkit-transform-style: preserve-3d) {
+    .business-card .card-front {
+      z-index: 2;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    
+    .business-card .card-back {
+      z-index: 1;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    
+    .business-card.flipped .card-front {
+      z-index: 1;
+    }
+    
+    .business-card.flipped .card-back {
+      z-index: 2;
+    }
+  }
+  
+  /* Additional iOS Safari specific fixes */
+  @media screen and (-webkit-min-device-pixel-ratio: 2) {
+    .business-card {
+      /* Force GPU acceleration on high-DPI iOS devices */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+    
+    .card-front,
+    .card-back {
+      /* Prevent content bleeding on iOS */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      isolation: isolate;
+    }
   }
 </style>
