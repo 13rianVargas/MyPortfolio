@@ -11,8 +11,8 @@
     --color-bg-secondary: #f8fafc;
     --color-text-primary: #1e293b;
     --color-text-secondary: #64748b;
-    --color-accent: #3b82f6;
-    --color-accent-hover: #2563eb;
+    --color-accent: #fbbf24;
+    --color-accent-hover: #f59e0b;
     --color-border: #e2e8f0;
     --color-shadow: rgba(0, 0, 0, 0.1);
   }
@@ -23,8 +23,8 @@
     --color-bg-secondary: #1e293b;
     --color-text-primary: #f1f5f9;
     --color-text-secondary: #94a3b8;
-    --color-accent: #60a5fa;
-    --color-accent-hover: #3b82f6;
+    --color-accent: #fcd34d;
+    --color-accent-hover: #fbbf24;
     --color-border: #334155;
     --color-shadow: rgba(0, 0, 0, 0.3);
   }
