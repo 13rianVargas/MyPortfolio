@@ -263,6 +263,9 @@ function getNavUrl(sectionId: string): string {
 		list-style: none;
 		padding: 0;
 		margin: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 	
 	.mobile-menu .nav-link {
@@ -270,7 +273,7 @@ function getNavUrl(sectionId: string): string {
 		width: 100%;
 		padding: 0.875rem 1rem;
 		margin: 0.25rem 0;
-		text-align: left;
+		text-align: center;
 		transform: translateY(10px);
 		opacity: 0;
 	}
