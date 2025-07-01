@@ -433,6 +433,10 @@ function getNavUrl(sectionId: string): string {
 		.mobile-menu {
 			width: calc(100vw - 1rem);
 		}
+		
+		.header-nav {
+			display: none !important;
+		}
 	}
 	
 	/* Large tablet (769px-1024px) */
@@ -448,8 +452,8 @@ function getNavUrl(sectionId: string): string {
 		}
 	}
 	
-	/* Desktop and above (>481px) - Show desktop nav, hide mobile menu */
-	@media (min-width: 481px) {
+	/* Desktop and above (>768px) - Show desktop nav, hide mobile menu */
+	@media (min-width: 769px) {
 		.mobile-menu-button,
 		.mobile-menu,
 		.mobile-menu.active {
