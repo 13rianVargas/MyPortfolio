@@ -1,0 +1,34 @@
+---
+import devPhoto from '../../assets/DeerHead.svg';
+
+interface Props {
+  size?: string;
+  className?: string;
+}
+
+const { size = 'var(--logo-size, 50px)', className } = Astro.props;
+---
+
+<div class:list={["logo-circle", className]} style=`width: ${size}; height: ${size};`>
+  <img src={devPhoto.src} alt="Developer Logo" />
+</div>
+
+<style>
+  .logo-circle {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+  }
+
+  .logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+</style>

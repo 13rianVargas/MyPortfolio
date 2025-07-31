@@ -7,6 +7,7 @@ const currentPath = Astro.url.pathname;
 // Imports
 import ThemeToggleButton from '../tools/ThemeToggleButton.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import Logo from '../tools/Logo.astro';
 
 // Navigation configuration - centralizes all section definitions
 const NAV_SECTIONS = [
@@ -128,10 +129,12 @@ function getNavUrl(sectionId: string): string {
 		will-change: backdrop-filter, transform;
 	}
 	
-	/* Header layout containers */
 	.header-title-container {
 		margin-right: var(--header-gap);
 		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 	
 	.header-actions {
@@ -471,6 +474,7 @@ function getNavUrl(sectionId: string): string {
 		<div class="flex items-center justify-between h-10 gap-4">
 			<!-- Header Title -->
 			<div class="header-title-container">
+				<Logo size="3rem" />
 				<h1 class="header-title text-xl font-bold text-gray-900 dark:text-white">13rian</h1>
 			</div>
 			

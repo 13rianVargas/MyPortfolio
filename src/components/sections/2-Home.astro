@@ -1,6 +1,6 @@
 ---
-import profilePhoto from '../../assets/BrianPhoto.svg';
-import devPhoto from '../../assets/13rianPhoto.svg';
+import profilePhoto from '../../assets/BrianPhoto.jpg';
+import Logo from '../tools/Logo.astro';
 import portfolioQR from '../../assets/PortfolioQR.svg';
 const { t } = Astro.props;
 ---
@@ -14,9 +14,7 @@ const { t } = Astro.props;
         <!-- Card Header with Company Branding -->
         <div class="card-header">
           <div class="company-logo">
-            <div class="logo-circle">
-              <img src={devPhoto.src} alt="Logo 13rian Vargas" />
-            </div>
+            <Logo />
           </div>
           <div class="company-info">
             <span class="company-name">13rian Vargas</span>
@@ -65,9 +63,7 @@ const { t } = Astro.props;
         <!-- Back Header -->
         <div class="card-header back-header">
           <div class="back-logo">
-            <div class="qr-code">
-              <div class="qr-pattern"></div>
-            </div>
+            <Logo />
           </div>
           <div class="back-info">
             <span class="back-title">{t("home.professionalDetails")}</span>
@@ -786,7 +782,6 @@ const { t } = Astro.props;
     font-weight: 500;
     margin: 0 0 var(--element-gap) 0;
     color: var(--color-accent);
-    text-transform: uppercase;
     letter-spacing: 0.05em;
   }
   
