@@ -1,63 +1,97 @@
 ---
-import { languages } from '../../i18n/ui';
+import { languages, ui } from '../../i18n/ui';
 import { getLangFromUrl, useTranslatedPath } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
-const translatePath = useTranslatedPath(lang);
 ---
 
-<select 
-  id="language-picker" 
-  class="language-select px-3 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
->
-  {Object.entries(languages).map(([langCode, label]) => (
-    <option 
-      value={translatePath('/', langCode)} 
-      selected={lang === langCode}
-    >
-      {label}
-    </option>
-  ))}
-</select>
+<div class="language-select-wrapper">
+  <select 
+    id="language-picker" 
+    class="language-select"
+  >
+    {Object.entries(languages).map(([langCode, label]) => (
+      <option 
+        value={langCode} 
+        selected={lang === langCode}
+      >
+        {label}
+      </option>
+    ))}
+  </select>
+</div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const languagePicker = document.getElementById('language-picker') as HTMLSelectElement;
-    
-    if (languagePicker) {
-      languagePicker.addEventListener('change', (event) => {
-        const target = event.target as HTMLSelectElement;
-        const selectedUrl = target.value;
-        
-        if (selectedUrl) {
-          window.location.href = selectedUrl;
-        }
-      });
-    }
+<script define:vars={{ translations: ui }}>
+  const languagePicker = document.getElementById('language-picker');
+
+  languagePicker.addEventListener('change', event => {
+    const newLang = event.target.value;
+
+    const customEvent = new CustomEvent('language-change', {
+      detail: {
+        lang: newLang,
+        translations: translations[newLang]
+      }
+    });
+    document.dispatchEvent(customEvent);
   });
 </script>
 
 <style>
+  .language-select-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.15rem 0.4rem;
+    border-radius: 1.5rem;
+    background: var(--glass-bg, rgba(255,255,255,0.15));
+    backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid var(--glass-border, rgba(255,255,255,0.2));
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+    transition: background 0.3s, box-shadow 0.3s;
+    min-width: 0;
+    width: auto;
+    margin: 0 auto;
+  }
   .language-select {
-    min-width: 120px;
+    width: auto;
+    min-width: 2.5em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 1rem;
+    background: transparent;
+    color: var(--color-text-primary);
+    border: none;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
     cursor: pointer;
+    transition: color 0.3s, background 0.3s;
+    appearance: none;
+    box-shadow: none;
+    position: relative;
+    z-index: 1;
   }
-  
+  .language-select:focus {
+    outline: 2px solid var(--color-accent, #fbbf24);
+    outline-offset: 2px;
+  }
   .language-select:hover {
-    background-color: #f3f4f6;
+    background: var(--glass-hover-bg, rgba(255,255,255,0.25));
   }
-  
-  :global(.dark) .language-select:hover {
-    background-color: #374151;
-  }
-  
   .language-select option {
-    background-color: white;
-    color: #374151;
+    background: var(--color-bg-primary, #fff);
+    color: var(--color-text-primary, #374151);
   }
-  
+  :global(.dark) .language-select-wrapper {
+    background: rgba(31,41,55,0.25);
+    border-color: var(--color-border, #334155);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10);
+  }
+  :global(.dark) .language-select {
+    color: var(--color-text-primary, #f9fafb);
+  }
   :global(.dark) .language-select option {
-    background-color: #1f2937;
-    color: #f9fafb;
+    background: var(--color-bg-secondary, #1e293b);
+    color: var(--color-text-primary, #f9fafb);
   }
 </style>

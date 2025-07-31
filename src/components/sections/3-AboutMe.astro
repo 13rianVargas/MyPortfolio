@@ -4,9 +4,11 @@ const { t } = Astro.props;
 
 <section class="aboutme-center-box" id="aboutme">
   <div class="aboutme-title">
-    <h2>{t('aboutme.title')}</h2>
+    <h2 data-translation-key="aboutme.title">{t('aboutme.title')}</h2>
   </div>
   <div class="aboutme-description">
-    <p>{t('aboutme.description')}</p>
+    <p data-translation-key="aboutme.description">{t('aboutme.description')}</p>
   </div>
 </section>
+
+<script src="../../i18n/translator.ts"></script>

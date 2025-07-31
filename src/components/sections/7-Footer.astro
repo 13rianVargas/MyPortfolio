@@ -3,5 +3,7 @@ const { t } = Astro.props;
 ---
 
 <footer>
-    <span>{t("layout.footer")}</span> — {new Date().getFullYear()}
+    <span data-translation-key="layout.footer">{t("layout.footer")}</span> — {new Date().getFullYear()}
 </footer>
+
+<script src="../../i18n/translator.ts"></script>

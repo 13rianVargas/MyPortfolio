@@ -4,10 +4,12 @@ const { t } = Astro.props;
 
 <section class="technologies-center-box" id="technologies">
   <div class="technologies-title">
-    <h2>{t('technologies.title')}</h2>
+    <h2 data-translation-key="technologies.title">{t('technologies.title')}</h2>
   </div>
   <ul class="technologies-list">
     <li class="technology-item">Astro</li>
         <!-- Add more technologies here -->
     </ul>
 </section>
+
+<script src="../../i18n/translator.ts"></script>

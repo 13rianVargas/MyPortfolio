@@ -6,6 +6,7 @@ const currentPath = Astro.url.pathname;
 
 // Imports
 import ThemeToggleButton from '../tools/ThemeToggleButton.astro';
+import LanguageSelect from '../tools/LanguageSelect.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Logo from '../tools/Logo.astro';
 
@@ -406,23 +407,38 @@ function getNavUrl(sectionId: string): string {
 	
 	/* Mobile breakpoint mixins for consistent responsive behavior */
 	
-	/* Small mobile devices (≤480px) */
-	@media (max-width: 480px) {
-		:root {
-			--header-border-radius: 20px;
-			--header-padding: 0.25rem 0.5rem;
-			--header-margin-top: 0.25rem;
-		}
-		
-		.header,
-		.mobile-menu {
-			width: calc(100vw - 0.5rem);
-		}
-		
-		.header-nav {
-			display: none !important;
-		}
+  /* Small mobile devices (≤480px) */
+  @media (max-width: 480px) {
+	:root {
+	  --header-border-radius: 20px;
+	  --header-padding: 0.25rem 0.5rem;
+	  --header-margin-top: 0.25rem;
 	}
+	.header,
+	.mobile-menu {
+	  width: calc(100vw - 0.5rem);
+	}
+	.header-nav {
+	  display: none !important;
+	}
+  .header-title-container {
+	gap: 0.5rem;
+  }
+	.header-title {
+	  font-size: 1rem !important;
+	  line-height: 1.1 !important;
+	}
+	/* Ajustar el tamaño del Logo */
+	.header-title-container > :global(svg),
+	.header-title-container > *:not(h1) {
+	  width: 2rem !important;
+	  height: 2rem !important;
+	  min-width: 2rem !important;
+	  min-height: 2rem !important;
+	  max-width: 2rem !important;
+	  max-height: 2rem !important;
+	}
+  }
 	
 	/* Medium mobile/tablet (481px-768px) */
 	@media (min-width: 481px) and (max-width: 768px) {
@@ -486,7 +502,8 @@ function getNavUrl(sectionId: string): string {
 						<li>
 							<a href={getNavUrl(section.id)} 
 							   class={getNavLinkClass(section.id)}
-							   data-section={section.id}>
+							   data-section={section.id}
+							   data-translation-key={section.labelKey}>
 								{t(section.labelKey)}
 							</a>
 						</li>
@@ -506,6 +523,7 @@ function getNavUrl(sectionId: string): string {
 						<span></span>
 					</div>
 				</button>
+				<LanguageSelect />
 				<ThemeToggleButton />
 			</div>
 		</div>
@@ -520,6 +538,7 @@ function getNavUrl(sectionId: string): string {
 				<a href={getNavUrl(section.id)} 
 				   class={getNavLinkClass(section.id)}
 				   data-section={section.id}
+				   data-translation-key={section.labelKey}
 				   style={`--i: ${index}`}>
 					{t(section.labelKey)}
 				</a>
@@ -1033,3 +1052,5 @@ function getNavUrl(sectionId: string): string {
 	(window as any).toggleMobileMenu = toggleMobileMenu;
 	(window as any).closeMobileMenu = closeMobileMenu;
 </script>
+
+<script src="../../i18n/translator.ts"></script>

@@ -4,11 +4,13 @@ const { t } = Astro.props;
 
 <section class="projects-center-box" id="projects">
   <div class="projects-title">
-    <h2>{t('projects.title')}</h2>
+    <h2 data-translation-key="projects.title">{t('projects.title')}</h2>
   </div>
   <div class="projects-description">
-    <p>{t('projects.description')}</p>
+    <p data-translation-key="projects.description">{t('projects.description')}</p>
   </div>
   <!-- Agregar la lista de proyectos -->
 </section>
+
+<script src="../../i18n/translator.ts"></script>
 

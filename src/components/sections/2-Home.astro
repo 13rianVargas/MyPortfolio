@@ -20,7 +20,7 @@ const { t } = Astro.props;
             <span class="company-name">13rian Vargas</span>
           </div>
           <div class="flip-hint">
-            <span class="flip-text">{t("home.clickToFlip")}</span>
+            <span class="flip-text" data-translation-key="home.clickToFlip">{t("home.clickToFlip")}</span>
             <div class="flip-icon">⟲</div>
           </div>
         </div>
@@ -32,8 +32,8 @@ const { t } = Astro.props;
               <img src={profilePhoto.src} alt={`Foto de perfil de Brian Vargas`} />
             </div>
             <div class="profile-info">
-              <h1 class="employee-name">{t("home.name")}</h1>
-              <h2 class="employee-role">{t("home.role")}</h2>
+              <h1 class="employee-name" data-translation-key="home.name">{t("home.name")}</h1>
+              <h2 class="employee-role" data-translation-key="home.role">{t("home.role")}</h2>
               <div class="employee-id">ID: 000-013</div>
             </div>
           </div>
@@ -53,7 +53,7 @@ const { t } = Astro.props;
           </div>
           <div class="card-security">
             <div class="security-chip"></div>
-            <span class="security-text">{t("home.securityText")}</span>
+            <span class="security-text" data-translation-key="home.securityText">{t("home.securityText")}</span>
           </div>
         </div>
       </div>
@@ -66,10 +66,10 @@ const { t } = Astro.props;
             <Logo />
           </div>
           <div class="back-info">
-            <span class="back-title">{t("home.professionalDetails")}</span>
+            <span class="back-title" data-translation-key="home.professionalDetails">{t("home.professionalDetails")}</span>
           </div>
           <div class="flip-hint">
-            <span class="flip-text">{t("home.clickToFlip")}</span>
+            <span class="flip-text" data-translation-key="home.tapToFlip">{t("home.tapToFlip")}</span>
             <div class="flip-icon">⟲</div>
           </div>
         </div>
@@ -82,19 +82,19 @@ const { t } = Astro.props;
               <!-- Portfolio QR Code - Scan to access portfolio -->
               <img src={portfolioQR.src} alt={t("home.qrInstruction")} class="qr-image" />
             </div>
-            <p class="qr-instruction">{t("home.qrInstruction")}</p>
+            <p class="qr-instruction" data-translation-key="home.qrInstruction">{t("home.qrInstruction")}</p>
           </div>
           
           <!-- Personal Information -->
           <div class="personal-info">
             <div class="info-item">
-              <span class="info-text">{t("home.passion")}</span>
+              <span class="info-text" data-translation-key="home.passion">{t("home.passion")}</span>
             </div>
             <div class="info-item">
-              <span class="info-text">{t("home.education")}</span>
+              <span class="info-text" data-translation-key="home.education">{t("home.education")}</span>
             </div>
             <div class="info-item">
-              <span class="info-text">{t("home.leadership")}</span>
+              <span class="info-text" data-translation-key="home.leadership">{t("home.leadership")}</span>
             </div>
           </div>
         </div>
@@ -103,19 +103,19 @@ const { t } = Astro.props;
         <div class="card-footer">
           <div class="contact-details">
             <div class="contact-item">
-              <span class="contact-label">{t("home.location")}</span>
-              <span class="contact-value">{t("home.locationValue")}</span>
+              <span class="contact-label" data-translation-key="home.location">{t("home.location")}</span>
+              <span class="contact-value" data-translation-key="home.locationValue">{t("home.locationValue")}</span>
             </div>
             <div class="contact-item">
-              <span class="contact-label">{t("home.workMode")}</span>
-              <span class="contact-value">{t("home.workModeValue")}</span>
+              <span class="contact-label" data-translation-key="home.workMode">{t("home.workMode")}</span>
+              <span class="contact-value" data-translation-key="home.workModeValue">{t("home.workModeValue")}</span>
             </div>
           </div>
           <div class="card-security">
             <div class="security-badge">
-              <span class="badge-text">{t("home.badgeText")}</span>
+              <span class="badge-text" data-translation-key="home.badgeText">{t("home.badgeText")}</span>
             </div>
-            <span class="issue-date">{t("home.issueDate")}</span>
+            <span class="issue-date" data-translation-key="home.issueDate">{t("home.issueDate")}</span>
           </div>
         </div>
       </div>
@@ -316,6 +316,8 @@ const { t } = Astro.props;
   // ========================================
   FlipTextUpdater.initializeEventListeners();
 </script>
+
+<script src="../../i18n/translator.ts"></script>
 
 <style>
   /* ========================================
