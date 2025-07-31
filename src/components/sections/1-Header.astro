@@ -440,49 +440,45 @@ function getNavUrl(sectionId: string): string {
 	}
   }
 	
-	/* Medium mobile/tablet (481px-768px) */
-	@media (min-width: 481px) and (max-width: 768px) {
-		:root {
-			--header-border-radius: 25px;
-			--header-padding: 0.25rem 1rem;
-			--header-margin-top: 0.25rem;
-		}
-		
-		.header,
-		.mobile-menu {
-			width: calc(100vw - 1rem);
-		}
-		
-		.header-nav {
-			display: none !important;
-		}
+  /* Medium mobile/tablet (481px-900px) */
+  @media (min-width: 481px) and (max-width: 900px) {
+	:root {
+	  --header-border-radius: 25px;
+	  --header-padding: 0.25rem 1rem;
+	  --header-margin-top: 0.25rem;
 	}
-	
-	/* Large tablet (769px-1024px) */
-	@media (min-width: 769px) and (max-width: 1024px) {
-		:root {
-			--header-border-radius: 40px;
-			--header-padding: 0.5rem 1.5rem;
-			--header-margin-top: 0.5rem;
-		}
-		
-		.header {
-			width: calc(100vw - 1.5rem);
-		}
+	.header,
+	.mobile-menu {
+	  width: calc(100vw - 1rem);
 	}
-	
-	/* Desktop and above (>768px) - Show desktop nav, hide mobile menu */
-	@media (min-width: 769px) {
-		.mobile-menu-button,
-		.mobile-menu,
-		.mobile-menu.active {
-			display: none !important;
-		}
-		
-		.header-nav {
-			display: flex !important;
-		}
+	.header-nav {
+	  display: none !important;
 	}
+  }
+  
+  /* Large tablet (901px-1024px) */
+  @media (min-width: 901px) and (max-width: 1024px) {
+	:root {
+	  --header-border-radius: 40px;
+	  --header-padding: 0.5rem 1.5rem;
+	  --header-margin-top: 0.5rem;
+	}
+	.header {
+	  width: calc(100vw - 1.5rem);
+	}
+  }
+  
+  /* Desktop y arriba (>900px) - Mostrar nav desktop, ocultar menú hamburguesa */
+  @media (min-width: 901px) {
+	.mobile-menu-button,
+	.mobile-menu,
+	.mobile-menu.active {
+	  display: none !important;
+	}
+	.header-nav {
+	  display: flex !important;
+	}
+  }
 </style>
 
 <header class="fixed top-0 w-full z-50 flex justify-center">
