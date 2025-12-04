@@ -1,0 +1,75 @@
+---
+/**
+ * Background.astro
+ * Clean gray background with interactive water ripple effect
+ */
+---
+
+<div class="background-gradient"></div>
+<div class="noise-overlay"></div>
+<div class="ripples-container" id="ripples-container"></div>
+
+<style is:global>
+  .background-gradient {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    background: linear-gradient(
+      135deg,
+      var(--bg-gradient-1) 0%,
+      var(--bg-gradient-2) 50%,
+      var(--bg-gradient-3) 100%
+    );
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -9;
+    opacity: 0.3;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .ripples-container {
+    position: absolute;
+    inset: 0;
+    z-index: -5;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: transparent;
+    border: 4px solid var(--ripple-color);
+    box-shadow:
+      0 0 40px var(--ripple-color),
+      inset 0 0 25px var(--ripple-color);
+    backdrop-filter: blur(3px) brightness(1.2) contrast(1.2);
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple-expand 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-expand {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ripple {
+      animation: none;
+      display: none;
+    }
+  }
+</style>
+
+<script src="/Background.js" is:inline></script>

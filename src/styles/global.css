@@ -1,7 +1,5 @@
 /* Tailwind CSS base styles */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Base styles and CSS reset */
 @layer base {
@@ -15,6 +13,18 @@
     --color-accent-hover: #f59e0b;
     --color-border: #e2e8f0;
     --color-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Liquid Glass System - Light Mode */
+    --glass-bg: rgba(255, 255, 255, 0.01);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    --glass-blur: 2px;
+
+    /* Background Colors - Light Mode (clean grays) */
+    --bg-gradient-1: #f5f5f5;
+    --bg-gradient-2: #e5e5e5;
+    --bg-gradient-3: #d4d4d4;
+    --ripple-color: rgba(217, 119, 6, 0.8); /* Dark amber for visibility */
   }
   
   .dark {
@@ -27,6 +37,18 @@
     --color-accent-hover: #fbbf24;
     --color-border: #334155;
     --color-shadow: rgba(0, 0, 0, 0.3);
+
+    /* Liquid Glass System - Dark Mode */
+    --glass-bg: rgba(15, 23, 42, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --glass-blur: 2px;
+
+    /* Background Colors - Dark Mode (deep grays) */
+    --bg-gradient-1: #171717;
+    --bg-gradient-2: #1f1f1f;
+    --bg-gradient-3: #262626;
+    --ripple-color: rgba(252, 211, 77, 0.5); /* Gold for dark mode */
   }
   
   html {
@@ -39,9 +61,12 @@
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    background-color: var(--color-bg-primary);
+    background-color: transparent;
     color: var(--color-text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: color 0.3s ease;
+    min-height: 100vh;
+    min-width: 321px;
+    position: relative;
   }
   
   * {

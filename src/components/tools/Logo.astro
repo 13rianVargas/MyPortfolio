@@ -1,16 +1,17 @@
 ---
-import devPhoto from '../../assets/DeerHead.svg';
-
 interface Props {
   size?: string;
   className?: string;
 }
 
-const { size = 'var(--logo-size, 50px)', className } = Astro.props;
+const { size = "var(--logo-size, 50px)", className } = Astro.props;
 ---
 
-<div class:list={["logo-circle", className]} style=`width: ${size}; height: ${size};`>
-  <img src={devPhoto.src} alt="Developer Logo" />
+<div
+  class:list={["logo-circle", className]}
+  style=`width: ${size}; height: ${size};`
+>
+  <img src="/DeerHead.svg" alt="Developer Logo" />
 </div>
 
 <style>

@@ -1,14 +1,13 @@
 ---
-import profilePhoto from '../../assets/BrianPhoto.jpg';
-import Logo from '../tools/Logo.astro';
-import portfolioQR from '../../assets/PortfolioQR.svg';
+import profilePhoto from "../../assets/BrianPhoto.png";
+import Logo from "../tools/Logo.astro";
+import portfolioQR from "../../assets/PortfolioQR.svg";
 const { t } = Astro.props;
 ---
 
 <section class="home-section">
   <div class="card-container">
-    <div class="business-card" onclick="this.classList.toggle('flipped')">
-
+    <div class="business-card">
       <!-- FRONT SIDE -->
       <div class="card-front">
         <!-- Card Header with Company Branding -->
@@ -16,44 +15,81 @@ const { t } = Astro.props;
           <div class="company-logo">
             <Logo />
           </div>
-          <div class="company-info">
-            <span class="company-name">13rian Vargas</span>
-          </div>
-          <div class="flip-hint">
-            <span class="flip-text" data-translation-key="home.clickToFlip">{t("home.clickToFlip")}</span>
-            <div class="flip-icon">⟲</div>
+          <div
+            class="flip-hint"
+            onclick="this.closest('.business-card').classList.toggle('flipped')"
+          >
+            <span class="flip-text" data-translation-key="home.clickToFlip"
+              >{t("home.clickToFlip")}</span
+            >
+            <div class="flip-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="100%"
+                height="100%"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+                ></path><path d="M3 3v5h5"></path><path
+                  d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
+                ></path><path d="M16 21h5v-5"></path></svg
+              >
+            </div>
           </div>
         </div>
-        
+
         <!-- Card Body with Profile -->
         <div class="card-body">
           <div class="profile-section">
             <div class="profile-photo">
-              <img src={profilePhoto.src} alt={`Foto de perfil de Brian Vargas`} />
+              <img
+                src={profilePhoto.src}
+                alt={`Foto de perfil de Brian Vargas`}
+              />
             </div>
             <div class="profile-info">
-              <h1 class="employee-name" data-translation-key="home.name">{t("home.name")}</h1>
-              <h2 class="employee-role" data-translation-key="home.role">{t("home.role")}</h2>
+              <h1 class="employee-name" data-translation-key="home.name">
+                {t("home.name")}
+              </h1>
+              <h2 class="employee-role" data-translation-key="home.role">
+                {t("home.role")}
+              </h2>
               <div class="employee-id">ID: 000-013</div>
             </div>
           </div>
         </div>
-        
+
         <!-- Card Footer with Contact Links -->
         <div class="card-footer">
           <div class="contact-links">
-            <a class="contact-btn linkedin" href="https://www.linkedin.com/in/13rian-vargas/" target="_blank" aria-label="LinkedIn">
+            <a
+              class="contact-btn linkedin"
+              href="https://www.linkedin.com/in/13rian-vargas/"
+              target="_blank"
+              aria-label="LinkedIn"
+            >
               <img src="/linkedin.svg" alt="LinkedIn" />
               <span>LinkedIn</span>
             </a>
-            <a class="contact-btn github" href="https://github.com/13rianVargas" target="_blank" aria-label="GitHub">
+            <a
+              class="contact-btn github"
+              href="https://github.com/13rianVargas"
+              target="_blank"
+              aria-label="GitHub"
+            >
               <img src="/github.svg" alt="GitHub" />
               <span>GitHub</span>
             </a>
           </div>
           <div class="card-security">
             <div class="security-chip"></div>
-            <span class="security-text" data-translation-key="home.securityText">{t("home.securityText")}</span>
+            <span class="security-text" data-translation-key="home.securityText"
+              >{t("home.securityText")}</span
+            >
           </div>
         </div>
       </div>
@@ -65,57 +101,103 @@ const { t } = Astro.props;
           <div class="back-logo">
             <Logo />
           </div>
-          <div class="back-info">
-            <span class="back-title" data-translation-key="home.professionalDetails">{t("home.professionalDetails")}</span>
-          </div>
-          <div class="flip-hint">
-            <span class="flip-text" data-translation-key="home.tapToFlip">{t("home.tapToFlip")}</span>
-            <div class="flip-icon">⟲</div>
+          <div
+            class="flip-hint"
+            onclick="this.closest('.business-card').classList.toggle('flipped')"
+          >
+            <span class="flip-text" data-translation-key="home.tapToFlip"
+              >{t("home.tapToFlip")}</span
+            >
+            <div class="flip-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="100%"
+                height="100%"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+                ></path><path d="M3 3v5h5"></path><path
+                  d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
+                ></path><path d="M16 21h5v-5"></path></svg
+              >
+            </div>
           </div>
         </div>
-        
+
         <!-- Back Body - Content Area -->
         <div class="card-body">
           <!-- QR Code Section -->
           <div class="qr-section">
             <div class="qr-placeholder">
               <!-- Portfolio QR Code - Scan to access portfolio -->
-              <img src={portfolioQR.src} alt={t("home.qrInstruction")} class="qr-image" />
+              <img
+                src={portfolioQR.src}
+                alt={t("home.qrInstruction")}
+                class="qr-image"
+              />
             </div>
-            <p class="qr-instruction" data-translation-key="home.qrInstruction">{t("home.qrInstruction")}</p>
+            <p class="qr-instruction" data-translation-key="home.qrInstruction">
+              {t("home.qrInstruction")}
+            </p>
           </div>
-          
+
           <!-- Personal Information -->
           <div class="personal-info">
             <div class="info-item">
-              <span class="info-text" data-translation-key="home.passion">{t("home.passion")}</span>
+              <span class="info-text" data-translation-key="home.passion"
+                >{t("home.passion")}</span
+              >
             </div>
             <div class="info-item">
-              <span class="info-text" data-translation-key="home.education">{t("home.education")}</span>
+              <span class="info-text" data-translation-key="home.education"
+                >{t("home.education")}</span
+              >
             </div>
             <div class="info-item">
-              <span class="info-text" data-translation-key="home.leadership">{t("home.leadership")}</span>
+              <span class="info-text" data-translation-key="home.leadership"
+                >{t("home.leadership")}</span
+              >
             </div>
           </div>
         </div>
-        
+
         <!-- Back Footer -->
         <div class="card-footer">
           <div class="contact-details">
             <div class="contact-item">
-              <span class="contact-label" data-translation-key="home.location">{t("home.location")}</span>
-              <span class="contact-value" data-translation-key="home.locationValue">{t("home.locationValue")}</span>
+              <span class="contact-label" data-translation-key="home.location"
+                >{t("home.location")}</span
+              >
+              <span
+                class="contact-value"
+                data-translation-key="home.locationValue"
+                >{t("home.locationValue")}</span
+              >
             </div>
             <div class="contact-item">
-              <span class="contact-label" data-translation-key="home.workMode">{t("home.workMode")}</span>
-              <span class="contact-value" data-translation-key="home.workModeValue">{t("home.workModeValue")}</span>
+              <span class="contact-label" data-translation-key="home.workMode"
+                >{t("home.workMode")}</span
+              >
+              <span
+                class="contact-value"
+                data-translation-key="home.workModeValue"
+                >{t("home.workModeValue")}</span
+              >
             </div>
           </div>
           <div class="card-security">
             <div class="security-badge">
-              <span class="badge-text" data-translation-key="home.badgeText">{t("home.badgeText")}</span>
+              <span class="badge-text" data-translation-key="home.badgeText"
+                >{t("home.badgeText")}</span
+              >
             </div>
-            <span class="issue-date" data-translation-key="home.issueDate">{t("home.issueDate")}</span>
+            <span class="issue-date" data-translation-key="home.issueDate"
+              >{t("home.issueDate")}</span
+            >
           </div>
         </div>
       </div>
@@ -128,13 +210,13 @@ const { t } = Astro.props;
    * ========================================
    * BUSINESS CARD FLIP FUNCTIONALITY
    * ========================================
-   * 
+   *
    * This script handles the dynamic behavior of the business card component:
    * - Device detection (mobile vs desktop)
    * - Internationalization support for flip hints
    * - Adaptive text updates based on user interaction method
    * - Responsive behavior across different screen sizes
-   * 
+   *
    * Features:
    * - Automatic device type detection using multiple criteria
    * - Language-aware text switching (ES/EN support)
@@ -150,33 +232,34 @@ const { t } = Astro.props;
     // Device detection parameters
     DEVICE_DETECTION: {
       mobileBreakpoint: 768,
-      mobileUserAgents: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i,
-      touchPointsThreshold: 1
+      mobileUserAgents:
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i,
+      touchPointsThreshold: 1,
     },
-    
+
     // Internationalized text content for different languages and device types
     FLIP_TEXTS: {
       es: {
-        mobile: 'Toca para voltear',
-        desktop: 'Clic para voltear'
+        mobile: "Toca para voltear",
+        desktop: "Clic para voltear",
       },
       en: {
-        mobile: 'Tap to flip',
-        desktop: 'Click to flip'
-      }
+        mobile: "Tap to flip",
+        desktop: "Click to flip",
+      },
     },
-    
+
     // DOM element selectors
     SELECTORS: {
-      flipText: '.flip-text',
-      documentElement: document.documentElement
+      flipText: ".flip-text",
+      documentElement: document.documentElement,
     },
-    
+
     // Default fallback values for error handling
     DEFAULTS: {
-      language: 'es',
-      deviceType: 'desktop'
-    }
+      language: "es",
+      deviceType: "desktop",
+    },
   };
 
   /**
@@ -191,13 +274,15 @@ const { t } = Astro.props;
      * @returns {boolean} True if mobile device is detected
      */
     isMobile() {
-      const { mobileUserAgents, mobileBreakpoint, touchPointsThreshold } = CONFIG.DEVICE_DETECTION;
-      
+      const { mobileUserAgents, mobileBreakpoint, touchPointsThreshold } =
+        CONFIG.DEVICE_DETECTION;
+
       return (
         // User agent string detection
         mobileUserAgents.test(navigator.userAgent) ||
         // Touch capability detection
-        (navigator.maxTouchPoints && navigator.maxTouchPoints > touchPointsThreshold) ||
+        (navigator.maxTouchPoints &&
+          navigator.maxTouchPoints > touchPointsThreshold) ||
         // Screen width detection
         window.innerWidth <= mobileBreakpoint
       );
@@ -207,9 +292,9 @@ const { t } = Astro.props;
      * Returns device type as string for text lookup
      * @returns {'mobile' | 'desktop'} Either 'mobile' or 'desktop'
      */
-    getDeviceType(): 'mobile' | 'desktop' {
-      return this.isMobile() ? 'mobile' : 'desktop';
-    }
+    getDeviceType(): "mobile" | "desktop" {
+      return this.isMobile() ? "mobile" : "desktop";
+    },
   };
 
   /**
@@ -233,20 +318,26 @@ const { t } = Astro.props;
      * @param {('mobile'|'desktop')} deviceType - Either 'mobile' or 'desktop'
      * @returns {string} Localized flip instruction text
      */
-    getFlipText(deviceType: 'mobile' | 'desktop'): string {
+    getFlipText(deviceType: "mobile" | "desktop"): string {
       const currentLang = this.getCurrentLanguage();
       const flipTexts = CONFIG.FLIP_TEXTS;
-      
+
       // Type-safe text retrieval with fallback handling
-      if (currentLang === 'es' && flipTexts.es) {
-        return deviceType === 'mobile' ? flipTexts.es.mobile : flipTexts.es.desktop;
-      } else if (currentLang === 'en' && flipTexts.en) {
-        return deviceType === 'mobile' ? flipTexts.en.mobile : flipTexts.en.desktop;
+      if (currentLang === "es" && flipTexts.es) {
+        return deviceType === "mobile"
+          ? flipTexts.es.mobile
+          : flipTexts.es.desktop;
+      } else if (currentLang === "en" && flipTexts.en) {
+        return deviceType === "mobile"
+          ? flipTexts.en.mobile
+          : flipTexts.en.desktop;
       } else {
         // Fallback to Spanish if language not found
-        return deviceType === 'mobile' ? flipTexts.es.mobile : flipTexts.es.desktop;
+        return deviceType === "mobile"
+          ? flipTexts.es.mobile
+          : flipTexts.es.desktop;
       }
-    }
+    },
   };
 
   /**
@@ -261,12 +352,14 @@ const { t } = Astro.props;
      * Based on current device type and document language
      */
     updateAll() {
-      const flipTextElements = document.querySelectorAll(CONFIG.SELECTORS.flipText);
+      const flipTextElements = document.querySelectorAll(
+        CONFIG.SELECTORS.flipText
+      );
       const deviceType = DeviceDetector.getDeviceType();
       const newText = LanguageManager.getFlipText(deviceType);
 
       // Update each flip text element found in the DOM
-      flipTextElements.forEach(element => {
+      flipTextElements.forEach((element) => {
         if (element && element.textContent !== newText) {
           element.textContent = newText;
         }
@@ -279,11 +372,11 @@ const { t } = Astro.props;
      */
     initializeEventListeners() {
       // Update text when DOM content is fully loaded
-      document.addEventListener('DOMContentLoaded', () => this.updateAll());
-      
+      document.addEventListener("DOMContentLoaded", () => this.updateAll());
+
       // Update on window resize to handle orientation changes and responsive breakpoints
-      window.addEventListener('resize', () => this.updateAll());
-      
+      window.addEventListener("resize", () => this.updateAll());
+
       // Set up mutation observer for language attribute changes
       this.initializeLanguageObserver();
     },
@@ -295,7 +388,10 @@ const { t } = Astro.props;
     initializeLanguageObserver() {
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'lang') {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "lang"
+          ) {
             // Language changed, update all flip text elements
             this.updateAll();
           }
@@ -305,9 +401,9 @@ const { t } = Astro.props;
       // Observe the document element for lang attribute changes
       observer.observe(CONFIG.SELECTORS.documentElement, {
         attributes: true,
-        attributeFilter: ['lang']
+        attributeFilter: ["lang"],
       });
-    }
+    },
   };
 
   // ========================================
@@ -332,7 +428,7 @@ const { t } = Astro.props;
     --card-height: 600px;
     --card-perspective: 1000px;
     --card-border-radius: 20px;
-    
+
     /* 3D rotation angles for different interaction states */
     --card-idle-rotate-y: -5deg;
     --card-idle-rotate-x: 2deg;
@@ -341,11 +437,11 @@ const { t } = Astro.props;
     --card-hover-scale: 1.02;
     --card-flipped-rotate-y: 175deg;
     --card-flipped-hover-rotate-y: 178deg;
-    
+
     /* ===== SPACING SYSTEM ===== */
     /* Consistent spacing hierarchy throughout the component */
     --section-padding: 2rem;
-    --floating-header-offset: 160px;
+    --floating-header-offset: 0px;
     --header-padding: 1.5rem;
     --header-min-height: 90px;
     --body-padding: 1.2rem 1.5rem;
@@ -353,21 +449,21 @@ const { t } = Astro.props;
     --element-gap: 1rem;
     --element-gap-small: 0.5rem;
     --element-gap-large: 1.5rem;
-    
+
     /* ===== COMPONENT DIMENSIONS ===== */
     /* Sizes for various UI elements */
-    --logo-size: 50px;
-    --profile-photo-size: 120px;
-    --profile-photo-border-radius: 15px;
+    --logo-size: 60px;
+    --profile-photo-size: 180px;
+    --profile-photo-border-radius: 50%;
     --security-chip-width: 30px;
     --security-chip-height: 20px;
     --contact-btn-padding: 0.8rem;
     --contact-icon-size: 18px;
-    
+
     /* QR code and related elements */
     --qr-placeholder-size: 120px;
     --qr-border-radius: 12px;
-    
+
     /* ===== TYPOGRAPHY SCALE ===== */
     /* Consistent font sizing across all text elements */
     --text-company-name: 1.2rem;
@@ -380,10 +476,10 @@ const { t } = Astro.props;
     --text-security: 0.7rem;
     --text-qr-instruction: 0.8rem;
     --text-info-item: 0.9rem;
-    
+
     /* Icon and symbol sizes */
     --flip-icon-size: 2rem;
-    
+
     /* ===== ANIMATION & TRANSITION SYSTEM ===== */
     /* Consistent timing and easing for all animations */
     --transition-card: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -391,23 +487,37 @@ const { t } = Astro.props;
     --transition-hover: all 0.2s ease-out;
     --animation-duration-pulse: 2s;
     --animation-duration-rotate: 2s;
-    --animation-duration-shine: 3s;
-    
+    --animation-duration-shine: 6s;
+
     /* ===== SHADOW SYSTEM ===== */
     /* Layered shadow effects for depth and elevation */
-    --shadow-card: 0 20px 40px var(--color-shadow), 0 0 0 1px var(--color-border), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    --shadow-card: 0 20px 40px var(--color-shadow),
+      0 0 0 1px var(--color-border), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     --shadow-element: 0 8px 16px var(--color-shadow);
     --shadow-hover: 0 4px 8px var(--color-shadow);
     --shadow-contact-btn: 0 2px 8px var(--color-shadow);
-    
+
     /* ===== GRADIENT DEFINITIONS ===== */
     /* Reusable gradient patterns for consistency */
-    --gradient-header: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-    --gradient-back-header: linear-gradient(135deg, #6b46c1 0%, #8b5cf6 100%);
+    --gradient-header: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      var(--color-accent-hover) 100%
+    );
+    --gradient-back-header: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      var(--color-accent-hover) 100%
+    );
     --gradient-security-chip: linear-gradient(135deg, #ffd700, #ffed4e);
     --gradient-security-badge: linear-gradient(135deg, #10b981, #059669);
-    --gradient-shine: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    
+    --gradient-shine: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+
     /* ===== BORDER & OPACITY VALUES ===== */
     /* Consistent border widths and opacity levels */
     --border-width-thin: 1px;
@@ -416,7 +526,7 @@ const { t } = Astro.props;
     --opacity-overlay: 0.1;
     --opacity-text-secondary: 0.9;
     --opacity-disabled: 0.6;
-    
+
     /* ===== Z-INDEX LAYERS ===== */
     /* Stacking context management */
     --z-index-base: 1;
@@ -434,11 +544,10 @@ const { t } = Astro.props;
     align-items: center;
     min-height: 100vh;
     padding: var(--section-padding);
-    padding-top: calc(var(--section-padding) + var(--floating-header-offset));
-    background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    background: transparent;
     perspective: var(--card-perspective);
   }
-  
+
   .card-container {
     position: relative;
     /* iOS Safari 3D context fix */
@@ -446,8 +555,9 @@ const { t } = Astro.props;
     perspective: var(--card-perspective);
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
+    margin-top: var(--floating-header-offset);
   }
-  
+
   /* ========================================
    * 3D CARD COMPONENT
    * Main business card with enhanced flip functionality for Safari/iOS
@@ -459,13 +569,10 @@ const { t } = Astro.props;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
     transition: var(--transition-card);
-    cursor: pointer;
-    transform: perspective(var(--card-perspective)) 
-               rotateY(var(--card-idle-rotate-y)) 
-               rotateX(var(--card-idle-rotate-x));
-    -webkit-transform: perspective(var(--card-perspective)) 
-                      rotateY(var(--card-idle-rotate-y)) 
-                      rotateX(var(--card-idle-rotate-x));
+    transform: perspective(var(--card-perspective))
+      rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x));
+    -webkit-transform: perspective(var(--card-perspective))
+      rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x));
     /* Enhanced hardware acceleration for iOS */
     will-change: transform;
     -webkit-font-smoothing: antialiased;
@@ -473,38 +580,32 @@ const { t } = Astro.props;
     /* Ensure proper z-index layering */
     z-index: 1;
   }
-  
+
   .business-card:hover {
-    transform: perspective(var(--card-perspective)) 
-               rotateY(var(--card-hover-rotate-y)) 
-               rotateX(var(--card-hover-rotate-x)) 
-               scale(var(--card-hover-scale));
-    -webkit-transform: perspective(var(--card-perspective)) 
-                      rotateY(var(--card-hover-rotate-y)) 
-                      rotateX(var(--card-hover-rotate-x)) 
-                      scale(var(--card-hover-scale));
+    transform: perspective(var(--card-perspective))
+      rotateY(var(--card-hover-rotate-y)) rotateX(var(--card-hover-rotate-x))
+      scale(var(--card-hover-scale));
+    -webkit-transform: perspective(var(--card-perspective))
+      rotateY(var(--card-hover-rotate-y)) rotateX(var(--card-hover-rotate-x))
+      scale(var(--card-hover-scale));
   }
-  
+
   .business-card.flipped {
-    transform: perspective(var(--card-perspective)) 
-               rotateY(var(--card-flipped-rotate-y)) 
-               rotateX(var(--card-idle-rotate-x));
-    -webkit-transform: perspective(var(--card-perspective)) 
-                      rotateY(var(--card-flipped-rotate-y)) 
-                      rotateX(var(--card-idle-rotate-x));
+    transform: perspective(var(--card-perspective))
+      rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x));
+    -webkit-transform: perspective(var(--card-perspective))
+      rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x));
   }
-  
+
   .business-card.flipped:hover {
-    transform: perspective(var(--card-perspective)) 
-               rotateY(var(--card-flipped-hover-rotate-y)) 
-               rotateX(var(--card-hover-rotate-x)) 
-               scale(var(--card-hover-scale));
-    -webkit-transform: perspective(var(--card-perspective)) 
-                      rotateY(var(--card-flipped-hover-rotate-y)) 
-                      rotateX(var(--card-hover-rotate-x)) 
-                      scale(var(--card-hover-scale));
+    transform: perspective(var(--card-perspective))
+      rotateY(var(--card-flipped-hover-rotate-y))
+      rotateX(var(--card-hover-rotate-x)) scale(var(--card-hover-scale));
+    -webkit-transform: perspective(var(--card-perspective))
+      rotateY(var(--card-flipped-hover-rotate-y))
+      rotateX(var(--card-hover-rotate-x)) scale(var(--card-hover-scale));
   }
-  
+
   /* ========================================
    * CARD SIDES - FRONT & BACK
    * Common styles for both card faces with enhanced Safari/iOS support
@@ -518,8 +619,12 @@ const { t } = Astro.props;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: var(--card-border-radius);
-    box-shadow: var(--shadow-card);
-    background: var(--color-bg-primary);
+    box-shadow: var(--glass-shadow);
+    /* Liquid Glass Effect */
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -533,20 +638,20 @@ const { t } = Astro.props;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   /* Front face - default position */
   .card-front {
     z-index: 2;
   }
-  
+
   /* Back face - rotated 180 degrees */
   .card-back {
     transform: rotateY(180deg) translateZ(0);
     -webkit-transform: rotateY(180deg) translateZ(0);
-    background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    /* Glass effect inherited from .card-front, .card-back */
     z-index: 1;
   }
-  
+
   /* ========================================
    * CARD HEADER COMPONENT
    * Top section with branding and flip hint
@@ -561,49 +666,72 @@ const { t } = Astro.props;
     position: relative;
     overflow: hidden;
   }
-  
+
   .back-header {
     background: var(--gradient-back-header);
   }
-  
-  /* Animated shine effect across header - visual enhancement */
-  .card-header::before {
-    content: '';
+
+  /* Animated shine effect across the entire card */
+  .card-front::before,
+  .card-back::before {
+    content: "";
     position: absolute;
     top: -50%;
     right: -50%;
-    width: 100%;
-    height: 100%;
-    background: var(--gradient-shine);
+    bottom: -50%;
+    left: -50%;
+    background: linear-gradient(
+      to bottom right,
+      transparent 45%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 55%
+    );
     transform: rotate(45deg);
     animation: shine var(--animation-duration-shine) infinite;
+    pointer-events: none;
     z-index: var(--z-index-overlay);
   }
-  
+
   /* ========================================
    * KEYFRAME ANIMATIONS
    * Reusable animation definitions for visual effects
    * ======================================== */
-  
+
   /* Subtle shine effect that moves across elements */
   @keyframes shine {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    0% {
+      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    50% {
+      transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
   }
-  
+
   /* Breathing pulse effect for attention-drawing elements */
   @keyframes pulse {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 1;
+    }
   }
-  
+
   /* Smooth continuous rotation for interactive icons */
   @keyframes rotate {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg); }
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
   }
-  
+
   /* ========================================
    * INTERACTIVE FLIP HINT COMPONENT
    * User guidance for card interaction with adaptive text
@@ -614,28 +742,59 @@ const { t } = Astro.props;
     right: var(--element-gap);
     transform: translateY(-50%);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    color: rgba(255, 255, 255, var(--opacity-text-secondary));
-    font-size: var(--text-flip-hint);
-    font-weight: 600;
-    text-align: center;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    animation: pulse var(--animation-duration-pulse) infinite;
+    gap: 8px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    color: #fff;
     cursor: pointer;
     user-select: none;
-    width: 70px;
-    line-height: 1.1;
     z-index: var(--z-index-floating);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
-  
+
+  .flip-hint:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .flip-hint:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .flip-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .flip-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    transition: transform 0.5s ease;
+  }
+
+  .flip-hint:hover .flip-icon {
+    transform: rotate(180deg);
+  }
+
   .flip-icon {
     font-size: var(--flip-icon-size);
     margin-top: 0.3rem;
     animation: rotate var(--animation-duration-rotate) ease-in-out infinite;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
   }
-  
+
   /* ========================================
    * LOGO AND BRANDING COMPONENTS
    * Profile photos, company logos, and QR code elements
@@ -645,7 +804,7 @@ const { t } = Astro.props;
     position: relative;
     z-index: var(--z-index-base);
   }
-  
+
   /* Circular logo container with glassmorphism effect */
   .logo-circle {
     width: var(--logo-size);
@@ -662,14 +821,14 @@ const { t } = Astro.props;
     backdrop-filter: blur(10px);
     overflow: hidden;
   }
-  
+
   .logo-circle img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
   }
-  
+
   /* QR code container - placeholder for future implementation */
   .qr-code {
     width: var(--logo-size);
@@ -679,18 +838,29 @@ const { t } = Astro.props;
     position: relative;
     overflow: hidden;
   }
-  
+
   /* Mock QR pattern using CSS gradients */
   .qr-pattern {
     position: absolute;
     inset: 4px;
     background: #000;
-    background-image: 
-      repeating-linear-gradient(0deg, transparent 0px, transparent 2px, #000 2px, #000 4px),
-      repeating-linear-gradient(90deg, transparent 0px, transparent 2px, #000 2px, #000 4px);
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        #000 2px,
+        #000 4px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 2px,
+        #000 2px,
+        #000 4px
+      );
     opacity: 0.8;
   }
-  
+
   /* ========================================
    * TYPOGRAPHY COMPONENTS
    * Consistent text styling for all content sections
@@ -702,7 +872,7 @@ const { t } = Astro.props;
     justify-content: center;
     color: white;
   }
-  
+
   .company-name {
     font-size: var(--text-company-name);
     font-weight: bold;
@@ -710,14 +880,14 @@ const { t } = Astro.props;
     color: var(--color-text-primary);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
-  
+
   .back-title {
     font-size: var(--text-company-name);
     font-weight: bold;
     margin: 0;
     color: white;
   }
-  
+
   /* ========================================
    * CARD BODY - MAIN CONTENT AREA
    * Central content section with profile info
@@ -729,46 +899,46 @@ const { t } = Astro.props;
     flex-direction: column;
     justify-content: center;
   }
-  
+
   .profile-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  
+
   /* Professional profile photo with enhanced styling */
   .profile-photo {
     width: var(--profile-photo-size);
     height: var(--profile-photo-size);
     border-radius: var(--profile-photo-border-radius);
     overflow: hidden;
-    margin-bottom: var(--element-gap-large);
+    margin-bottom: var(--element-gap);
     border: var(--border-width-thick) solid var(--color-border);
     box-shadow: var(--shadow-element);
     position: relative;
   }
-  
+
   /* Subtle highlight overlay for photo */
   .profile-photo::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: var(--gradient-shine);
     pointer-events: none;
     z-index: var(--z-index-overlay);
   }
-  
+
   .profile-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
+
   .profile-info {
     width: 100%;
   }
-  
+
   /* Employee name with enhanced typography */
   .employee-name {
     font-size: var(--text-employee-name);
@@ -777,7 +947,7 @@ const { t } = Astro.props;
     color: var(--color-text-primary);
     letter-spacing: -0.02em;
   }
-  
+
   /* Employee role with accent styling */
   .employee-role {
     font-size: var(--text-employee-role);
@@ -786,19 +956,19 @@ const { t } = Astro.props;
     color: var(--color-accent);
     letter-spacing: 0.05em;
   }
-  
+
   /* Employee ID badge with monospace styling */
   .employee-id {
     font-size: var(--text-employee-id);
     color: var(--color-text-secondary);
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     background: var(--color-bg-secondary);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     display: inline-block;
     border: var(--border-width-thin) solid var(--color-border);
   }
-  
+
   /* ========================================
    * QR CODE SECTION - BACK SIDE
    * Interactive QR code for portfolio access
@@ -809,7 +979,7 @@ const { t } = Astro.props;
     align-items: center;
     margin-bottom: var(--element-gap-large);
   }
-  
+
   /* QR code container with professional styling */
   .qr-placeholder {
     width: var(--qr-placeholder-size);
@@ -826,7 +996,7 @@ const { t } = Astro.props;
     padding: 0.5rem;
     transition: var(--transition-hover);
   }
-  
+
   /* QR code image with optimized display */
   .qr-image {
     width: 100%;
@@ -834,13 +1004,13 @@ const { t } = Astro.props;
     object-fit: contain;
     border-radius: 8px;
   }
-  
+
   /* Hover effect for QR container */
   .qr-placeholder:hover {
     transform: scale(1.02);
     box-shadow: var(--shadow-hover);
   }
-  
+
   /* Instructional text for QR code usage */
   .qr-instruction {
     font-size: var(--text-qr-instruction);
@@ -850,7 +1020,7 @@ const { t } = Astro.props;
     margin: 0;
     line-height: 1.3;
   }
-  
+
   /* ========================================
    * PERSONAL INFO SECTION - BACK SIDE
    * Professional highlights and personal details
@@ -860,7 +1030,7 @@ const { t } = Astro.props;
     flex-direction: column;
     gap: 0.8rem;
   }
-  
+
   /* Individual info item with hover effects */
   .info-item {
     display: flex;
@@ -873,23 +1043,28 @@ const { t } = Astro.props;
     position: relative;
     overflow: hidden;
   }
-  
+
   /* Subtle shine overlay for info items */
   .info-item::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, transparent, rgba(255, 255, 255, var(--opacity-overlay)), transparent);
+    background: linear-gradient(
+      135deg,
+      transparent,
+      rgba(255, 255, 255, var(--opacity-overlay)),
+      transparent
+    );
     pointer-events: none;
     z-index: var(--z-index-overlay);
   }
-  
+
   /* Hover effect for info items */
   .info-item:hover {
     transform: translateX(2px);
     box-shadow: var(--shadow-contact-btn);
   }
-  
+
   /* Text content within info items */
   .info-text {
     font-size: var(--text-info-item);
@@ -898,7 +1073,7 @@ const { t } = Astro.props;
     line-height: 1.4;
     margin: 0;
   }
-  
+
   /* ========================================
    * CARD FOOTER - CONTACT & SECURITY
    * Bottom section with contact links and security elements
@@ -908,19 +1083,19 @@ const { t } = Astro.props;
     padding: var(--footer-padding);
     margin-top: auto;
   }
-  
+
   /* Contact button container with consistent spacing */
   .contact-links {
     display: flex;
     gap: var(--element-gap);
     margin-bottom: var(--element-gap-large);
   }
-  
+
   /* ========================================
    * CONTACT BUTTONS COMPONENT
    * Interactive social media and contact links
    * ======================================== */
-  
+
   /* Base contact button styling with glassmorphism effect */
   .contact-btn {
     flex: 1;
@@ -940,10 +1115,10 @@ const { t } = Astro.props;
     position: relative;
     overflow: hidden;
   }
-  
+
   /* Animated shine effect on hover */
   .contact-btn::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: var(--gradient-shine);
@@ -951,31 +1126,31 @@ const { t } = Astro.props;
     transition: var(--transition-hover);
     z-index: var(--z-index-overlay);
   }
-  
+
   .contact-btn:hover::before {
     transform: translateX(100%);
   }
-  
+
   /* General hover effects for all contact buttons */
   .contact-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-element);
     border-color: var(--color-accent);
   }
-  
+
   /* Platform-specific branding colors on hover */
   .contact-btn.linkedin:hover {
     background: #0077b5;
     color: white;
     border-color: #0077b5;
   }
-  
+
   .contact-btn.github:hover {
     background: #333;
     color: white;
     border-color: #333;
   }
-  
+
   /* Contact button icons with smooth transitions */
   .contact-btn img {
     width: var(--contact-icon-size);
@@ -983,22 +1158,22 @@ const { t } = Astro.props;
     filter: var(--icon-filter, none);
     transition: var(--transition-hover);
   }
-  
+
   /* Icon color inversion on hover for better contrast */
   .contact-btn:hover img {
     filter: brightness(0) invert(1);
   }
-  
+
   /* ========================================
    * CONTACT DETAILS SECTION - BACK SIDE
    * Location and work mode information
    * ======================================== */
-  
+
   /* Contact details container */
   .contact-details {
     margin-bottom: var(--element-gap-large);
   }
-  
+
   /* Individual contact detail items */
   .contact-item {
     display: flex;
@@ -1007,19 +1182,19 @@ const { t } = Astro.props;
     margin-bottom: var(--element-gap-small);
     font-size: var(--text-contact-item);
   }
-  
+
   /* Contact item labels */
   .contact-label {
     color: var(--color-text-secondary);
     font-weight: 500;
   }
-  
+
   /* Contact item values with emphasis */
   .contact-value {
     color: var(--color-text-primary);
     font-weight: 600;
   }
-  
+
   /* ========================================
    * SECURITY ELEMENTS
    * Authentication chips, badges, and verification components
@@ -1031,7 +1206,7 @@ const { t } = Astro.props;
     padding-top: 0.7rem;
     border-top: var(--border-width-thin) solid var(--color-border);
   }
-  
+
   /* Security chip component (front side) - simulates smart card chip */
   .security-chip {
     width: var(--security-chip-width);
@@ -1041,16 +1216,16 @@ const { t } = Astro.props;
     position: relative;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
   }
-  
+
   /* Inner chip detail for realistic effect */
   .security-chip::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 2px;
     background: linear-gradient(135deg, #ffed4e, #ffd700);
     border-radius: 2px;
   }
-  
+
   /* Security text styling */
   .security-text {
     font-size: var(--text-security);
@@ -1058,7 +1233,7 @@ const { t } = Astro.props;
     font-weight: 600;
     letter-spacing: 0.1em;
   }
-  
+
   /* Security badge component (back side) - verification status */
   .security-badge {
     background: var(--gradient-security-badge);
@@ -1069,121 +1244,54 @@ const { t } = Astro.props;
     font-weight: 600;
     letter-spacing: 0.1em;
   }
-  
+
   /* Badge text with enhanced readability */
   .badge-text {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
-  
+
   /* Issue date styling */
   .issue-date {
     font-size: var(--text-security);
     color: var(--color-text-secondary);
     font-weight: 600;
   }
-  
+
   /* ========================================
    * RESPONSIVE DESIGN SYSTEM
    * Mobile-first approach with progressive enhancement
    * Consistent with project-wide breakpoint strategy
    * ======================================== */
-  
-  /* ===== ULTRA NARROW DEVICES (≤320px) ===== */
-  /* Galaxy Fold and similar ultra-narrow screens */
-  @media (max-width: 320px) {
+
+  /* ========================================
+   * RESPONSIVE DESIGN SYSTEM
+   * Based on specific device dimensions:
+   * - Phones: 375px, 390px, 412px
+   * - Small Tablet: 768px
+   * - Big Tablet: 834px
+   * - Laptop: 1366px
+   * - Desktop: 1920px
+   * ======================================== */
+
+  /* ===== PHONES (375px - 412px) & SMALLER ===== */
+  /* Covers Small Phone (375), Medium Phone (390), Big Phone (412) */
+  @media (max-width: 480px) {
     :root {
-      /* Extremely compact dimensions for ultra narrow screens */
-      --card-width: 260px;
-      --card-height: 420px;
-      --section-padding: 0.25rem;
-      --floating-header-offset: 80px;
-      --header-padding: 0.75rem 0.5rem;
-      --body-padding: 0.6rem 0.5rem;
-      --footer-padding: 0.5rem;
-      
-      /* Minimal component sizes */
-      --profile-photo-size: 70px;
-      --logo-size: 40px;
-      --header-min-height: 60px;
-      --qr-placeholder-size: 80px;
-      --contact-icon-size: 12px;
-      
-      /* Typography scaling for narrow screens */
-      --text-company-name: 0.9rem;
-      --text-employee-name: 1.2rem;
-      --text-employee-role: 0.9rem;
-      --text-employee-id: 0.75rem;
-      --text-flip-hint: 0.65rem;
-      --text-contact-btn: 0.65rem;
-      --text-security: 0.6rem;
-      --text-contact-item: 0.75rem;
-      --text-qr-instruction: 0.7rem;
-      --text-info-item: 0.75rem;
-      --flip-icon-size: 1.4rem;
-      
-      /* Minimal hover effects for performance */
-      --card-hover-scale: 1.005;
-      
-      /* Disable 3D effects completely for performance */
-      --card-idle-rotate-y: 0deg;
-      --card-idle-rotate-x: 0deg;
-      --card-hover-rotate-y: 0deg;
-      --card-hover-rotate-x: 0deg;
-    }
-    
-    /* Component-specific adjustments */
-    .flip-hint {
-      right: 0.25rem;
-      width: 50px;
-      line-height: 1.0;
-    }
-    
-    .contact-links {
-      gap: 0.25rem;
-      margin-bottom: var(--element-gap);
-    }
-    
-    .contact-btn {
-      padding: 0.4rem 0.2rem;
-      gap: 0.2rem;
-    }
-    
-    .employee-id {
-      padding: 0.2rem 0.6rem;
-    }
-    
-    .contact-item {
-      margin-bottom: 0.3rem;
-    }
-    
-    .personal-info {
-      gap: var(--element-gap-small);
-    }
-    
-    .info-item {
-      padding: 0.4rem 0.8rem;
-    }
-  }
-  
-  /* ===== SMALL MOBILE DEVICES (321px-480px) ===== */
-  /* Compact mobile layout with essential features */
-  @media (min-width: 321px) and (max-width: 480px) {
-    :root {
-      /* Balanced mobile dimensions */
+      /* Compact dimensions for phones */
       --card-width: 320px;
       --card-height: 520px;
       --section-padding: 0.5rem;
-      --floating-header-offset: 100px;
+      --floating-header-offset: -130px;
       --header-padding: 1rem 0.75rem;
       --body-padding: 0.8rem 0.75rem;
-      
-      /* Optimized mobile component sizes */
-      --profile-photo-size: 90px;
+
+      /* Optimized component sizes */
+      --profile-photo-size: 140px;
       --header-min-height: 70px;
       --qr-placeholder-size: 100px;
       --contact-icon-size: 14px;
-      
-      /* Mobile-optimized typography */
+
+      /* Typography */
       --text-company-name: 1rem;
       --text-employee-name: 1.4rem;
       --text-flip-hint: 0.75rem;
@@ -1192,57 +1300,66 @@ const { t } = Astro.props;
       --text-info-item: 0.8rem;
       --flip-icon-size: 1.6rem;
       --card-hover-scale: 1.01;
-      
-      /* Performance optimization - disable 3D effects */
+
+      /* Disable 3D effects for performance */
       --card-idle-rotate-y: 0deg;
       --card-idle-rotate-x: 0deg;
       --card-hover-rotate-y: 0deg;
       --card-hover-rotate-x: 0deg;
     }
-    
+
     .flip-hint {
       right: var(--element-gap-small);
-      width: 60px;
-      line-height: 1.0;
+      width: auto;
+      min-width: 100px;
+      line-height: 1;
     }
-    
+
     .contact-links {
       gap: var(--element-gap-small);
     }
-    
+
     .contact-btn {
       padding: 0.5rem 0.3rem;
       gap: 0.3rem;
     }
-    
+
     .personal-info {
       gap: 0.6rem;
     }
-    
+
     .info-item {
       padding: 0.5rem 0.8rem;
     }
   }
-  
-  /* ===== MEDIUM MOBILE/TABLET (481px-768px) ===== */
-  /* Balanced layout for larger mobile devices and small tablets */
+
+  /* ===== ULTRA NARROW (Special Case < 320px) ===== */
+  @media (max-width: 320px) {
+    :root {
+      --card-width: 260px;
+      --card-height: 420px;
+      --profile-photo-size: 70px;
+      --logo-size: 40px;
+      --header-min-height: 60px;
+    }
+  }
+
+  /* ===== SMALL TABLET (768px) ===== */
+  /* Covers Small Tablet (768x1024) */
   @media (min-width: 481px) and (max-width: 768px) {
     :root {
-      /* Enhanced mobile/tablet dimensions */
       --card-width: 350px;
       --card-height: 550px;
       --section-padding: 0.75rem;
-      --floating-header-offset: 120px;
+      --floating-header-offset: -130px;
       --header-padding: 1.2rem 1rem;
       --body-padding: 1rem 1rem;
-      
-      /* Balanced component sizing */
-      --profile-photo-size: 100px;
+
+      --profile-photo-size: 160px;
       --header-min-height: 75px;
       --qr-placeholder-size: 110px;
       --contact-icon-size: 16px;
-      
-      /* Typography refinements */
+
       --text-company-name: 1.1rem;
       --text-employee-name: 1.6rem;
       --text-flip-hint: 0.8rem;
@@ -1250,77 +1367,96 @@ const { t } = Astro.props;
       --text-qr-instruction: 0.8rem;
       --text-info-item: 0.85rem;
       --card-hover-scale: 1.02;
-      
-      /* Minimal 3D effects for tablets */
+
       --card-idle-rotate-y: 0deg;
       --card-idle-rotate-x: 0deg;
       --card-hover-rotate-y: 0deg;
       --card-hover-rotate-x: 0deg;
     }
-    
+
     .flip-hint {
       right: 0.75rem;
-      width: 65px;
+      width: auto;
+      min-width: 110px;
       line-height: 1.1;
     }
-    
+
     .contact-links {
       gap: 0.75rem;
     }
-    
+
     .contact-btn {
       padding: 0.6rem 0.4rem;
     }
-    
+
     .personal-info {
       gap: 0.7rem;
     }
-    
+
     .info-item {
       padding: 0.55rem 0.9rem;
     }
   }
-  
-  /* ===== LARGE TABLET (769px-1024px) ===== */
-  /* Enhanced tablet experience with full features */
+
+  /* ===== BIG TABLET (834px) ===== */
+  /* Covers Big Tablet (834x1194) */
   @media (min-width: 769px) and (max-width: 1024px) {
     :root {
-      /* Full-featured tablet dimensions */
       --card-width: 380px;
       --card-height: 580px;
       --section-padding: 1.5rem;
-      --floating-header-offset: 140px;
+      --floating-header-offset: -130px;
       --header-padding: 1.4rem 1.25rem;
       --body-padding: 1.2rem 1.25rem;
-      
-      /* Enhanced component sizes */
-      --profile-photo-size: 110px;
+
+      --profile-photo-size: 150px;
       --header-min-height: 80px;
-      
-      /* Refined typography for larger screens */
+
       --text-company-name: 1.15rem;
       --text-employee-name: 1.7rem;
       --text-flip-hint: 0.85rem;
     }
   }
-  
+
+  /* ===== LAPTOP (1366px) ===== */
+  /* Covers Laptop (1366x768) */
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    :root {
+      /* Standard desktop/laptop sizes */
+      --card-width: 400px;
+      --card-height: 600px;
+      --floating-header-offset: -110px;
+    }
+  }
+
+  /* ===== DESKTOP (1920px) ===== */
+  /* Covers Desktop (1920x1080) */
+  @media (min-width: 1441px) {
+    :root {
+      /* Enhanced spacing for large screens */
+      --card-width: 420px;
+      --card-height: 620px;
+      --floating-header-offset: -130px;
+    }
+  }
+
   /* ========================================
    * DARK MODE ENHANCEMENTS
    * Theme-specific visual adjustments
    * ======================================== */
   .dark .card-front,
   .dark .card-back {
-    box-shadow: 
+    box-shadow:
       0 20px 40px rgba(0, 0, 0, 0.4),
       0 0 0 1px var(--color-border),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
-  
+
   /* ========================================
    * WEBKIT/SAFARI iOS SPECIFIC FIXES
    * Fixes for 3D transform bugs on mobile Safari
    * ======================================== */
-  
+
   /* Force proper layering and backface visibility on WebKit */
   @supports (-webkit-transform-style: preserve-3d) {
     .business-card .card-front {
@@ -1328,27 +1464,27 @@ const { t } = Astro.props;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
-    
+
     .business-card .card-back {
       z-index: 1;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
-    
+
     .business-card.flipped .card-front {
       z-index: 1;
     }
-    
+
     .business-card.flipped .card-back {
       z-index: 2;
     }
   }
-  
+
   /* ========================================
    * SAFARI/IOS SPECIFIC FIXES
    * Critical 3D flip bug fixes for WebKit browsers
    * ======================================== */
-  
+
   /* Safari-specific 3D transform fixes */
   @supports (-webkit-appearance: none) {
     .business-card {
@@ -1356,14 +1492,18 @@ const { t } = Astro.props;
       -webkit-transform-style: preserve-3d !important;
       transform-style: preserve-3d !important;
       /* Ensure hardware acceleration */
-      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x)) translateZ(0);
+      -webkit-transform: perspective(var(--card-perspective))
+        rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x))
+        translateZ(0);
     }
-    
+
     .business-card.flipped {
       /* Explicit 3D transform for flipped state on Safari */
-      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x)) translateZ(0);
+      -webkit-transform: perspective(var(--card-perspective))
+        rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x))
+        translateZ(0);
     }
-    
+
     .card-front,
     .card-back {
       /* Force backface-visibility on Safari */
@@ -1376,43 +1516,47 @@ const { t } = Astro.props;
       opacity: 1;
       visibility: visible;
     }
-    
+
     .card-back {
       /* Explicit back face transform for Safari */
       -webkit-transform: rotateY(180deg) translateZ(0) !important;
       transform: rotateY(180deg) translateZ(0) !important;
     }
   }
-  
+
   /* iOS specific fixes for touch devices */
   @media screen and (-webkit-min-device-pixel-ratio: 2) {
     .business-card {
       /* Enhanced GPU acceleration on iOS */
-      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x)) translate3d(0,0,0);
+      -webkit-transform: perspective(var(--card-perspective))
+        rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x))
+        translate3d(0, 0, 0);
       /* Prevent iOS from auto-hiding elements */
       -webkit-backface-visibility: visible;
     }
-    
+
     .business-card.flipped {
-      -webkit-transform: perspective(var(--card-perspective)) rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x)) translate3d(0,0,0);
+      -webkit-transform: perspective(var(--card-perspective))
+        rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x))
+        translate3d(0, 0, 0);
     }
-    
+
     .card-front,
     .card-back {
       /* Force visibility on iOS during transitions */
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      -webkit-transform: translate3d(0,0,0);
-      transform: translate3d(0,0,0);
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
       /* Prevent iOS rendering bugs */
       isolation: isolate;
       contain: layout style paint;
     }
-    
+
     .card-back {
       /* iOS-specific back face positioning */
-      -webkit-transform: rotateY(180deg) translate3d(0,0,0);
-      transform: rotateY(180deg) translate3d(0,0,0);
+      -webkit-transform: rotateY(180deg) translate3d(0, 0, 0);
+      transform: rotateY(180deg) translate3d(0, 0, 0);
     }
   }
 </style>

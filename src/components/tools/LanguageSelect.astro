@@ -1,97 +1,204 @@
 ---
-import { languages, ui } from '../../i18n/ui';
-import { getLangFromUrl, useTranslatedPath } from '../../i18n/utils';
+import { languages, ui } from "../../i18n/ui";
+import { getLangFromUrl } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 ---
 
-<div class="language-select-wrapper">
-  <select 
-    id="language-picker" 
-    class="language-select"
+<div class="language-dropdown-container">
+  <button
+    id="language-toggle"
+    class="language-toggle-btn"
+    aria-label="Select language"
+    aria-expanded="false"
   >
-    {Object.entries(languages).map(([langCode, label]) => (
-      <option 
-        value={langCode} 
-        selected={lang === langCode}
-      >
-        {label}
-      </option>
-    ))}
-  </select>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m5 8 6 6"></path>
+      <path d="m4 14 6-6 2-3"></path>
+      <path d="M2 5h12"></path>
+      <path d="M7 2h1"></path>
+      <path d="m22 22-5-10-5 10"></path>
+      <path d="M14 18h6"></path>
+    </svg>
+  </button>
+
+  <div id="language-menu" class="language-menu hidden">
+    <ul class="language-list">
+      {
+        Object.entries(languages).map(([langCode, label]) => (
+          <li>
+            <button
+              class={`language-option ${lang === langCode ? "active" : ""}`}
+              data-lang={langCode}
+            >
+              <span class="lang-flag">{label}</span>
+              <span class="lang-name">{langCode.toUpperCase()}</span>
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </div>
 
 <script define:vars={{ translations: ui }}>
-  const languagePicker = document.getElementById('language-picker');
+  const toggleBtn = document.getElementById("language-toggle");
+  const menu = document.getElementById("language-menu");
+  const options = document.querySelectorAll(".language-option");
 
-  languagePicker.addEventListener('change', event => {
-    const newLang = event.target.value;
+  // Toggle menu
+  toggleBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+    toggleBtn.setAttribute("aria-expanded", (!isExpanded).toString());
+    menu?.classList.toggle("hidden");
+  });
 
-    const customEvent = new CustomEvent('language-change', {
-      detail: {
-        lang: newLang,
-        translations: translations[newLang]
-      }
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!menu?.contains(e.target) && !toggleBtn?.contains(e.target)) {
+      menu?.classList.add("hidden");
+      toggleBtn?.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Handle language selection
+  options.forEach((option) => {
+    option.addEventListener("click", () => {
+      const newLang = option.getAttribute("data-lang");
+      if (!newLang) return;
+
+      // Update active state
+      options.forEach((opt) => opt.classList.remove("active"));
+      option.classList.add("active");
+
+      // Dispatch change event
+      const customEvent = new CustomEvent("language-change", {
+        detail: {
+          lang: newLang,
+          translations: translations[newLang],
+        },
+      });
+      document.dispatchEvent(customEvent);
+
+      // Close menu
+      menu?.classList.add("hidden");
+      toggleBtn?.setAttribute("aria-expanded", "false");
     });
-    document.dispatchEvent(customEvent);
   });
 </script>
 
 <style>
-  .language-select-wrapper {
+  .language-dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .language-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.15rem 0.4rem;
-    border-radius: 1.5rem;
-    background: var(--glass-bg, rgba(255,255,255,0.15));
-    backdrop-filter: blur(8px) saturate(140%);
-    border: 1px solid var(--glass-border, rgba(255,255,255,0.2));
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
-    transition: background 0.3s, box-shadow 0.3s;
-    min-width: 0;
-    width: auto;
-    margin: 0 auto;
-  }
-  .language-select {
-    width: auto;
-    min-width: 2.5em;
-    padding: 0.3rem 0.7rem;
-    border-radius: 1rem;
-    background: transparent;
-    color: var(--color-text-primary);
-    border: none;
-    font-size: 1rem;
-    font-family: inherit;
-    outline: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
     cursor: pointer;
-    transition: color 0.3s, background 0.3s;
-    appearance: none;
-    box-shadow: none;
-    position: relative;
-    z-index: 1;
+    transition: all 0.3s ease;
+    box-shadow: var(--glass-shadow);
   }
-  .language-select:focus {
-    outline: 2px solid var(--color-accent, #fbbf24);
-    outline-offset: 2px;
+
+  .language-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
   }
-  .language-select:hover {
-    background: var(--glass-hover-bg, rgba(255,255,255,0.25));
+
+  .language-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 120px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    padding: 0.5rem;
+    z-index: 100;
+    transform-origin: top right;
+    transition: all 0.2s ease;
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
-  .language-select option {
-    background: var(--color-bg-primary, #fff);
-    color: var(--color-text-primary, #374151);
+
+  .language-menu.hidden {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+    pointer-events: none;
+    visibility: hidden;
   }
-  :global(.dark) .language-select-wrapper {
-    background: rgba(31,41,55,0.25);
-    border-color: var(--color-border, #334155);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10);
+
+  .language-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   }
-  :global(.dark) .language-select {
-    color: var(--color-text-primary, #f9fafb);
+
+  .language-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    font-size: 0.9rem;
+    text-align: left;
   }
-  :global(.dark) .language-select option {
-    background: var(--color-bg-secondary, #1e293b);
-    color: var(--color-text-primary, #f9fafb);
+
+  .language-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .language-option.active {
+    background: var(--amber-bg);
+    color: var(--amber-color);
+    font-weight: 600;
+  }
+
+  .lang-flag {
+    font-size: 1.2rem;
+  }
+
+  .lang-name {
+    font-size: 0.85rem;
+  }
+
+  /* Dark mode adjustments */
+  :global(.dark) .language-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  :global(.dark) .language-option:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
 </style>

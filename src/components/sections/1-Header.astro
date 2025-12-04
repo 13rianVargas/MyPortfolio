@@ -1,1052 +1,1173 @@
 ---
 // Component props and utilities
 const { t } = Astro.props;
-const currentLang = Astro.currentLocale || 'es';
+const currentLang = Astro.currentLocale || "es";
 const currentPath = Astro.url.pathname;
 
 // Imports
-import ThemeToggleButton from '../tools/ThemeToggleButton.astro';
-import LanguageSelect from '../tools/LanguageSelect.astro';
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import Logo from '../tools/Logo.astro';
+import ThemeToggleButton from "../tools/ThemeToggleButton.astro";
+import LanguageSelect from "../tools/LanguageSelect.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Logo from "../tools/Logo.astro";
 
 // Navigation configuration - centralizes all section definitions
 const NAV_SECTIONS = [
-	{ id: 'home', labelKey: 'layout.home' },
-	{ id: 'aboutme', labelKey: 'layout.about' },
-	{ id: 'projects', labelKey: 'layout.projects' },
-	{ id: 'technologies', labelKey: 'layout.technologies' },
-	{ id: 'contactme', labelKey: 'layout.contact' }
+  { id: "home", labelKey: "layout.home" },
+  { id: "aboutme", labelKey: "layout.about" },
+  { id: "projects", labelKey: "layout.projects" },
+  { id: "technologies", labelKey: "layout.technologies" },
+  { id: "contactme", labelKey: "layout.contact" },
 ] as const;
 
 // Helper function to determine if a section is currently active
 function isActiveSection(sectionId: string): boolean {
-	const isHomePage = currentPath === '/' || currentPath === `/${currentLang}/`;
-	return currentPath.includes(sectionId) || (sectionId === 'home' && isHomePage);
+  const isHomePage = currentPath === "/" || currentPath === `/${currentLang}/`;
+  return (
+    currentPath.includes(sectionId) || (sectionId === "home" && isHomePage)
+  );
 }
 
 // Generate navigation link with proper classes
 function getNavLinkClass(sectionId: string): string {
-	return `nav-link ${isActiveSection(sectionId) ? 'nav-link-active' : ''}`;
+  return `nav-link ${isActiveSection(sectionId) ? "nav-link-active" : ""}`;
 }
 
 // Generate navigation URL for section
 function getNavUrl(sectionId: string): string {
-	return getRelativeLocaleUrl(currentLang, `#${sectionId}`);
+  return getRelativeLocaleUrl(currentLang, `#${sectionId}`);
 }
 ---
 
 <style>
-	/* ========================================
-	 * CSS CUSTOM PROPERTIES CONFIGURATION
-	 * ======================================== */
-	
-	:root {
-		/* Global behavior settings */
-		scroll-behavior: smooth;
-		scroll-padding-top: 5rem;
-		
-		/* ========================================
-		 * LAYOUT DIMENSIONS
-		 * ======================================== */
-		
-		/* Header sizing and positioning */
-		--header-height: 2.5rem;
-		--header-border-radius: 50px;
-		--header-padding: 0.25rem 2rem;
-		--header-margin-top: 0.5rem;
-		--header-gap: 1rem;
-		--header-blur: blur(8px) saturate(140%);
-		
-		/* Navigation indicator dimensions */
-		--nav-indicator-height: 28px;
-		--nav-indicator-border-radius: 14px;
-		--nav-link-padding: 0.75rem 1rem;
-		--nav-link-border-radius: 0.5rem;
-		
-		/* Mobile menu positioning */
-		--mobile-menu-top: calc(var(--header-margin-top) + 6rem);
-		
-		/* ========================================
-		 * COLOR PALETTE
-		 * ======================================== */
-		
-		/* Brand colors */
-		--amber-color: #fbbf24;
-		--amber-bg: rgba(251, 191, 36, 0.1);
-		
-		/* Text colors */
-		--text-color: rgb(55, 65, 81);
-		
-		/* Glass morphism effects - Light mode */
-		--glass-bg: rgba(255, 255, 255, 0.15);
-		--glass-border: rgba(255, 255, 255, 0.2);
-		--glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
-		--glass-shadow-top: 0 -4px 16px rgba(0, 0, 0, 0.05), 0 -2px 8px rgba(0, 0, 0, 0.05);
-		--glass-shadow-bottom: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
-		
-		/* ========================================
-		 * ANIMATION TIMING
-		 * ======================================== */
-		
-		--transition-smooth: all 0.3s ease;
-		--transition-menu: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		--transition-menu-active: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-		--transition-oval: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-		--transition-oval-recovery: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-		--transition-oval-crash: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-		--transition-oval-contract: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-	}
-	
-	/* ========================================
-	 * DARK MODE THEME OVERRIDES
-	 * ======================================== */
-	
-	html.dark {
-		--text-color: rgb(209, 213, 219);
-		--glass-bg: rgba(15, 23, 42, 0.15);
-		--glass-border: rgba(255, 255, 255, 0.1);
-		--glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
-		--glass-shadow-top: 0 -4px 16px rgba(0, 0, 0, 0.15), 0 -2px 8px rgba(0, 0, 0, 0.1);
-		--glass-shadow-bottom: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
-	}
-	
-	/* ========================================
-	 * HEADER COMPONENT STYLES
-	 * ======================================== */
-	
-	/* Main glassmorphic navigation bar */
-	.header {
-		position: relative;
-		width: calc(100vw - 2rem);
-		margin: var(--header-margin-top) 0 0 0;
-		padding: var(--header-padding);
-		background: var(--glass-bg);
-		backdrop-filter: var(--header-blur);
-		border: 1px solid var(--glass-border);
-		border-radius: var(--header-border-radius);
-		box-shadow: var(--glass-shadow);
-		transition: var(--transition-smooth);
-		will-change: backdrop-filter, transform;
-	}
-	
-	.header-title-container {
-		margin-right: var(--header-gap);
-		flex-shrink: 0;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-	
-	.header-actions {
-		margin-left: var(--header-gap);
-		gap: 0.75rem;
-		display: flex;
-		align-items: center;
-		flex-shrink: 0;
-	}
-	
-	/* Header state when mobile menu is active */
-	.header.menu-active {
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-		border-bottom: none;
-		box-shadow: var(--glass-shadow-top);
-		z-index: 55; /* Above mobile menu */
-	}
-	
-	/* ========================================
-	 * DESKTOP NAVIGATION STYLES
-	 * ======================================== */
-	
-	.header-nav {
-		display: flex;
-		margin: 0 var(--header-gap);
-		position: relative;
-		flex: 1;
-		justify-content: center;
-	}
-	
-	.header-nav ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-	}
-	
-	.header-nav li {
-		margin: 0;
-		padding: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-	}
-	
-	/* ========================================
-	 * NAVIGATION LINK STYLES
-	 * ======================================== */
-	
-	/* Unified styles for both desktop and mobile navigation links */
-	.nav-link {
-		color: var(--text-color);
-		transition: var(--transition-smooth);
-		padding: var(--nav-link-padding);
-		border-radius: var(--nav-link-border-radius);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		text-decoration: none;
-		white-space: nowrap;
-	}
-	
-	.nav-link:hover {
-		color: var(--amber-color);
-		background-color: var(--amber-bg);
-	}
-	
-	/* Active navigation link styles */
-	.nav-link-active {
-		color: var(--amber-color) !important;
-		font-weight: 600;
-		position: relative;
-		z-index: 1;
-	}
-	
-	/* Hide initial server-side active states to prevent flash */
-	.nav-links-hidden .nav-link-active {
-		color: var(--text-color) !important;
-		font-weight: normal !important;
-	}
-	
-	/* ========================================
-	 * MOBILE MENU COMPONENT
-	 * ======================================== */
-	
-	/* Glassmorphic dropdown extension of header */
-	.mobile-menu {
-		position: fixed;
-		top: var(--mobile-menu-top);
-		left: 50%;
-		transform: translateX(-50%) translateY(-100px) scale(0.95);
-		width: calc(100vw - 2rem);
-		min-height: 200px;
-		z-index: 45; /* Below header z-index of 50 */
-		opacity: 0;
-		visibility: hidden;
-		transition: var(--transition-menu);
-		pointer-events: none;
-		background: var(--glass-bg);
-		backdrop-filter: var(--header-blur);
-		border: 1px solid var(--glass-border);
-		border-top: none; /* Seamless connection with header */
-		border-radius: var(--header-border-radius);
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		box-shadow: var(--glass-shadow);
-		padding: 1rem;
-		will-change: transform, opacity;
-	}
+  /* ========================================
+   * CSS CUSTOM PROPERTIES CONFIGURATION
+   * ======================================== */
 
-	/* Mobile menu active state - seamless glassmorphic connection */
-	.mobile-menu.active {
-		opacity: 1;
-		visibility: visible;
-		transform: translateX(-50%) translateY(0) scale(1);
-		pointer-events: auto;
-		transition: var(--transition-menu);
-		box-shadow: var(--glass-shadow-bottom); /* Only bottom shadow for seamless connection */
-	}
-	
-	/* Mobile menu navigation structure */
-	.mobile-menu ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	
-	.mobile-menu .nav-link {
-		display: block;
-		width: 100%;
-		padding: 0.875rem 1rem;
-		margin: 0.25rem 0;
-		text-align: center;
-		transform: translateY(10px);
-		opacity: 0;
-	}
-	
-	/* Staggered animation for mobile menu links */
-	.mobile-menu.active .nav-link {
-		transform: translateY(0);
-		opacity: 1;
-		transition-delay: calc(var(--i, 0) * 0.05s + 0.1s);
-		text-decoration: none;
-	}
-	
-	.mobile-menu .nav-link:hover,
-	.mobile-menu .nav-link-active {
-		color: var(--amber-color);
-		background-color: var(--amber-bg);
-	}
+  :root {
+    /* Global behavior settings */
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
 
-	.mobile-menu .nav-link-active {
-		font-weight: 600;
-	}
-	
-	/* ========================================
-	 * HAMBURGER MENU BUTTON
-	 * ======================================== */
-	
-	.mobile-menu-button {
-		display: flex;
-		align-items: center;
-	}
-	
-	.hamburger {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		width: 24px;
-		height: 18px;
-		cursor: pointer;
-		padding: 0;
-		margin: 0;
-	}
-	
-	.hamburger span {
-		width: 100%;
-		height: 2px;
-		background-color: currentColor;
-		transition: var(--transition-smooth);
-		transform-origin: center;
-		display: block;
-	}
-	
-	/* Hamburger animation - transforms to X when active */
-	.hamburger.active span:nth-child(1) {
-		transform: rotate(45deg) translate(5px, 5px);
-	}
-	
-	.hamburger.active span:nth-child(2) {
-		opacity: 0;
-	}
-	
-	.hamburger.active span:nth-child(3) {
-		transform: rotate(-45deg) translate(7px, -6px);
-	}
-	
-	/* ========================================
-	 * NAVIGATION OVAL INDICATOR
-	 * ======================================== */
-	
-	/* Animated background indicator for active nav items */
-	.nav-oval-indicator {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		min-width: 60px;
-		height: var(--nav-indicator-height);
-		background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.3));
-		border: 2px solid rgba(251, 191, 36, 0.4);
-		border-radius: var(--nav-indicator-border-radius);
-		transform: translateY(-50%);
-		transition: var(--transition-oval);
-		pointer-events: none;
-		z-index: -1;
-		opacity: 0;
-		backdrop-filter: blur(6px);
-	}
-	
-	/* Oval indicator animation states */
-	.nav-oval-indicator.active {
-		opacity: 1;
-	}
-	
-	.nav-oval-indicator.full-width,
-	.nav-oval-indicator.contracting {
-		height: var(--nav-indicator-height);
-		border-radius: var(--nav-indicator-border-radius);
-		transform: translateY(-50%);
-		opacity: 1;
-	}
-	
-	.nav-oval-indicator.full-width {
-		transition: none;
-	}
-	
-	.nav-oval-indicator.contracting {
-		transition: var(--transition-oval-contract);
-	}
-	
-	.nav-oval-indicator.scrolling {
-		height: calc(var(--nav-indicator-height) / 2);
-		border-radius: 20px;
-		transition: all 0.2s ease-out;
-	}
-	
-	.nav-oval-indicator.crashed {
-		height: calc(var(--nav-indicator-height) * 1.4);
-		border-radius: 10px;
-		transition: var(--transition-oval-crash);
-	}
-	
-	.nav-oval-indicator.recovering {
-		transition: var(--transition-oval-recovery);
-	}
-	
-	/* ========================================
+    /* ========================================
+     * LAYOUT DIMENSIONS
+     * ======================================== */
+
+    /* Header sizing and positioning */
+    --header-height: 5rem;
+    --header-border-radius: 50px;
+    --header-padding: 1.5rem 2rem;
+    --header-margin-top: 0.5rem;
+    --header-gap: 1rem;
+    --header-blur: blur(8px) saturate(140%);
+
+    /* Navigation indicator dimensions */
+    --nav-indicator-height: 28px;
+    --nav-indicator-border-radius: 14px;
+    --nav-link-padding: 0.75rem 1rem;
+    --nav-link-border-radius: 0.5rem;
+
+    /* Mobile menu positioning */
+    --mobile-menu-top: calc(var(--header-margin-top) + 6rem);
+
+    /* ========================================
+     * COLOR PALETTE
+     * ======================================== */
+
+    /* Brand colors */
+    --amber-color: #fbbf24;
+    --amber-bg: rgba(251, 191, 36, 0.1);
+
+    /* Text colors */
+    --text-color: rgb(55, 65, 81);
+
+    /* ========================================
+     * ANIMATION TIMING
+     * ======================================== */
+
+    --transition-smooth: all 0.3s ease;
+    --transition-menu: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-menu-active: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-oval: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-oval-recovery: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    --transition-oval-crash: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-oval-contract: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+
+    --animation-duration-shine: 10s;
+  }
+
+  /* ========================================
+   * KEYFRAME ANIMATIONS
+   * ======================================== */
+
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    50% {
+      transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+  }
+
+  /* ========================================
+   * DARK MODE THEME OVERRIDES
+   * ======================================== */
+
+  html.dark {
+    --text-color: rgb(209, 213, 219);
+  }
+
+  /* ========================================
+   * HEADER COMPONENT STYLES
+   * ======================================== */
+
+  /* Main glassmorphic navigation bar */
+  .header {
+    position: relative;
+    width: calc(100vw - 2rem);
+    margin: var(--header-margin-top) 0 0 0;
+    padding: var(--header-padding);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--header-border-radius);
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-smooth);
+    will-change: backdrop-filter, transform;
+  }
+
+  /* Shine container - clips the shine effect without clipping header content */
+  .shine-container {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Shine effect */
+  .shine-effect {
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    background: linear-gradient(
+      to bottom right,
+      transparent 45%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 55%
+    );
+    transform: rotate(45deg);
+    animation: shine var(--animation-duration-shine) infinite;
+  }
+  .header-title-container {
+    margin-right: var(--header-gap);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .header-actions {
+    margin-left: var(--header-gap);
+    gap: 0.75rem;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Header state when mobile menu is active */
+  .header.menu-active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+    box-shadow: var(--glass-shadow-top);
+    z-index: 55; /* Above mobile menu */
+  }
+
+  /* ========================================
+   * DESKTOP NAVIGATION STYLES
+   * ======================================== */
+
+  .header-nav {
+    display: flex;
+    margin: 0 var(--header-gap);
+    position: relative;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .header-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .header-nav li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ========================================
+   * NAVIGATION LINK STYLES
+   * ======================================== */
+
+  /* Unified styles for both desktop and mobile navigation links */
+  .nav-link {
+    color: var(--text-color);
+    transition: var(--transition-smooth);
+    padding: var(--nav-link-padding);
+    border-radius: var(--nav-link-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: var(--amber-color);
+    background-color: var(--amber-bg);
+  }
+
+  /* Active navigation link styles */
+  .nav-link-active {
+    color: var(--amber-color) !important;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hide initial server-side active states to prevent flash */
+  .nav-links-hidden .nav-link-active {
+    color: var(--text-color) !important;
+    font-weight: normal !important;
+  }
+
+  /* ========================================
+   * MOBILE MENU COMPONENT
+   * ======================================== */
+
+  /* Glassmorphic dropdown extension of header */
+  .mobile-menu {
+    position: fixed;
+    top: var(--mobile-menu-top);
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px) scale(0.95);
+    width: calc(100vw - 2rem);
+    min-height: 200px;
+    z-index: 45; /* Below header z-index of 50 */
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-menu);
+    pointer-events: none;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-top: none; /* Seamless connection with header */
+    border-radius: var(--header-border-radius);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: var(--glass-shadow);
+    padding: 1rem;
+    will-change: transform, opacity;
+  }
+
+  /* Mobile menu active state - seamless glassmorphic connection */
+  .mobile-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0) scale(1);
+    pointer-events: auto;
+    transition: var(--transition-menu);
+    box-shadow: var(
+      --glass-shadow-bottom
+    ); /* Only bottom shadow for seamless connection */
+  }
+
+  /* Mobile menu navigation structure */
+  .mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-menu .nav-link {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    margin: 0.25rem 0;
+    text-align: center;
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  /* Staggered animation for mobile menu links */
+  .mobile-menu.active .nav-link {
+    transform: translateY(0);
+    opacity: 1;
+    transition-delay: calc(var(--i, 0) * 0.05s + 0.1s);
+    text-decoration: none;
+  }
+
+  .mobile-menu .nav-link:hover,
+  .mobile-menu .nav-link-active {
+    color: var(--amber-color);
+    background-color: var(--amber-bg);
+  }
+
+  .mobile-menu .nav-link-active {
+    font-weight: 600;
+  }
+
+  /* ========================================
+   * HAMBURGER MENU BUTTON
+   * ======================================== */
+
+  .mobile-menu-button {
+    display: flex;
+    align-items: center;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+
+  .hamburger span {
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transition: var(--transition-smooth);
+    transform-origin: center;
+    display: block;
+  }
+
+  /* Hamburger animation - transforms to X when active */
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* ========================================
+   * NAVIGATION OVAL INDICATOR
+   * ======================================== */
+
+  /* Animated background indicator for active nav items */
+  .nav-oval-indicator {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    min-width: 60px;
+    height: var(--nav-indicator-height);
+    background: linear-gradient(
+      135deg,
+      rgba(251, 191, 36, 0.2),
+      rgba(251, 191, 36, 0.3)
+    );
+    border: 2px solid rgba(251, 191, 36, 0.4);
+    border-radius: var(--nav-indicator-border-radius);
+    transform: translateY(-50%);
+    transition: var(--transition-oval);
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0;
+    backdrop-filter: blur(6px);
+  }
+
+  /* Oval indicator animation states */
+  .nav-oval-indicator.active {
+    opacity: 1;
+  }
+
+  .nav-oval-indicator.full-width,
+  .nav-oval-indicator.contracting {
+    height: var(--nav-indicator-height);
+    border-radius: var(--nav-indicator-border-radius);
+    transform: translateY(-50%);
+    opacity: 1;
+  }
+
+  .nav-oval-indicator.full-width {
+    transition: none;
+  }
+
+  .nav-oval-indicator.contracting {
+    transition: var(--transition-oval-contract);
+  }
+
+  .nav-oval-indicator.scrolling {
+    height: calc(var(--nav-indicator-height) / 2);
+    border-radius: 20px;
+    transition: all 0.2s ease-out;
+  }
+
+  .nav-oval-indicator.crashed {
+    height: calc(var(--nav-indicator-height) * 1.4);
+    border-radius: 10px;
+    transition: var(--transition-oval-crash);
+  }
+
+  .nav-oval-indicator.recovering {
+    transition: var(--transition-oval-recovery);
+  }
+
+  /* ========================================
 	 * RESPONSIVE BREAKPOINTS
 	 * ======================================== */
-	
-	/* Mobile breakpoint mixins for consistent responsive behavior */
-	
-  /* Small mobile devices (≤480px) */
+
+  /* 
+   * MOBILE DEVICES (≤480px)
+   * Compact layout for smartphones
+   */
   @media (max-width: 480px) {
-	:root {
-	  --header-border-radius: 20px;
-	  --header-padding: 0.25rem 0.5rem;
-	  --header-margin-top: 0.25rem;
-	}
-	.header,
-	.mobile-menu {
-	  width: calc(100vw - 0.5rem);
-	}
-	.header-nav {
-	  display: none !important;
-	}
-  .header-title-container {
-	gap: 0.5rem;
+    :root {
+      --header-border-radius: 20px;
+      --header-padding: 0.75rem 0.5rem;
+      --header-margin-top: 0.25rem;
+    }
+    .header,
+    .mobile-menu {
+      width: calc(100vw - 0.5rem);
+    }
+    .header-nav {
+      display: none !important;
+    }
+    .header-title-container {
+      gap: 0.5rem;
+    }
+    .header-title {
+      font-size: 1rem !important;
+      line-height: 1.1 !important;
+    }
+    /* Adjust Logo size for small screens */
+    .header-title-container > :global(svg),
+    .header-title-container > *:not(h1) {
+      width: 2rem !important;
+      height: 2rem !important;
+      min-width: 2rem !important;
+      min-height: 2rem !important;
+      max-width: 2rem !important;
+      max-height: 2rem !important;
+    }
   }
-	.header-title {
-	  font-size: 1rem !important;
-	  line-height: 1.1 !important;
-	}
-	/* Ajustar el tamaño del Logo */
-	.header-title-container > :global(svg),
-	.header-title-container > *:not(h1) {
-	  width: 2rem !important;
-	  height: 2rem !important;
-	  min-width: 2rem !important;
-	  min-height: 2rem !important;
-	  max-width: 2rem !important;
-	  max-height: 2rem !important;
-	}
+
+  /* 
+   * TABLET PORTRAIT (481px - 768px)
+   * Balanced layout for larger phones and small tablets
+   */
+  @media (min-width: 481px) and (max-width: 768px) {
+    :root {
+      --header-border-radius: 25px;
+      --header-padding: 1rem 1rem;
+      --header-margin-top: 0.25rem;
+    }
+    .header,
+    .mobile-menu {
+      width: calc(100vw - 1rem);
+    }
+    .header-nav {
+      display: none !important;
+    }
   }
-	
-  /* Medium mobile/tablet (481px-900px) */
-  @media (min-width: 481px) and (max-width: 900px) {
-	:root {
-	  --header-border-radius: 25px;
-	  --header-padding: 0.25rem 1rem;
-	  --header-margin-top: 0.25rem;
-	}
-	.header,
-	.mobile-menu {
-	  width: calc(100vw - 1rem);
-	}
-	.header-nav {
-	  display: none !important;
-	}
+
+  /* 
+   * TABLET LANDSCAPE / SMALL LAPTOP (769px - 1024px)
+   * Enhanced tablet experience, still using hamburger menu
+   */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    :root {
+      --header-border-radius: 40px;
+      --header-padding: 1.25rem 1.5rem;
+      --header-margin-top: 0.5rem;
+    }
+    .header {
+      width: calc(100vw - 1.5rem);
+    }
   }
-  
-  /* Large tablet (901px-1024px) */
-  @media (min-width: 901px) and (max-width: 1024px) {
-	:root {
-	  --header-border-radius: 40px;
-	  --header-padding: 0.5rem 1.5rem;
-	  --header-margin-top: 0.5rem;
-	}
-	.header {
-	  width: calc(100vw - 1.5rem);
-	}
-  }
-  
-  /* Desktop y arriba (>900px) - Mostrar nav desktop, ocultar menú hamburguesa */
-  @media (min-width: 901px) {
-	.mobile-menu-button,
-	.mobile-menu,
-	.mobile-menu.active {
-	  display: none !important;
-	}
-	.header-nav {
-	  display: flex !important;
-	}
+
+  /* 
+   * DESKTOP & LARGE SCREENS (≥1025px)
+   * Full navigation experience
+   */
+  @media (min-width: 1025px) {
+    .mobile-menu-button,
+    .mobile-menu,
+    .mobile-menu.active {
+      display: none !important;
+    }
+    .header-nav {
+      display: flex !important;
+    }
   }
 </style>
 
 <header class="fixed top-0 w-full z-50 flex justify-center">
-	<div class="header">
-		<div class="flex items-center justify-between h-10 gap-4">
-			<!-- Header Title -->
-			<div class="header-title-container">
-				<Logo size="3rem" />
-				<h1 class="header-title text-xl font-bold text-gray-900 dark:text-white">13rian</h1>
-			</div>
-			
-			<!-- Desktop Navigation -->
-			<nav class="header-nav nav-links-hidden" id="headerNav" style="display: none;">
-				<div class="nav-oval-indicator" id="navOvalIndicator"></div>
-				<ul>
-					{NAV_SECTIONS.map(section => (
-						<li>
-							<a href={getNavUrl(section.id)} 
-							   class={getNavLinkClass(section.id)}
-							   data-section={section.id}
-							   data-translation-key={section.labelKey}>
-								{t(section.labelKey)}
-							</a>
-						</li>
-					))}
-				</ul>
-			</nav>
-			
-			<!-- Mobile Menu Button + Actions -->
-			<div class="header-actions">
-				<button 
-					class="mobile-menu-button text-gray-700 dark:text-gray-300 p-2"
-					aria-label="Toggle mobile menu"
-					type="button">
-					<div class="hamburger" id="hamburger">
-						<span></span>
-						<span></span>
-						<span></span>
-					</div>
-				</button>
-				<LanguageSelect />
-				<ThemeToggleButton />
-			</div>
-		</div>
-	</div>
+  <div class="header">
+    <!-- Shine Container -->
+    <div class="shine-container">
+      <div class="shine-effect"></div>
+    </div>
+
+    <div class="flex items-center justify-between h-10 gap-4 relative z-10">
+      <!-- Header Title -->
+      <div class="header-title-container">
+        <Logo size="3rem" />
+        <h1
+          class="header-title text-xl font-bold text-gray-900 dark:text-white"
+        >
+          13rian
+        </h1>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav
+        class="header-nav nav-links-hidden"
+        id="headerNav"
+        style="display: none;"
+      >
+        <div class="nav-oval-indicator" id="navOvalIndicator"></div>
+        <ul>
+          {
+            NAV_SECTIONS.map((section) => (
+              <li>
+                <a
+                  href={getNavUrl(section.id)}
+                  class={getNavLinkClass(section.id)}
+                  data-section={section.id}
+                  data-translation-key={section.labelKey}
+                >
+                  {t(section.labelKey)}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Mobile Menu Button + Actions -->
+      <div class="header-actions">
+        <button
+          class="mobile-menu-button text-gray-700 dark:text-gray-300 p-2"
+          aria-label="Toggle mobile menu"
+          type="button"
+        >
+          <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+        <LanguageSelect />
+        <ThemeToggleButton />
+      </div>
+    </div>
+  </div>
 </header>
 
 <!-- Mobile Menu - Positioned outside header for seamless glassmorphic effect -->
 <div class="mobile-menu" id="mobileMenu">
-	<ul>
-		{NAV_SECTIONS.map((section, index) => (
-			<li>
-				<a href={getNavUrl(section.id)} 
-				   class={getNavLinkClass(section.id)}
-				   data-section={section.id}
-				   data-translation-key={section.labelKey}
-				   style={`--i: ${index}`}>
-					{t(section.labelKey)}
-				</a>
-			</li>
-		))}
-	</ul>
+  <ul>
+    {
+      NAV_SECTIONS.map((section, index) => (
+        <li>
+          <a
+            href={getNavUrl(section.id)}
+            class={getNavLinkClass(section.id)}
+            data-section={section.id}
+            data-translation-key={section.labelKey}
+            style={`--i: ${index}`}
+          >
+            {t(section.labelKey)}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </div>
 
 <script>
-	// ========================================
-	// CONSTANTS AND CONFIGURATION
-	// ========================================
-	
-	// Navigation sections - must match component configuration
-	const SECTIONS = ['home', 'aboutme', 'projects', 'technologies', 'contactme'] as const;
-	
-	// Scroll detection threshold for animations
-	const SCROLL_THRESHOLD = 20;
-	
-	// Animation timing configuration
-	const TIMINGS = {
-		recovery: 100,          // Oval recovery after scroll stops
-		crash: 200,             // Delay before crash recovery
-		entryDelay: 500,        // Initial entry animation delay
-		contractionEnd: 700,    // Full-width to active animation duration
-		menuTransition: 600     // Mobile menu transition duration
-	} as const;
-	
-	// CSS class names for consistency
-	const CSS_CLASSES = {
-		active: 'active',
-		menuActive: 'menu-active',
-		navLinkActive: 'nav-link-active',
-		navLinksHidden: 'nav-links-hidden',
-		// Oval indicator states
-		ovalScrolling: 'scrolling',
-		ovalCrashed: 'crashed',
-		ovalRecovering: 'recovering',
-		ovalFullWidth: 'full-width',
-		ovalContracting: 'contracting'
-	} as const;
-	
-	// DOM element selectors
-	const SELECTORS = {
-		mobileMenu: '#mobileMenu',
-		hamburger: '#hamburger',
-		headerNav: '#headerNav',
-		ovalIndicator: '#navOvalIndicator',
-		header: '.header',
-		headerNavUl: '.header-nav ul',
-		mobileMenuButton: '.mobile-menu-button',
-		desktopNavLinks: '.header-nav a[data-section]',
-		mobileNavLinks: '#mobileMenu a[data-section]',
-		navLinks: '.nav-link'
-	} as const;
-	
-	// ========================================
-	// STATE MANAGEMENT
-	// ========================================
-	
-	interface AppState {
-		scrollTimeout: number | null;
-		crashTimeout: number | null;
-		isScrolling: boolean;
-		lastScrollY: number;
-		currentActiveSection: string;
-		entryAnimationInProgress: boolean;
-	}
-	
-	// Application state
-	const state: AppState = {
-		scrollTimeout: null,
-		crashTimeout: null,
-		isScrolling: false,
-		lastScrollY: 0,
-		currentActiveSection: '',
-		entryAnimationInProgress: true
-	};
-	
-	// ========================================
-	// DOM UTILITIES
-	// ========================================
-	
-	/**
-	 * Safely get a DOM element by selector
-	 */
-	function getElement<T extends HTMLElement = HTMLElement>(selector: string): T | null {
-		return document.querySelector<T>(selector);
-	}
-	
-	/**
-	 * Get multiple DOM elements by selector
-	 */
-	function getElements<T extends HTMLElement = HTMLElement>(selector: string): NodeListOf<T> {
-		return document.querySelectorAll<T>(selector);
-	}
-	
-	/**
-	 * Get mobile menu elements as a group
-	 */
-	function getMobileMenuElements() {
-		return {
-			menu: getElement(SELECTORS.mobileMenu),
-			hamburger: getElement(SELECTORS.hamburger),
-			header: getElement<HTMLElement>(SELECTORS.header)
-		};
-	}
-	
-	/**
-	 * Clear a timeout if it exists
-	 */
-	function clearTimeoutSafe(timeoutId: number | null): void {
-		if (timeoutId !== null) {
-			clearTimeout(timeoutId);
-		}
-	}
-	
-	/**
-	 * Toggle CSS classes on multiple elements
-	 */
-	function toggleClasses(elements: (HTMLElement | null)[], className: string, action: 'add' | 'remove'): void {
-		elements.forEach(element => {
-			if (element) {
-				element.classList[action](className);
-			}
-		});
-	}
-	
-	// ========================================
-	// NAVIGATION LOGIC
-	// ========================================
-	
-	/**
-	 * Update active link styling across both desktop and mobile navigation
-	 */
-	function updateActiveLink(sectionId: string): void {
-		// Remove active class from all navigation links
-		getElements(SELECTORS.navLinks).forEach(link => {
-			link.classList.remove(CSS_CLASSES.navLinkActive);
-		});
-		
-		// Add active class to links matching the current section
-		getElements(`a[href*="#${sectionId}"]`).forEach(link => {
-			link.classList.add(CSS_CLASSES.navLinkActive);
-		});
-	}
-	
-	/**
-	 * Get current section based on scroll position
-	 */
-	function getCurrentSection(): string {
-		const scrollOffset = 100;
-		const scrollPosition = window.scrollY + scrollOffset;
-		
-		// Check sections in reverse order to prioritize lower sections
-		for (const section of [...SECTIONS].reverse()) {
-			const element = document.getElementById(section);
-			if (element && element.offsetTop <= scrollPosition) {
-				return section;
-			}
-		}
-		
-		return 'home'; // Default fallback
-	}
-	
-	/**
-	 * Get section from URL hash if present and valid
-	 */
-	function getCurrentSectionFromURL(): string | null {
-		const hash = window.location.hash;
-		if (hash?.startsWith('#')) {
-			const sectionFromHash = hash.substring(1);
-			if (SECTIONS.includes(sectionFromHash as any)) {
-				return sectionFromHash;
-			}
-		}
-		return null;
-	}
-	
-	// ========================================
-	// MOBILE MENU MANAGEMENT
-	// ========================================
-	
-	/**
-	 * Toggle mobile menu visibility with proper state management
-	 */
-	function toggleMobileMenu(): void {
-		const elements = getMobileMenuElements();
-		
-		if (elements.menu && elements.hamburger && elements.header) {
-			const isActive = elements.menu.classList.contains(CSS_CLASSES.active);
-			const action = isActive ? 'remove' : 'add';
-			
-			// Toggle classes on all relevant elements
-			[elements.menu, elements.hamburger].forEach(el => {
-				el?.classList[action](CSS_CLASSES.active);
-			});
-			elements.header.classList[action](CSS_CLASSES.menuActive);
-		}
-	}
-	
-	/**
-	 * Close mobile menu and reset all related states
-	 */
-	function closeMobileMenu(): void {
-		const elements = getMobileMenuElements();
-		const classesToRemove = [CSS_CLASSES.active, CSS_CLASSES.menuActive];
-		
-		Object.values(elements).forEach(element => {
-			if (element) {
-				classesToRemove.forEach(className => {
-					element.classList.remove(className);
-				});
-			}
-		});
-	}
-	
-	/**
-	 * Handle clicks outside the header to close mobile menu
-	 */
-	function handleOutsideClick(event: Event): void {
-		const mobileMenu = getElement(SELECTORS.mobileMenu);
-		const header = getElement('header');
-		
-		if (mobileMenu?.classList.contains(CSS_CLASSES.active) && 
-			header && !header.contains(event.target as Node)) {
-			closeMobileMenu();
-		}
-	}
-	
-	// ========================================
-	// OVAL INDICATOR ANIMATION SYSTEM
-	// ========================================
-	
-	/**
-	 * Calculate oval position and size based on target link
-	 */
-	function calculateOvalPosition(activeLink: HTMLElement, nav: HTMLElement) {
-		const navRect = nav.getBoundingClientRect();
-		const linkRect = activeLink.getBoundingClientRect();
-		
-		return {
-			width: linkRect.width + 10,
-			left: linkRect.left - navRect.left - 5
-		};
-	}
-	
-	/**
-	 * Apply oval position and styling
-	 */
-	function applyOvalPosition(ovalIndicator: HTMLElement, position: { width: number; left: number }): void {
-		ovalIndicator.style.width = `${position.width}px`;
-		ovalIndicator.style.left = `${position.left}px`;
-		ovalIndicator.classList.add(CSS_CLASSES.active);
-	}
-	
-	/**
-	 * Move oval indicator to the active navigation link
-	 */
-	function moveOvalToActiveLink(sectionId: string, forceMove = false): void {
-		const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-		const activeLink = getElement<HTMLElement>(`a[data-section="${sectionId}"]`);
-		
-		if (!ovalIndicator || !activeLink) return;
-		
-		// Don't move if crashed unless forced
-		if (!forceMove && ovalIndicator.classList.contains(CSS_CLASSES.ovalCrashed)) return;
-		
-		const nav = activeLink.closest('.header-nav') as HTMLElement;
-		if (!nav) return;
-		
-		const position = calculateOvalPosition(activeLink, nav);
-		
-		// Clear timeouts if forcing movement
-		if (forceMove) {
-			const classesToRemove = [CSS_CLASSES.ovalScrolling, CSS_CLASSES.ovalCrashed, CSS_CLASSES.ovalRecovering];
-			classesToRemove.forEach(className => ovalIndicator.classList.remove(className));
-			
-			clearTimeoutSafe(state.scrollTimeout);
-			clearTimeoutSafe(state.crashTimeout);
-			state.scrollTimeout = null;
-			state.crashTimeout = null;
-		}
-		
-		applyOvalPosition(ovalIndicator, position);
-	}
-	
-	/**
-	 * Handle scroll-induced oval squishing animation
-	 */
-	function handleScrollSquish(): void {
-		const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-		if (!ovalIndicator) return;
-		
-		const currentScrollY = window.scrollY;
-		const scrollDelta = Math.abs(currentScrollY - state.lastScrollY);
-		
-		if (scrollDelta > SCROLL_THRESHOLD) {
-			ovalIndicator.classList.add(CSS_CLASSES.ovalScrolling);
-			ovalIndicator.classList.remove(CSS_CLASSES.ovalCrashed, CSS_CLASSES.ovalRecovering);
-			state.isScrolling = true;
-			checkForCrash();
-		}
-		
-		// Reset recovery timeout
-		clearTimeoutSafe(state.scrollTimeout);
-		state.scrollTimeout = window.setTimeout(recoverOval, TIMINGS.recovery);
-		state.lastScrollY = currentScrollY;
-	}
-	
-	/**
-	 * Check if oval indicator is near navigation edges (crash detection)
-	 */
-	function checkForCrash(): void {
-		const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-		const nav = getElement(SELECTORS.headerNavUl);
-		
-		if (!ovalIndicator || !nav) return;
-		
-		const ovalRect = ovalIndicator.getBoundingClientRect();
-		const navRect = nav.getBoundingClientRect();
-		const edgeThreshold = 20;
-		
-		const nearEdge = ovalRect.left <= navRect.left + edgeThreshold || 
-						ovalRect.right >= navRect.right - edgeThreshold;
-		
-		if (nearEdge) {
-			ovalIndicator.classList.remove(CSS_CLASSES.ovalScrolling);
-			ovalIndicator.classList.add(CSS_CLASSES.ovalCrashed);
-			
-			clearTimeoutSafe(state.crashTimeout);
-			state.crashTimeout = window.setTimeout(recoverOval, TIMINGS.crash);
-		}
-	}
-	
-	/**
-	 * Recover oval from scrolling or crashed state
-	 */
-	function recoverOval(): void {
-		const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-		if (!ovalIndicator) return;
-		
-		ovalIndicator.classList.remove(CSS_CLASSES.ovalScrolling, CSS_CLASSES.ovalCrashed);
-		ovalIndicator.classList.add(CSS_CLASSES.ovalRecovering);
-		state.isScrolling = false;
-		
-		setTimeout(() => {
-			ovalIndicator.classList.remove(CSS_CLASSES.ovalRecovering);
-		}, TIMINGS.menuTransition);
-	}
-	
-	// ========================================
-	// INITIALIZATION SYSTEM
-	// ========================================
-	
-	/**
-	 * Set up event listeners for both mobile and desktop navigation
-	 */
-	function setupEventListeners(): void {
-		// Mobile menu setup
-		const hamburgerButton = getElement(SELECTORS.mobileMenuButton);
-		hamburgerButton?.addEventListener('click', toggleMobileMenu);
+  // ========================================
+  // CONSTANTS AND CONFIGURATION
+  // ========================================
 
-		// Navigation link handlers
-		getElements(SELECTORS.mobileNavLinks).forEach(link => {
-			link.addEventListener('click', (e) => {
-				handleNavClick(e);
-				closeMobileMenu();
-			});
-		});
+  // Navigation sections - must match component configuration
+  const SECTIONS = [
+    "home",
+    "aboutme",
+    "projects",
+    "technologies",
+    "contactme",
+  ] as const;
 
-		getElements(SELECTORS.desktopNavLinks).forEach(link => {
-			link.addEventListener('click', handleNavClick);
-		});
+  // Scroll detection threshold for animations
+  const SCROLL_THRESHOLD = 20;
 
-		// Global event listeners
-		window.addEventListener('scroll', updateActiveSection);
-		window.addEventListener('resize', handleResize);
-		document.addEventListener('click', handleOutsideClick);
-	}
-	
-	/**
-	 * Handle navigation link clicks
-	 */
-	function handleNavClick(e: Event): void {
-		const sectionId = (e.currentTarget as HTMLAnchorElement).getAttribute('data-section');
-		if (!sectionId) return;
-		
-		updateActiveLink(sectionId);
-		moveOvalToActiveLink(sectionId, true);
-		state.currentActiveSection = sectionId;
-	}
-	
-	/**
-	 * Handle window resize events
-	 */
-	function handleResize(): void {
-		const currentSection = getCurrentSection();
-		if (currentSection) {
-			moveOvalToActiveLink(currentSection, false);
-		}
-	}
-	
-	/**
-	 * Update active section based on scroll position
-	 */
-	function updateActiveSection(): void {
-		if (state.entryAnimationInProgress) return;
-		
-		const newSection = getCurrentSection();
-		
-		if (newSection !== state.currentActiveSection) {
-			updateActiveLink(newSection);
-			moveOvalToActiveLink(newSection);
-			handleScrollSquish();
-			state.currentActiveSection = newSection;
-		}
-	}
-	
-	/**
-	 * Initialize oval animation with full-width entry effect
-	 */
-	function initializeOvalAnimation(): void {
-		const initialActiveSection = getCurrentSectionFromURL() || getCurrentSection();
-		state.currentActiveSection = initialActiveSection;
-		
-		// Show navigation
-		const headerNav = getElement(SELECTORS.headerNav);
-		headerNav?.classList.remove(CSS_CLASSES.navLinksHidden);
-		
-		updateActiveLink(initialActiveSection);
-		initializeOvalWithFullWidthAnimation();
-	}
-	
-	/**
-	 * Create full-width oval animation on page load
-	 */
-	function initializeOvalWithFullWidthAnimation(): void {
-		const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-		const nav = getElement<HTMLElement>('.header-nav');
-		
-		if (!ovalIndicator || !nav) return;
-		
-		const navItems = nav.querySelectorAll('li');
-		if (navItems.length > 0) {
-			const firstItem = navItems[0];
-			const lastItem = navItems[navItems.length - 1];
-			const navRect = nav.getBoundingClientRect();
-			const firstRect = firstItem.getBoundingClientRect();
-			const lastRect = lastItem.getBoundingClientRect();
-			
-			const startPosition = firstRect.left - navRect.left;
-			const endPosition = lastRect.right - navRect.left;
-			const calculatedWidth = endPosition - startPosition;
-			
-			// Set initial full-width state
-			ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalFullWidth}`;
-			ovalIndicator.style.left = `${startPosition}px`;
-			ovalIndicator.style.width = `${calculatedWidth}px`;
-			ovalIndicator.style.opacity = '1';
-		} else {
-			// Fallback for empty navigation
-			ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalFullWidth}`;
-			ovalIndicator.style.opacity = '1';
-		}
-		
-		setTimeout(startFullWidthAnimation, TIMINGS.entryDelay);
-	}
-	
-	/**
-	 * Animate from full-width to focused on active section
-	 */
-	function startFullWidthAnimation(): void {
-		const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-		const nav = getElement<HTMLElement>('.header-nav');
-		
-		if (!ovalIndicator || !nav) return;
-		
-		const targetLink = getElement<HTMLElement>(`a[data-section="${state.currentActiveSection}"]`);
-		if (!targetLink) return;
-		
-		const position = calculateOvalPosition(targetLink, nav);
-		
-		// Start contraction animation
-		ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalContracting}`;
-		ovalIndicator.style.left = `${position.left}px`;
-		ovalIndicator.style.width = `${position.width}px`;
-		
-		setTimeout(() => {
-			ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.active}`;
-			state.entryAnimationInProgress = false;
-		}, TIMINGS.contractionEnd);
-	}
-	
-	/**
-	 * Main initialization function
-	 */
-	function initialize(): void {
-		setupEventListeners();
-		initializeOvalAnimation();
-	}
-	
-	// ========================================
-	// APPLICATION ENTRY POINT
-	// ========================================
-	
-	// Initialize when DOM is ready
-	document.addEventListener('DOMContentLoaded', initialize);
-	
-	// Legacy global function support for backwards compatibility
-	(window as any).toggleMobileMenu = toggleMobileMenu;
-	(window as any).closeMobileMenu = closeMobileMenu;
+  // Animation timing configuration
+  const TIMINGS = {
+    recovery: 100, // Oval recovery after scroll stops
+    crash: 200, // Delay before crash recovery
+    entryDelay: 500, // Initial entry animation delay
+    contractionEnd: 700, // Full-width to active animation duration
+    menuTransition: 600, // Mobile menu transition duration
+  } as const;
+
+  // CSS class names for consistency
+  const CSS_CLASSES = {
+    active: "active",
+    menuActive: "menu-active",
+    navLinkActive: "nav-link-active",
+    navLinksHidden: "nav-links-hidden",
+    // Oval indicator states
+    ovalScrolling: "scrolling",
+    ovalCrashed: "crashed",
+    ovalRecovering: "recovering",
+    ovalFullWidth: "full-width",
+    ovalContracting: "contracting",
+  } as const;
+
+  // DOM element selectors
+  const SELECTORS = {
+    mobileMenu: "#mobileMenu",
+    hamburger: "#hamburger",
+    headerNav: "#headerNav",
+    ovalIndicator: "#navOvalIndicator",
+    header: ".header",
+    headerNavUl: ".header-nav ul",
+    mobileMenuButton: ".mobile-menu-button",
+    desktopNavLinks: ".header-nav a[data-section]",
+    mobileNavLinks: "#mobileMenu a[data-section]",
+    navLinks: ".nav-link",
+  } as const;
+
+  // ========================================
+  // STATE MANAGEMENT
+  // ========================================
+
+  interface AppState {
+    scrollTimeout: number | null;
+    crashTimeout: number | null;
+    isScrolling: boolean;
+    lastScrollY: number;
+    currentActiveSection: string;
+    entryAnimationInProgress: boolean;
+  }
+
+  // Application state
+  const state: AppState = {
+    scrollTimeout: null,
+    crashTimeout: null,
+    isScrolling: false,
+    lastScrollY: 0,
+    currentActiveSection: "",
+    entryAnimationInProgress: true,
+  };
+
+  // ========================================
+  // DOM UTILITIES
+  // ========================================
+
+  /**
+   * Safely get a DOM element by selector
+   */
+  function getElement<T extends HTMLElement = HTMLElement>(
+    selector: string
+  ): T | null {
+    return document.querySelector<T>(selector);
+  }
+
+  /**
+   * Get multiple DOM elements by selector
+   */
+  function getElements<T extends HTMLElement = HTMLElement>(
+    selector: string
+  ): NodeListOf<T> {
+    return document.querySelectorAll<T>(selector);
+  }
+
+  /**
+   * Get mobile menu elements as a group
+   */
+  function getMobileMenuElements() {
+    return {
+      menu: getElement(SELECTORS.mobileMenu),
+      hamburger: getElement(SELECTORS.hamburger),
+      header: getElement<HTMLElement>(SELECTORS.header),
+    };
+  }
+
+  /**
+   * Clear a timeout if it exists
+   */
+  function clearTimeoutSafe(timeoutId: number | null): void {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  /**
+   * Toggle CSS classes on multiple elements
+   */
+  function toggleClasses(
+    elements: (HTMLElement | null)[],
+    className: string,
+    action: "add" | "remove"
+  ): void {
+    elements.forEach((element) => {
+      if (element) {
+        element.classList[action](className);
+      }
+    });
+  }
+
+  // ========================================
+  // NAVIGATION LOGIC
+  // ========================================
+
+  /**
+   * Update active link styling across both desktop and mobile navigation
+   */
+  function updateActiveLink(sectionId: string): void {
+    // Remove active class from all navigation links
+    getElements(SELECTORS.navLinks).forEach((link) => {
+      link.classList.remove(CSS_CLASSES.navLinkActive);
+    });
+
+    // Add active class to links matching the current section
+    getElements(`a[href*="#${sectionId}"]`).forEach((link) => {
+      link.classList.add(CSS_CLASSES.navLinkActive);
+    });
+  }
+
+  /**
+   * Get current section based on scroll position
+   */
+  function getCurrentSection(): string {
+    const scrollOffset = 100;
+    const scrollPosition = window.scrollY + scrollOffset;
+
+    // Check sections in reverse order to prioritize lower sections
+    for (const section of [...SECTIONS].reverse()) {
+      const element = document.getElementById(section);
+      if (element && element.offsetTop <= scrollPosition) {
+        return section;
+      }
+    }
+
+    return "home"; // Default fallback
+  }
+
+  /**
+   * Get section from URL hash if present and valid
+   */
+  function getCurrentSectionFromURL(): string | null {
+    const hash = window.location.hash;
+    if (hash?.startsWith("#")) {
+      const sectionFromHash = hash.substring(1);
+      if (SECTIONS.includes(sectionFromHash as any)) {
+        return sectionFromHash;
+      }
+    }
+    return null;
+  }
+
+  // ========================================
+  // MOBILE MENU MANAGEMENT
+  // ========================================
+
+  /**
+   * Toggle mobile menu visibility with proper state management
+   */
+  function toggleMobileMenu(): void {
+    const elements = getMobileMenuElements();
+
+    if (elements.menu && elements.hamburger && elements.header) {
+      const isActive = elements.menu.classList.contains(CSS_CLASSES.active);
+      const action = isActive ? "remove" : "add";
+
+      // Toggle classes on all relevant elements
+      [elements.menu, elements.hamburger].forEach((el) => {
+        el?.classList[action](CSS_CLASSES.active);
+      });
+      elements.header.classList[action](CSS_CLASSES.menuActive);
+    }
+  }
+
+  /**
+   * Close mobile menu and reset all related states
+   */
+  function closeMobileMenu(): void {
+    const elements = getMobileMenuElements();
+    const classesToRemove = [CSS_CLASSES.active, CSS_CLASSES.menuActive];
+
+    Object.values(elements).forEach((element) => {
+      if (element) {
+        classesToRemove.forEach((className) => {
+          element.classList.remove(className);
+        });
+      }
+    });
+  }
+
+  /**
+   * Handle clicks outside the header to close mobile menu
+   */
+  function handleOutsideClick(event: Event): void {
+    const mobileMenu = getElement(SELECTORS.mobileMenu);
+    const header = getElement("header");
+
+    if (
+      mobileMenu?.classList.contains(CSS_CLASSES.active) &&
+      header &&
+      !header.contains(event.target as Node)
+    ) {
+      closeMobileMenu();
+    }
+  }
+
+  // ========================================
+  // OVAL INDICATOR ANIMATION SYSTEM
+  // ========================================
+
+  /**
+   * Calculate oval position and size based on target link
+   */
+  function calculateOvalPosition(activeLink: HTMLElement, nav: HTMLElement) {
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+
+    return {
+      width: linkRect.width + 10,
+      left: linkRect.left - navRect.left - 5,
+    };
+  }
+
+  /**
+   * Apply oval position and styling
+   */
+  function applyOvalPosition(
+    ovalIndicator: HTMLElement,
+    position: { width: number; left: number }
+  ): void {
+    ovalIndicator.style.width = `${position.width}px`;
+    ovalIndicator.style.left = `${position.left}px`;
+    ovalIndicator.classList.add(CSS_CLASSES.active);
+  }
+
+  /**
+   * Move oval indicator to the active navigation link
+   */
+  function moveOvalToActiveLink(sectionId: string, forceMove = false): void {
+    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
+    const activeLink = getElement<HTMLElement>(
+      `a[data-section="${sectionId}"]`
+    );
+
+    if (!ovalIndicator || !activeLink) return;
+
+    // Don't move if crashed unless forced
+    if (!forceMove && ovalIndicator.classList.contains(CSS_CLASSES.ovalCrashed))
+      return;
+
+    const nav = activeLink.closest(".header-nav") as HTMLElement;
+    if (!nav) return;
+
+    const position = calculateOvalPosition(activeLink, nav);
+
+    // Clear timeouts if forcing movement
+    if (forceMove) {
+      const classesToRemove = [
+        CSS_CLASSES.ovalScrolling,
+        CSS_CLASSES.ovalCrashed,
+        CSS_CLASSES.ovalRecovering,
+      ];
+      classesToRemove.forEach((className) =>
+        ovalIndicator.classList.remove(className)
+      );
+
+      clearTimeoutSafe(state.scrollTimeout);
+      clearTimeoutSafe(state.crashTimeout);
+      state.scrollTimeout = null;
+      state.crashTimeout = null;
+    }
+
+    applyOvalPosition(ovalIndicator, position);
+  }
+
+  /**
+   * Handle scroll-induced oval squishing animation
+   */
+  function handleScrollSquish(): void {
+    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
+    if (!ovalIndicator) return;
+
+    const currentScrollY = window.scrollY;
+    const scrollDelta = Math.abs(currentScrollY - state.lastScrollY);
+
+    if (scrollDelta > SCROLL_THRESHOLD) {
+      ovalIndicator.classList.add(CSS_CLASSES.ovalScrolling);
+      ovalIndicator.classList.remove(
+        CSS_CLASSES.ovalCrashed,
+        CSS_CLASSES.ovalRecovering
+      );
+      state.isScrolling = true;
+      checkForCrash();
+    }
+
+    // Reset recovery timeout
+    clearTimeoutSafe(state.scrollTimeout);
+    state.scrollTimeout = window.setTimeout(recoverOval, TIMINGS.recovery);
+    state.lastScrollY = currentScrollY;
+  }
+
+  /**
+   * Check if oval indicator is near navigation edges (crash detection)
+   */
+  function checkForCrash(): void {
+    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
+    const nav = getElement(SELECTORS.headerNavUl);
+
+    if (!ovalIndicator || !nav) return;
+
+    const ovalRect = ovalIndicator.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    const edgeThreshold = 20;
+
+    const nearEdge =
+      ovalRect.left <= navRect.left + edgeThreshold ||
+      ovalRect.right >= navRect.right - edgeThreshold;
+
+    if (nearEdge) {
+      ovalIndicator.classList.remove(CSS_CLASSES.ovalScrolling);
+      ovalIndicator.classList.add(CSS_CLASSES.ovalCrashed);
+
+      clearTimeoutSafe(state.crashTimeout);
+      state.crashTimeout = window.setTimeout(recoverOval, TIMINGS.crash);
+    }
+  }
+
+  /**
+   * Recover oval from scrolling or crashed state
+   */
+  function recoverOval(): void {
+    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
+    if (!ovalIndicator) return;
+
+    ovalIndicator.classList.remove(
+      CSS_CLASSES.ovalScrolling,
+      CSS_CLASSES.ovalCrashed
+    );
+    ovalIndicator.classList.add(CSS_CLASSES.ovalRecovering);
+    state.isScrolling = false;
+
+    setTimeout(() => {
+      ovalIndicator.classList.remove(CSS_CLASSES.ovalRecovering);
+    }, TIMINGS.menuTransition);
+  }
+
+  // ========================================
+  // INITIALIZATION SYSTEM
+  // ========================================
+
+  /**
+   * Set up event listeners for both mobile and desktop navigation
+   */
+  function setupEventListeners(): void {
+    // Mobile menu setup
+    const hamburgerButton = getElement(SELECTORS.mobileMenuButton);
+    hamburgerButton?.addEventListener("click", toggleMobileMenu);
+
+    // Navigation link handlers
+    getElements(SELECTORS.mobileNavLinks).forEach((link) => {
+      link.addEventListener("click", (e) => {
+        handleNavClick(e);
+        closeMobileMenu();
+      });
+    });
+
+    getElements(SELECTORS.desktopNavLinks).forEach((link) => {
+      link.addEventListener("click", handleNavClick);
+    });
+
+    // Global event listeners
+    window.addEventListener("scroll", updateActiveSection);
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("click", handleOutsideClick);
+
+    // Listen for language changes to update oval position
+    document.addEventListener("language-change", () => {
+      // Wait for text content to update
+      setTimeout(() => {
+        moveOvalToActiveLink(state.currentActiveSection, true);
+      }, 50);
+    });
+  }
+
+  /**
+   * Handle navigation link clicks
+   */
+  function handleNavClick(e: Event): void {
+    const sectionId = (e.currentTarget as HTMLAnchorElement).getAttribute(
+      "data-section"
+    );
+    if (!sectionId) return;
+
+    updateActiveLink(sectionId);
+    moveOvalToActiveLink(sectionId, true);
+    state.currentActiveSection = sectionId;
+  }
+
+  /**
+   * Handle window resize events
+   */
+  function handleResize(): void {
+    const currentSection = getCurrentSection();
+    if (currentSection) {
+      moveOvalToActiveLink(currentSection, false);
+    }
+  }
+
+  /**
+   * Update active section based on scroll position
+   */
+  function updateActiveSection(): void {
+    if (state.entryAnimationInProgress) return;
+
+    const newSection = getCurrentSection();
+
+    if (newSection !== state.currentActiveSection) {
+      updateActiveLink(newSection);
+      moveOvalToActiveLink(newSection);
+      handleScrollSquish();
+      state.currentActiveSection = newSection;
+    }
+  }
+
+  /**
+   * Initialize oval animation with full-width entry effect
+   */
+  function initializeOvalAnimation(): void {
+    const initialActiveSection =
+      getCurrentSectionFromURL() || getCurrentSection();
+    state.currentActiveSection = initialActiveSection;
+
+    // Show navigation
+    const headerNav = getElement(SELECTORS.headerNav);
+    headerNav?.classList.remove(CSS_CLASSES.navLinksHidden);
+
+    updateActiveLink(initialActiveSection);
+    initializeOvalWithFullWidthAnimation();
+  }
+
+  /**
+   * Create full-width oval animation on page load
+   */
+  function initializeOvalWithFullWidthAnimation(): void {
+    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
+    const nav = getElement<HTMLElement>(".header-nav");
+
+    if (!ovalIndicator || !nav) return;
+
+    const navItems = nav.querySelectorAll("li");
+    if (navItems.length > 0) {
+      const firstItem = navItems[0];
+      const lastItem = navItems[navItems.length - 1];
+      const navRect = nav.getBoundingClientRect();
+      const firstRect = firstItem.getBoundingClientRect();
+      const lastRect = lastItem.getBoundingClientRect();
+
+      const startPosition = firstRect.left - navRect.left;
+      const endPosition = lastRect.right - navRect.left;
+      const calculatedWidth = endPosition - startPosition;
+
+      // Set initial full-width state
+      ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalFullWidth}`;
+      ovalIndicator.style.left = `${startPosition}px`;
+      ovalIndicator.style.width = `${calculatedWidth}px`;
+      ovalIndicator.style.opacity = "1";
+    } else {
+      // Fallback for empty navigation
+      ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalFullWidth}`;
+      ovalIndicator.style.opacity = "1";
+    }
+
+    setTimeout(startFullWidthAnimation, TIMINGS.entryDelay);
+  }
+
+  /**
+   * Animate from full-width to focused on active section
+   */
+  function startFullWidthAnimation(): void {
+    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
+    const nav = getElement<HTMLElement>(".header-nav");
+
+    if (!ovalIndicator || !nav) return;
+
+    const targetLink = getElement<HTMLElement>(
+      `a[data-section="${state.currentActiveSection}"]`
+    );
+    if (!targetLink) return;
+
+    const position = calculateOvalPosition(targetLink, nav);
+
+    // Start contraction animation
+    ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalContracting}`;
+    ovalIndicator.style.left = `${position.left}px`;
+    ovalIndicator.style.width = `${position.width}px`;
+
+    setTimeout(() => {
+      ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.active}`;
+      state.entryAnimationInProgress = false;
+    }, TIMINGS.contractionEnd);
+  }
+
+  /**
+   * Main initialization function
+   */
+  function initialize(): void {
+    setupEventListeners();
+    initializeOvalAnimation();
+  }
+
+  // ========================================
+  // APPLICATION ENTRY POINT
+  // ========================================
+
+  // Initialize when DOM is ready
+  document.addEventListener("DOMContentLoaded", initialize);
+
+  // Legacy global function support for backwards compatibility
+  (window as any).toggleMobileMenu = toggleMobileMenu;
+  (window as any).closeMobileMenu = closeMobileMenu;
 </script>
 
 <script src="../../i18n/translator.ts"></script>
