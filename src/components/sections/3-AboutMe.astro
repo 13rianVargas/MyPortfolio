@@ -1,14 +1,564 @@
 ---
+import profilePhoto from "../../assets/BrianPhoto.png";
 const { t } = Astro.props;
+
+const startYear = 2023;
+const currentYear = new Date().getFullYear();
+const yearsOfExperience = currentYear - startYear;
 ---
 
-<section class="aboutme-center-box" id="aboutme">
-  <div class="aboutme-title">
-    <h2 data-translation-key="aboutme.title">{t('aboutme.title')}</h2>
-  </div>
-  <div class="aboutme-description">
-    <p data-translation-key="aboutme.description">{t('aboutme.description')}</p>
+<section id="aboutme" class="about-section">
+  <div class="glass-container">
+    <div class="content-wrapper">
+      <!-- Profile Image Side -->
+      <div class="image-container">
+        <div class="image-frame">
+          <img src={profilePhoto.src} alt="Brian Vargas" />
+          <div class="image-overlay"></div>
+        </div>
+      </div>
+
+      <!-- Text Content Side -->
+      <div class="text-container">
+        <h2 class="section-title" data-translation-key="aboutme.title">
+          {t("aboutme.title")}
+        </h2>
+
+        <div class="description-box">
+          <p
+            class="description-text"
+            data-translation-key="aboutme.description"
+          >
+            {t("aboutme.description")}
+          </p>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-item">
+            <span class="stat-number">{yearsOfExperience}+</span>
+            <span class="stat-label" data-translation-key="aboutme.experience"
+              >{t("aboutme.experience")}</span
+            >
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">10+</span>
+            <span class="stat-label" data-translation-key="aboutme.technologies"
+              >{t("aboutme.technologies")}</span
+            >
+          </div>
+        </div>
+
+        <div class="skills-container">
+          <h3 class="skills-title" data-translation-key="aboutme.softSkills">
+            {t("aboutme.softSkills")}
+          </h3>
+          <div class="skills-list">
+            <span
+              class="skill-tag"
+              data-translation-key="aboutme.skill.teamwork"
+              >{t("aboutme.skill.teamwork")}</span
+            >
+            <span
+              class="skill-tag"
+              data-translation-key="aboutme.skill.problemSolving"
+              >{t("aboutme.skill.problemSolving")}</span
+            >
+            <span
+              class="skill-tag"
+              data-translation-key="aboutme.skill.communication"
+              >{t("aboutme.skill.communication")}</span
+            >
+            <span
+              class="skill-tag"
+              data-translation-key="aboutme.skill.adaptability"
+              >{t("aboutme.skill.adaptability")}</span
+            >
+          </div>
+        </div>
+
+        <div class="action-container">
+          <div class="cv-wrapper" id="cv-wrapper">
+            <button class="download-btn" id="cv-main-btn">
+              <span data-translation-key="aboutme.downloadCV"
+                >{t("aboutme.downloadCV")}</span
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                ></path><polyline points="7 10 12 15 17 10"></polyline><line
+                  x1="12"
+                  y1="15"
+                  x2="12"
+                  y2="3"></line></svg
+              >
+            </button>
+            <div class="cv-options">
+              <a href="/Brian_Vargas_CV_ES.pdf" class="cv-option" download>ES</a
+              >
+              <span class="separator">|</span>
+              <a href="/Brian_Vargas_CV_EN.pdf" class="cv-option" download>EN</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const wrapper = document.getElementById("cv-wrapper");
+
+    if (wrapper) {
+      wrapper.addEventListener("click", (e) => {
+        // Toggle expansion only if not clicking directly on a download link
+        if (!(e.target as HTMLElement).closest(".cv-option")) {
+          wrapper.classList.toggle("expanded");
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!wrapper.contains(e.target as Node)) {
+          wrapper.classList.remove("expanded");
+        }
+      });
+    }
+  });
+</script>
+
 <script src="../../i18n/translator.ts"></script>
+
+<style>
+  .about-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .glass-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 30px;
+    padding: 4rem;
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .glass-container:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Shine effect */
+  .glass-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
+    transition: 0.5s;
+    pointer-events: none;
+  }
+
+  .glass-container:hover::before {
+    left: 100%;
+  }
+
+  .content-wrapper {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  /* Image Styles */
+  .image-container {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .image-frame {
+    width: 320px;
+    height: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transform: rotate(-3deg);
+    transition: transform 0.3s ease;
+  }
+
+  .image-frame:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  .image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(20%);
+    transition:
+      filter 0.3s ease,
+      transform 0.3s ease;
+    transform: scale(1.35);
+  }
+
+  .image-frame:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.4);
+  }
+
+  /* Text Styles */
+  .text-container {
+    flex: 1;
+  }
+
+  .section-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--color-text-primary);
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 2px;
+  }
+
+  .description-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    text-align: justify;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .glass-container {
+      padding: 3rem;
+    }
+
+    .content-wrapper {
+      flex-direction: column;
+      text-align: center;
+      gap: 2.5rem;
+    }
+
+    .image-frame {
+      width: 280px;
+      height: 380px;
+      border-radius: 20px;
+      transform: rotate(-2deg);
+      margin: 0 auto;
+    }
+
+    .image-frame:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    .section-title {
+      font-size: 2.8rem;
+    }
+
+    .section-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .description-text {
+      text-align: center;
+    }
+
+    .stats-container {
+      justify-content: center;
+    }
+
+    .action-container {
+      justify-content: center;
+    }
+
+    .skills-list {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-section {
+      padding: 1rem;
+    }
+
+    .glass-container {
+      padding: 2rem;
+    }
+
+    .image-frame {
+      width: 240px;
+      height: 320px;
+    }
+
+    .stats-container {
+      gap: 1.5rem;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+    }
+  }
+
+  /* Stats */
+  .stats-container {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Skills */
+  .skills-container {
+    margin-bottom: 2.5rem;
+  }
+
+  .skills-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .skill-tag {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    transition: all 0.3s ease;
+  }
+
+  .skill-tag:hover {
+    background: var(--color-accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Action Button */
+  .action-container {
+    margin-top: 2rem;
+    height: 50px;
+    display: flex;
+    align-items: center;
+  }
+
+  .cv-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent);
+    border-radius: 30px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    height: 48px;
+    min-width: 200px;
+    cursor: pointer;
+  }
+
+  .cv-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .cv-wrapper.expanded {
+    min-width: 160px;
+    background: var(--color-accent);
+  }
+
+  @media (hover: hover) {
+    .cv-wrapper:hover {
+      min-width: 160px;
+      background: var(--color-accent);
+    }
+  }
+
+  .download-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0 2rem;
+    background: transparent;
+    color: white;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    white-space: nowrap;
+    transition:
+      opacity 0.2s ease 0.2s,
+      transform 0.2s ease 0.2s;
+  }
+
+  .cv-wrapper.expanded .download-btn {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    position: absolute;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  @media (hover: hover) {
+    .cv-wrapper:hover .download-btn {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+      position: absolute;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+  }
+
+  .cv-options {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    pointer-events: none;
+    width: 100%;
+  }
+
+  .cv-wrapper.expanded .cv-options {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition:
+      opacity 0.2s ease 0.2s,
+      transform 0.2s ease 0.2s;
+  }
+
+  @media (hover: hover) {
+    .cv-wrapper:hover .cv-options {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition:
+        opacity 0.2s ease 0.2s,
+        transform 0.2s ease 0.2s;
+    }
+  }
+
+  .cv-option {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    transition: transform 0.2s;
+  }
+
+  .cv-option:hover {
+    transform: scale(1.2);
+  }
+
+  .separator {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+  }
+
+  @media (max-width: 768px) {
+    .glass-container {
+      padding: 2rem;
+      border-radius: 20px;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+    }
+
+    .description-text {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .image-frame {
+      width: 240px;
+      height: 320px;
+    }
+
+    .glass-container {
+      padding: 1.5rem;
+    }
+  }
+</style>
