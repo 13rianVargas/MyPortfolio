@@ -61,13 +61,14 @@ function getNavUrl(sectionId: string): string {
     --header-blur: blur(8px) saturate(140%);
 
     /* Navigation indicator dimensions */
-    --nav-indicator-height: 28px;
-    --nav-indicator-border-radius: 14px;
-    --nav-link-padding: 0.75rem 1rem;
-    --nav-link-border-radius: 0.5rem;
+    --nav-indicator-height: 36px;
+    --nav-indicator-border-radius: 9999px;
+    --nav-link-padding: 0.5rem 1.25rem;
+    --nav-link-border-radius: 9999px;
 
     /* Mobile menu positioning */
-    --mobile-menu-top: calc(var(--header-margin-top) + 6rem);
+    /* 2.5rem (content) + 3rem (padding vertical) = 5.5rem */
+    --mobile-menu-top: calc(var(--header-margin-top) + 5.5rem);
 
     /* ========================================
      * COLOR PALETTE
@@ -87,10 +88,11 @@ function getNavUrl(sectionId: string): string {
     --transition-smooth: all 0.3s ease;
     --transition-menu: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --transition-menu-active: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --transition-oval: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-oval-recovery: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-    --transition-oval-crash: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --transition-oval-contract: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+
+    /* Bouncy, fluid movement */
+    --transition-indicator:
+      transform 0.5s cubic-bezier(0.2, 0.6, 0.2, 1.15),
+      width 0.5s cubic-bezier(0.2, 0.6, 0.2, 1.15), opacity 0.3s ease;
 
     --animation-duration-shine: 10s;
   }
@@ -227,7 +229,7 @@ function getNavUrl(sectionId: string): string {
   /* Unified styles for both desktop and mobile navigation links */
   .nav-link {
     color: var(--text-color);
-    transition: var(--transition-smooth);
+    transition: color 0.2s ease;
     padding: var(--nav-link-padding);
     border-radius: var(--nav-link-border-radius);
     display: flex;
@@ -236,19 +238,20 @@ function getNavUrl(sectionId: string): string {
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
+    position: relative;
+    z-index: 2; /* Above indicator */
   }
 
   .nav-link:hover {
     color: var(--amber-color);
-    background-color: var(--amber-bg);
+    /* No background on hover to avoid overlap with active indicator */
+    background: transparent;
   }
 
   /* Active navigation link styles */
   .nav-link-active {
     color: var(--amber-color) !important;
     font-weight: 600;
-    position: relative;
-    z-index: 1;
   }
 
   /* Hide initial server-side active states to prevent flash */
@@ -309,9 +312,10 @@ function getNavUrl(sectionId: string): string {
   }
 
   .mobile-menu .nav-link {
-    display: block;
-    width: 100%;
-    padding: 0.875rem 1rem;
+    display: inline-block;
+    width: auto;
+    min-width: 200px;
+    padding: 0.875rem 1.5rem;
     margin: 0.25rem 0;
     text-align: center;
     transform: translateY(10px);
@@ -329,7 +333,12 @@ function getNavUrl(sectionId: string): string {
   .mobile-menu .nav-link:hover,
   .mobile-menu .nav-link-active {
     color: var(--amber-color);
-    background-color: var(--amber-bg);
+    background: linear-gradient(
+      135deg,
+      rgba(251, 191, 36, 0.1),
+      rgba(251, 191, 36, 0.2)
+    );
+    border: 1px solid rgba(251, 191, 36, 0.3);
   }
 
   .mobile-menu .nav-link-active {
@@ -386,59 +395,32 @@ function getNavUrl(sectionId: string): string {
   .nav-oval-indicator {
     position: absolute;
     top: 50%;
-    left: 0;
-    min-width: 60px;
+    left: 0; /* Base position, moved via transform */
     height: var(--nav-indicator-height);
     background: linear-gradient(
       135deg,
-      rgba(251, 191, 36, 0.2),
-      rgba(251, 191, 36, 0.3)
+      rgba(251, 191, 36, 0.15),
+      rgba(251, 191, 36, 0.25)
     );
-    border: 2px solid rgba(251, 191, 36, 0.4);
+    border: 1px solid rgba(251, 191, 36, 0.3);
     border-radius: var(--nav-indicator-border-radius);
-    transform: translateY(-50%);
-    transition: var(--transition-oval);
+
+    /* Performance optimizations */
+    transform-origin: left center;
+    transform: translateY(-50%) translateX(0);
+    transition: var(--transition-indicator);
+    will-change: transform, width;
+
     pointer-events: none;
-    z-index: -1;
+    z-index: 1; /* Behind text but visible */
     opacity: 0;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(251, 191, 36, 0.1);
   }
 
   /* Oval indicator animation states */
   .nav-oval-indicator.active {
     opacity: 1;
-  }
-
-  .nav-oval-indicator.full-width,
-  .nav-oval-indicator.contracting {
-    height: var(--nav-indicator-height);
-    border-radius: var(--nav-indicator-border-radius);
-    transform: translateY(-50%);
-    opacity: 1;
-  }
-
-  .nav-oval-indicator.full-width {
-    transition: none;
-  }
-
-  .nav-oval-indicator.contracting {
-    transition: var(--transition-oval-contract);
-  }
-
-  .nav-oval-indicator.scrolling {
-    height: calc(var(--nav-indicator-height) / 2);
-    border-radius: 20px;
-    transition: all 0.2s ease-out;
-  }
-
-  .nav-oval-indicator.crashed {
-    height: calc(var(--nav-indicator-height) * 1.4);
-    border-radius: 10px;
-    transition: var(--transition-oval-crash);
-  }
-
-  .nav-oval-indicator.recovering {
-    transition: var(--transition-oval-recovery);
   }
 
   /* ========================================
@@ -454,6 +436,8 @@ function getNavUrl(sectionId: string): string {
       --header-border-radius: 20px;
       --header-padding: 0.75rem 0.5rem;
       --header-margin-top: 0.25rem;
+      /* 2.5rem + 1.5rem = 4rem */
+      --mobile-menu-top: calc(0.25rem + 4rem);
     }
     .header,
     .mobile-menu {
@@ -488,6 +472,8 @@ function getNavUrl(sectionId: string): string {
   @media (min-width: 481px) and (max-width: 768px) {
     :root {
       --header-border-radius: 25px;
+      /* 2.5rem + 2rem = 4.5rem */
+      --mobile-menu-top: calc(0.25rem + 4.5rem);
       --header-padding: 1rem 1rem;
       --header-margin-top: 0.25rem;
     }
@@ -507,11 +493,17 @@ function getNavUrl(sectionId: string): string {
   @media (min-width: 769px) and (max-width: 1024px) {
     :root {
       --header-border-radius: 40px;
+      /* 2.5rem + 2.5rem = 5rem */
+      --mobile-menu-top: calc(0.5rem + 5rem);
       --header-padding: 1.25rem 1.5rem;
       --header-margin-top: 0.5rem;
     }
-    .header {
+    .header,
+    .mobile-menu {
       width: calc(100vw - 1.5rem);
+    }
+    .header-nav {
+      display: none !important;
     }
   }
 
@@ -680,6 +672,7 @@ function getNavUrl(sectionId: string): string {
     lastScrollY: number;
     currentActiveSection: string;
     entryAnimationInProgress: boolean;
+    isClickScrolling: boolean;
   }
 
   // Application state
@@ -690,6 +683,7 @@ function getNavUrl(sectionId: string): string {
     lastScrollY: 0,
     currentActiveSection: "",
     entryAnimationInProgress: true,
+    isClickScrolling: false,
   };
 
   // ========================================
@@ -865,28 +859,19 @@ function getNavUrl(sectionId: string): string {
     const navRect = nav.getBoundingClientRect();
     const linkRect = activeLink.getBoundingClientRect();
 
-    return {
-      width: linkRect.width + 10,
-      left: linkRect.left - navRect.left - 5,
-    };
-  }
+    // Calculate relative position
+    const relativeLeft = linkRect.left - navRect.left;
 
-  /**
-   * Apply oval position and styling
-   */
-  function applyOvalPosition(
-    ovalIndicator: HTMLElement,
-    position: { width: number; left: number }
-  ): void {
-    ovalIndicator.style.width = `${position.width}px`;
-    ovalIndicator.style.left = `${position.left}px`;
-    ovalIndicator.classList.add(CSS_CLASSES.active);
+    return {
+      width: linkRect.width,
+      translateX: relativeLeft,
+    };
   }
 
   /**
    * Move oval indicator to the active navigation link
    */
-  function moveOvalToActiveLink(sectionId: string, forceMove = false): void {
+  function moveOvalToActiveLink(sectionId: string): void {
     const ovalIndicator = getElement(SELECTORS.ovalIndicator);
     const activeLink = getElement<HTMLElement>(
       `a[data-section="${sectionId}"]`
@@ -894,104 +879,15 @@ function getNavUrl(sectionId: string): string {
 
     if (!ovalIndicator || !activeLink) return;
 
-    // Don't move if crashed unless forced
-    if (!forceMove && ovalIndicator.classList.contains(CSS_CLASSES.ovalCrashed))
-      return;
-
     const nav = activeLink.closest(".header-nav") as HTMLElement;
     if (!nav) return;
 
     const position = calculateOvalPosition(activeLink, nav);
 
-    // Clear timeouts if forcing movement
-    if (forceMove) {
-      const classesToRemove = [
-        CSS_CLASSES.ovalScrolling,
-        CSS_CLASSES.ovalCrashed,
-        CSS_CLASSES.ovalRecovering,
-      ];
-      classesToRemove.forEach((className) =>
-        ovalIndicator.classList.remove(className)
-      );
-
-      clearTimeoutSafe(state.scrollTimeout);
-      clearTimeoutSafe(state.crashTimeout);
-      state.scrollTimeout = null;
-      state.crashTimeout = null;
-    }
-
-    applyOvalPosition(ovalIndicator, position);
-  }
-
-  /**
-   * Handle scroll-induced oval squishing animation
-   */
-  function handleScrollSquish(): void {
-    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-    if (!ovalIndicator) return;
-
-    const currentScrollY = window.scrollY;
-    const scrollDelta = Math.abs(currentScrollY - state.lastScrollY);
-
-    if (scrollDelta > SCROLL_THRESHOLD) {
-      ovalIndicator.classList.add(CSS_CLASSES.ovalScrolling);
-      ovalIndicator.classList.remove(
-        CSS_CLASSES.ovalCrashed,
-        CSS_CLASSES.ovalRecovering
-      );
-      state.isScrolling = true;
-      checkForCrash();
-    }
-
-    // Reset recovery timeout
-    clearTimeoutSafe(state.scrollTimeout);
-    state.scrollTimeout = window.setTimeout(recoverOval, TIMINGS.recovery);
-    state.lastScrollY = currentScrollY;
-  }
-
-  /**
-   * Check if oval indicator is near navigation edges (crash detection)
-   */
-  function checkForCrash(): void {
-    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-    const nav = getElement(SELECTORS.headerNavUl);
-
-    if (!ovalIndicator || !nav) return;
-
-    const ovalRect = ovalIndicator.getBoundingClientRect();
-    const navRect = nav.getBoundingClientRect();
-    const edgeThreshold = 20;
-
-    const nearEdge =
-      ovalRect.left <= navRect.left + edgeThreshold ||
-      ovalRect.right >= navRect.right - edgeThreshold;
-
-    if (nearEdge) {
-      ovalIndicator.classList.remove(CSS_CLASSES.ovalScrolling);
-      ovalIndicator.classList.add(CSS_CLASSES.ovalCrashed);
-
-      clearTimeoutSafe(state.crashTimeout);
-      state.crashTimeout = window.setTimeout(recoverOval, TIMINGS.crash);
-    }
-  }
-
-  /**
-   * Recover oval from scrolling or crashed state
-   */
-  function recoverOval(): void {
-    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-    if (!ovalIndicator) return;
-
-    ovalIndicator.classList.remove(
-      CSS_CLASSES.ovalScrolling,
-      CSS_CLASSES.ovalCrashed
-    );
-    ovalIndicator.classList.add(CSS_CLASSES.ovalRecovering);
-    state.isScrolling = false;
-
-    setTimeout(() => {
-      ovalIndicator.classList.remove(CSS_CLASSES.ovalRecovering);
-    }, TIMINGS.menuTransition);
+    // Apply transforms for high performance
+    ovalIndicator.style.width = `${position.width}px`;
+    ovalIndicator.style.transform = `translateY(-50%) translateX(${position.translateX}px)`;
+    ovalIndicator.classList.add(CSS_CLASSES.active);
   }
 
   // ========================================
@@ -1019,15 +915,34 @@ function getNavUrl(sectionId: string): string {
     });
 
     // Global event listeners
-    window.addEventListener("scroll", updateActiveSection);
+    // Throttled scroll listener for better performance
+    let scrollTick = false;
+    window.addEventListener("scroll", () => {
+      // If we are click-scrolling, maintain the lock until scroll stops
+      if (state.isClickScrolling) {
+        clearTimeoutSafe(state.scrollTimeout);
+        state.scrollTimeout = window.setTimeout(() => {
+          state.isClickScrolling = false;
+        }, 150); // Debounce release of lock
+        return;
+      }
+
+      if (!scrollTick) {
+        window.requestAnimationFrame(() => {
+          updateActiveSection();
+          scrollTick = false;
+        });
+        scrollTick = true;
+      }
+    });
+
     window.addEventListener("resize", handleResize);
     document.addEventListener("click", handleOutsideClick);
 
     // Listen for language changes to update oval position
     document.addEventListener("language-change", () => {
-      // Wait for text content to update
       setTimeout(() => {
-        moveOvalToActiveLink(state.currentActiveSection, true);
+        moveOvalToActiveLink(state.currentActiveSection);
       }, 50);
     });
   }
@@ -1040,18 +955,26 @@ function getNavUrl(sectionId: string): string {
     const sectionId = link.getAttribute("data-section");
     if (!sectionId) return;
 
-    // Prevent default anchor behavior to ensure smooth scroll
     e.preventDefault();
 
     const element = document.getElementById(sectionId);
     if (element) {
+      // Set flag to prevent scroll listener from interfering
+      state.isClickScrolling = true;
+      // Clear any existing timeout to prevent premature release
+      clearTimeoutSafe(state.scrollTimeout);
+
       element.scrollIntoView({ behavior: "smooth" });
-      // Update URL hash
       history.pushState(null, "", `#${sectionId}`);
+
+      // Fallback safety: release lock if no scroll events occur (e.g. already at target)
+      state.scrollTimeout = window.setTimeout(() => {
+        state.isClickScrolling = false;
+      }, 1000);
     }
 
     updateActiveLink(sectionId);
-    moveOvalToActiveLink(sectionId, true);
+    moveOvalToActiveLink(sectionId);
     state.currentActiveSection = sectionId;
   }
 
@@ -1061,7 +984,7 @@ function getNavUrl(sectionId: string): string {
   function handleResize(): void {
     const currentSection = getCurrentSection();
     if (currentSection) {
-      moveOvalToActiveLink(currentSection, false);
+      moveOvalToActiveLink(currentSection);
     }
   }
 
@@ -1069,20 +992,20 @@ function getNavUrl(sectionId: string): string {
    * Update active section based on scroll position
    */
   function updateActiveSection(): void {
-    if (state.entryAnimationInProgress) return;
+    // Skip update if we are scrolling due to a click
+    if (state.isClickScrolling) return;
 
     const newSection = getCurrentSection();
 
     if (newSection !== state.currentActiveSection) {
       updateActiveLink(newSection);
       moveOvalToActiveLink(newSection);
-      handleScrollSquish();
       state.currentActiveSection = newSection;
     }
   }
 
   /**
-   * Initialize oval animation with full-width entry effect
+   * Initialize oval animation
    */
   function initializeOvalAnimation(): void {
     const initialActiveSection =
@@ -1091,72 +1014,23 @@ function getNavUrl(sectionId: string): string {
 
     // Show navigation
     const headerNav = getElement(SELECTORS.headerNav);
-    headerNav?.classList.remove(CSS_CLASSES.navLinksHidden);
-
-    updateActiveLink(initialActiveSection);
-    initializeOvalWithFullWidthAnimation();
-  }
-
-  /**
-   * Create full-width oval animation on page load
-   */
-  function initializeOvalWithFullWidthAnimation(): void {
-    const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-    const nav = getElement<HTMLElement>(".header-nav");
-
-    if (!ovalIndicator || !nav) return;
-
-    const navItems = nav.querySelectorAll("li");
-    if (navItems.length > 0) {
-      const firstItem = navItems[0];
-      const lastItem = navItems[navItems.length - 1];
-      const navRect = nav.getBoundingClientRect();
-      const firstRect = firstItem.getBoundingClientRect();
-      const lastRect = lastItem.getBoundingClientRect();
-
-      const startPosition = firstRect.left - navRect.left;
-      const endPosition = lastRect.right - navRect.left;
-      const calculatedWidth = endPosition - startPosition;
-
-      // Set initial full-width state
-      ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalFullWidth}`;
-      ovalIndicator.style.left = `${startPosition}px`;
-      ovalIndicator.style.width = `${calculatedWidth}px`;
-      ovalIndicator.style.opacity = "1";
-    } else {
-      // Fallback for empty navigation
-      ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalFullWidth}`;
-      ovalIndicator.style.opacity = "1";
+    if (headerNav) {
+      headerNav.classList.remove(CSS_CLASSES.navLinksHidden);
+      headerNav.style.display = ""; // Ensure inline display: none is removed
     }
 
-    setTimeout(startFullWidthAnimation, TIMINGS.entryDelay);
-  }
+    updateActiveLink(initialActiveSection);
 
-  /**
-   * Animate from full-width to focused on active section
-   */
-  function startFullWidthAnimation(): void {
+    // Initial positioning without animation
     const ovalIndicator = getElement(SELECTORS.ovalIndicator);
-    const nav = getElement<HTMLElement>(".header-nav");
-
-    if (!ovalIndicator || !nav) return;
-
-    const targetLink = getElement<HTMLElement>(
-      `a[data-section="${state.currentActiveSection}"]`
-    );
-    if (!targetLink) return;
-
-    const position = calculateOvalPosition(targetLink, nav);
-
-    // Start contraction animation
-    ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.ovalContracting}`;
-    ovalIndicator.style.left = `${position.left}px`;
-    ovalIndicator.style.width = `${position.width}px`;
-
-    setTimeout(() => {
-      ovalIndicator.className = `nav-oval-indicator ${CSS_CLASSES.active}`;
-      state.entryAnimationInProgress = false;
-    }, TIMINGS.contractionEnd);
+    if (ovalIndicator) {
+      ovalIndicator.style.transition = "none";
+      moveOvalToActiveLink(initialActiveSection);
+      // Force reflow
+      ovalIndicator.offsetHeight;
+      // Restore transition
+      ovalIndicator.style.transition = "";
+    }
   }
 
   /**
