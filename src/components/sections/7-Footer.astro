@@ -1,9 +1,123 @@
 ---
+import Logo from "../tools/Logo.astro";
 const { t } = Astro.props;
+const currentYear = new Date().getFullYear();
 ---
 
-<footer>
-    <span data-translation-key="layout.footer">{t("layout.footer")}</span> — {new Date().getFullYear()}
+<footer class="footer-section">
+  <div class="glass-footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <Logo />
+      </div>
+
+      <div class="copyright">
+        <span data-translation-key="layout.footer">{t("layout.footer")}</span>
+        <span class="separator">•</span>
+        <span class="year">{currentYear}</span>
+      </div>
+
+      <div class="footer-links">
+        <a href="#home" class="footer-link" aria-label="Back to top">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg
+          >
+        </a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script src="../../i18n/translator.ts"></script>
+
+<style>
+  .footer-section {
+    padding: 2rem;
+    position: relative;
+    z-index: 10;
+    margin-top: auto;
+  }
+
+  .glass-footer {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    transform: scale(0.8);
+  }
+
+  .copyright {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .separator {
+    color: var(--color-accent);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-link {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--color-text-primary);
+    transition: all 0.3s ease;
+  }
+
+  .footer-link:hover {
+    background: var(--color-accent);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .footer-content {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .copyright {
+      order: 2;
+    }
+
+    .footer-links {
+      order: 1;
+    }
+  }
+</style>

@@ -1036,10 +1036,19 @@ function getNavUrl(sectionId: string): string {
    * Handle navigation link clicks
    */
   function handleNavClick(e: Event): void {
-    const sectionId = (e.currentTarget as HTMLAnchorElement).getAttribute(
-      "data-section"
-    );
+    const link = e.currentTarget as HTMLAnchorElement;
+    const sectionId = link.getAttribute("data-section");
     if (!sectionId) return;
+
+    // Prevent default anchor behavior to ensure smooth scroll
+    e.preventDefault();
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      // Update URL hash
+      history.pushState(null, "", `#${sectionId}`);
+    }
 
     updateActiveLink(sectionId);
     moveOvalToActiveLink(sectionId, true);
