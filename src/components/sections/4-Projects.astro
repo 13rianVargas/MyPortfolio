@@ -15,17 +15,64 @@ const REPOSITORIES = [
   {
     slug: "13rianVargas/SpemTraductor",
   },
-  {
-    slug: "13rianVargas/MyPortfolio",
-  },
+  // {
+  //   slug: "13rianVargas/MyPortfolio",
+  // },
 ];
 
-function getTechIconFilename(tech) {
+// Order of technologies for sorting
+const TECH_PRIORITY = [
+  "HTML",
+  "HTML5",
+  "CSS",
+  "CSS3",
+  "JavaScript",
+  "JS",
+  "TypeScript",
+  "TS",
+  "Astro",
+  "Angular",
+  "Tailwind CSS",
+  "Tailwind",
+  "Java",
+  "Spring Boot",
+  "Spring",
+  "Node.js",
+  "Node",
+  "Python",
+  "REST APIs Design",
+  "PostgreSQL",
+  "Postgres",
+  "MySQL",
+  "MongoDB",
+  "MariaDB",
+  "Oracle Database (PL/SQL)",
+  "Oracle",
+  "PL/SQL",
+  "Git",
+  "GitHub",
+  "Docker",
+  "Linux",
+  "CI/CD (GitHub Actions)",
+  "GitHub Actions",
+  "AWS (EC2, S3, RDS)",
+  "AWS",
+  "Google Cloud (Cloud Run, Cloud SQL)",
+  "Google Cloud",
+  "GCP",
+  "Cisco Networking Academy – Networking & Cybersecurity",
+  "Cisco",
+  "npm",
+  "pnpm",
+  "Bun",
+  "Postman",
+  "GitKraken",
+];
+
+function getTechIconFilename(tech: string) {
   const key = tech.toLowerCase();
 
   // Map common variations to standard filenames
-  if (key.includes("react")) return "react.svg";
-  if (key.includes("vue")) return "vue.svg";
   if (key.includes("astro")) return "astro.svg";
   if (key.includes("python")) return "python.svg";
   if (key.includes("java") && !key.includes("script")) return "java.svg";
@@ -38,6 +85,7 @@ function getTechIconFilename(tech) {
   if (key.includes("type") && key.includes("script")) return "typescript.svg";
   if (key.includes("java") && key.includes("script")) return "javascript.svg";
   if (key.includes("html")) return "html.svg";
+  if (key.includes("scss") || key.includes("sass")) return "scss.svg";
   if (key.includes("css")) return "css.svg";
   if (key.includes("angular")) return "angular.svg";
   if (key.includes("docker")) return "docker.svg";
@@ -45,16 +93,17 @@ function getTechIconFilename(tech) {
   if (key.includes("github")) return "../github.svg";
   if (key.includes("git")) return "git.svg";
   if (key.includes("mysql")) return "mysql.svg";
+  if (key.includes("spring")) return "spring.svg";
 
   // Default: use the tech name as filename (e.g. "rust" -> "rust.svg")
   return `${key.replace(/[^a-z0-9]/g, "")}.svg`;
 }
 
-async function fetchProjectData(repoConfig) {
+async function fetchProjectData(repoConfig: any) {
   try {
     if (!repoConfig.slug) return repoConfig;
 
-    const headers = {
+    const headers: Record<string, string> = {
       Accept: "application/vnd.github.v3+json",
     };
 
@@ -85,7 +134,7 @@ async function fetchProjectData(repoConfig) {
     const data = await response.json();
 
     // Fetch languages
-    let languages = [];
+    let languages: string[] = [];
     try {
       const langResponse = await fetch(data.languages_url, { headers });
       if (langResponse.ok) {
@@ -118,22 +167,34 @@ async function fetchProjectData(repoConfig) {
 
     // 1. Java -> Add Spring
     const hasJava = techStack.some(
-      (t) =>
+      (t: string) =>
         t.toLowerCase().includes("java") && !t.toLowerCase().includes("script")
     );
     if (hasJava) {
-      const hasSpring = techStack.some((t) =>
+      const hasSpring = techStack.some((t: string) =>
         t.toLowerCase().includes("spring")
       );
       if (!hasSpring) {
-        techStack.push("Spring");
+        techStack.push("Spring Boot");
       }
     }
 
     // 2. PLPGSQL -> PostgreSQL
-    techStack = techStack.map((t) => {
+    techStack = techStack.map((t: string) => {
       if (t.toUpperCase() === "PLPGSQL") return "PostgreSQL";
+      if (t.toLowerCase() === "spring") return "Spring Boot";
       return t;
+    });
+
+    // Sort tech stack based on priority
+    techStack.sort((a: string, b: string) => {
+      const getPriority = (tech: string) => {
+        const index = TECH_PRIORITY.findIndex(
+          (t) => t.toLowerCase() === tech.toLowerCase()
+        );
+        return index === -1 ? 999 : index;
+      };
+      return getPriority(a) - getPriority(b);
     });
 
     return {
@@ -169,7 +230,7 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
 
     <div class="projects-grid">
       {
-        projects.map((project) => (
+        projects.map((project: any) => (
           <div class="project-card">
             <div class="card-image">
               {project.image ? (
@@ -227,10 +288,10 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
                 <div class="tech-stack">
                   {project.tech
                     .filter(
-                      (tech) =>
+                      (tech: string) =>
                         !["shell", "powershell"].includes(tech.toLowerCase())
                     )
-                    .map((tech) => (
+                    .map((tech: string) => (
                       <span class="tech-badge">
                         <img
                           src={`/icons/tech/${getTechIconFilename(tech)}`}
@@ -659,14 +720,14 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
   }
 
   .action-btn.demo.no-demo {
-    background: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
     cursor: not-allowed;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    border: 1px solid rgba(107, 114, 128, 0.3);
   }
 
   .action-btn.demo.no-demo:hover {
-    background: rgba(239, 68, 68, 0.3);
+    background: rgba(107, 114, 128, 0.3);
   }
 
   #toast {
