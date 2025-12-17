@@ -1,16 +1,708 @@
 ---
 const { t } = Astro.props;
+
+// Configuration for projects to display
+const REPOSITORIES = [
+  {
+    slug: "K-Forge/Tienda-K",
+  },
+  {
+    slug: "K-Forge/K-APP",
+  },
+  {
+    slug: "K-Forge/Gretta",
+  },
+  {
+    slug: "13rianVargas/SpemTraductor",
+  },
+  {
+    slug: "13rianVargas/MyPortfolio",
+  },
+];
+
+function getTechIconFilename(tech) {
+  const key = tech.toLowerCase();
+
+  // Map common variations to standard filenames
+  if (key.includes("react")) return "react.svg";
+  if (key.includes("vue")) return "vue.svg";
+  if (key.includes("astro")) return "astro.svg";
+  if (key.includes("python")) return "python.svg";
+  if (key.includes("java") && !key.includes("script")) return "java.svg";
+  if (
+    key.includes("plpgsql") ||
+    key.includes("postgres") ||
+    key.includes("sql")
+  )
+    return "postgresql.svg";
+  if (key.includes("type") && key.includes("script")) return "typescript.svg";
+  if (key.includes("java") && key.includes("script")) return "javascript.svg";
+  if (key.includes("html")) return "html.svg";
+  if (key.includes("css")) return "css.svg";
+  if (key.includes("angular")) return "angular.svg";
+  if (key.includes("docker")) return "docker.svg";
+  if (key.includes("gitkraken")) return "gitkraken.svg";
+  if (key.includes("github")) return "../github.svg";
+  if (key.includes("git")) return "git.svg";
+  if (key.includes("mysql")) return "mysql.svg";
+
+  // Default: use the tech name as filename (e.g. "rust" -> "rust.svg")
+  return `${key.replace(/[^a-z0-9]/g, "")}.svg`;
+}
+
+async function fetchProjectData(repoConfig) {
+  try {
+    if (!repoConfig.slug) return repoConfig;
+
+    const headers = {
+      Accept: "application/vnd.github.v3+json",
+    };
+
+    const token = import.meta.env.GITHUB_TOKEN;
+    if (token) {
+      headers["Authorization"] = `token ${token}`;
+    }
+
+    const response = await fetch(
+      `https://api.github.com/repos/${repoConfig.slug}`,
+      { headers }
+    );
+
+    if (!response.ok) {
+      console.error(
+        `Failed to fetch data for ${repoConfig.slug}: ${response.statusText}`
+      );
+      return {
+        title: repoConfig.slug.split("/")[1],
+        description: "Project details could not be loaded.",
+        tech: [],
+        link: null,
+        github: "#",
+        ...repoConfig,
+      };
+    }
+
+    const data = await response.json();
+
+    // Fetch languages
+    let languages = [];
+    try {
+      const langResponse = await fetch(data.languages_url, { headers });
+      if (langResponse.ok) {
+        const langData = await langResponse.json();
+        languages = Object.keys(langData);
+      }
+    } catch (e) {
+      console.warn(`Could not fetch languages for ${repoConfig.slug}`);
+    }
+
+    // Check if a cover image exists in the repo
+    let imageUrl = repoConfig.image;
+    if (!imageUrl) {
+      const potentialImage = `https://raw.githubusercontent.com/${repoConfig.slug}/${data.default_branch}/portfolio-cover.png`;
+      try {
+        const imgCheck = await fetch(potentialImage, { method: "HEAD" });
+        if (imgCheck.ok) {
+          imageUrl = potentialImage;
+        }
+      } catch (e) {
+        console.warn(`Could not check image for ${repoConfig.slug}`);
+      }
+    }
+
+    // Process Tech Stack
+    let techStack =
+      repoConfig.tech ||
+      (languages.length > 0 ? languages : data.topics) ||
+      [data.language].filter(Boolean);
+
+    // 1. Java -> Add Spring
+    const hasJava = techStack.some(
+      (t) =>
+        t.toLowerCase().includes("java") && !t.toLowerCase().includes("script")
+    );
+    if (hasJava) {
+      const hasSpring = techStack.some((t) =>
+        t.toLowerCase().includes("spring")
+      );
+      if (!hasSpring) {
+        techStack.push("Spring");
+      }
+    }
+
+    // 2. PLPGSQL -> PostgreSQL
+    techStack = techStack.map((t) => {
+      if (t.toUpperCase() === "PLPGSQL") return "PostgreSQL";
+      return t;
+    });
+
+    return {
+      title: repoConfig.title || data.name,
+      description: repoConfig.description || data.description,
+      tech: techStack,
+      link: data.homepage, // Only if homepage is set
+      github: data.html_url,
+      image: imageUrl,
+      stars: data.stargazers_count,
+      forks: data.forks_count,
+      ...repoConfig,
+    };
+  } catch (error) {
+    console.error(`Error fetching ${repoConfig.slug}:`, error);
+    return repoConfig;
+  }
+}
+
+const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
 ---
 
-<section class="projects-center-box" id="projects">
-  <div class="projects-title">
-    <h2 data-translation-key="projects.title">{t('projects.title')}</h2>
+<section id="projects" class="projects-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-translation-key="projects.title">
+        {t("projects.title")}
+      </h2>
+      <p class="section-subtitle" data-translation-key="projects.description">
+        {t("projects.description")}
+      </p>
+    </div>
+
+    <div class="projects-grid">
+      {
+        projects.map((project) => (
+          <div class="project-card">
+            <div class="card-image">
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  class="project-img"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="fun-placeholder ufo-scene">
+                  <div class="ufo-container">
+                    <div class="ufo-ship">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M2 12h20" />
+                        <path d="M7 12a5 5 0 0 1 10 0" />
+                        <path d="M4 12c0 3 2 5 8 5s8-2 8-5" />
+                        <circle cx="12" cy="12" r="1" fill="currentColor" />
+                      </svg>
+                    </div>
+                    <div class="beam-container">
+                      <div class="beam" />
+                    </div>
+                  </div>
+                  <span
+                    class="placeholder-text"
+                    data-translation-key="projects.imageAbducted"
+                  >
+                    {t("projects.imageAbducted")}
+                  </span>
+                </div>
+              )}
+              <div class="overlay" />
+            </div>
+
+            <div class="card-content">
+              <h3 class="project-title">{project.title}</h3>
+              <div class="card-body">
+                <p
+                  class="project-description"
+                  data-translation-key={`projects.repo.${project.slug.split("/")[1].toLowerCase()}`}
+                >
+                  {t(
+                    `projects.repo.${project.slug.split("/")[1].toLowerCase()}`
+                  )}
+                </p>
+
+                <div class="tech-stack">
+                  {project.tech
+                    .filter(
+                      (tech) =>
+                        !["shell", "powershell"].includes(tech.toLowerCase())
+                    )
+                    .map((tech) => (
+                      <span class="tech-badge">
+                        <img
+                          src={`/icons/tech/${getTechIconFilename(tech)}`}
+                          alt={tech}
+                          class="tech-icon"
+                          width="40"
+                          height="40"
+                          loading="lazy"
+                          onerror="this.style.display='none'"
+                        />
+                        {tech}
+                      </span>
+                    ))}
+                </div>
+              </div>
+
+              <div class="card-actions">
+                <a
+                  href={project.link || "#"}
+                  target={project.link ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  class={`action-btn demo ${!project.link ? "no-demo" : ""}`}
+                  onclick={
+                    !project.link ? "event.preventDefault(); showToast();" : ""
+                  }
+                >
+                  <span data-translation-key="projects.liveDemo">
+                    {t("projects.liveDemo")}
+                  </span>
+                  {project.link ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                    </svg>
+                  )}
+                </a>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="action-btn github"
+                >
+                  <span data-translation-key="projects.code">
+                    {t("projects.code")}
+                  </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <div id="toast" data-translation-key="projects.liveDemoUnavailable">
+      {t("projects.liveDemoUnavailable")}
+    </div>
   </div>
-  <div class="projects-description">
-    <p data-translation-key="projects.description">{t('projects.description')}</p>
-  </div>
-  <!-- Agregar la lista de proyectos -->
 </section>
+
+<script is:inline>
+  function showToast() {
+    const toast = document.getElementById("toast");
+    toast.className = "show";
+    setTimeout(function () {
+      toast.className = toast.className.replace("show", "");
+    }, 3000);
+  }
+</script>
 
 <script src="../../i18n/translator.ts"></script>
 
+<style>
+  .projects-section {
+    min-height: 100vh;
+    padding: 6rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    display: inline-block;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 2px;
+  }
+
+  .section-subtitle {
+    font-size: 1.2rem;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 2rem auto;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
+    justify-content: center;
+    gap: 2.5rem;
+  }
+
+  .project-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    overflow: hidden;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-image {
+    height: 200px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .project-card:hover .project-img {
+    transform: scale(1.1);
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+  }
+
+  .fun-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: linear-gradient(to bottom, #0f172a, #334155);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ufo-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: hover 3s ease-in-out infinite;
+  }
+
+  .ufo-ship {
+    width: 80px;
+    height: 48px;
+    color: #fbbf24;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ufo-ship svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+  }
+
+  .beam-container {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 100px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .beam {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(251, 191, 36, 0.3),
+      transparent
+    );
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    animation: pulse-beam 2s infinite alternate;
+  }
+
+  .placeholder-text {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: #fef3c7;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: glitch 1.5s infinite;
+    z-index: 2;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes hover {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes pulse-beam {
+    0% {
+      opacity: 0.3;
+      transform: scaleY(0.9);
+    }
+    100% {
+      opacity: 0.7;
+      transform: scaleY(1.1);
+    }
+  }
+
+  @keyframes glitch {
+    0%,
+    90%,
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    92% {
+      opacity: 0.8;
+      transform: translateX(2px);
+    }
+    94% {
+      opacity: 1;
+      transform: translateX(-2px);
+    }
+    96% {
+      opacity: 0.5;
+      transform: translateX(0);
+    }
+  }
+
+  .project-card:hover .overlay {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  .card-content {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 1.5rem;
+  }
+
+  .project-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--color-text-primary);
+  }
+
+  .project-description {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tech-badge {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--color-text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    min-width: 60px;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .tech-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .tech-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .action-btn.demo {
+    background: var(--color-accent);
+    color: white;
+  }
+
+  .action-btn.demo:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .action-btn.github {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+  }
+
+  .action-btn.github:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-text-primary);
+  }
+
+  .action-btn.demo.no-demo {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    cursor: not-allowed;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .action-btn.demo.no-demo:hover {
+    background: rgba(239, 68, 68, 0.3);
+  }
+
+  #toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 17px;
+    opacity: 0;
+    transition:
+      opacity 0.3s,
+      bottom 0.3s;
+  }
+
+  #toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+    }
+  }
+</style>
