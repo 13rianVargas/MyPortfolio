@@ -34,7 +34,7 @@
     const target = e.target;
     
     // Lista de selectores de elementos interactivos
-    const interactiveSelectors = 'button, a, input, textarea, select, [role="button"], .business-card, .card-container, .card-front, .card-back, .flip-hint, nav, header, footer, .scene, .profile-photo, img, svg, path, .glass-container, .project-card';
+    const interactiveSelectors = 'button, a, input, textarea, select, [role="button"], .business-card, .card-container, .card-front, .card-back, .flip-hint, nav, header, footer, .scene, .profile-photo, img, svg, path, .glass-container, .project-card, .dock';
     
     // Verificar si el click fue en un elemento interactivo
     if (target.closest && target.closest(interactiveSelectors)) {
