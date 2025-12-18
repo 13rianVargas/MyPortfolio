@@ -65,8 +65,9 @@
     color: var(--color-text-primary);
     transition: color 0.3s ease;
     min-height: 100vh;
-    min-width: 321px;
+    min-width: 320px;
     position: relative;
+    overflow-x: hidden;
   }
   
   * {

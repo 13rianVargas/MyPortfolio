@@ -99,6 +99,23 @@ const currentYear = new Date().getFullYear();
     transition: all 0.3s ease;
   }
 
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    
+    .copyright {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .separator {
+      display: none;
+    }
+  }
+
   .footer-link:hover {
     background: var(--color-accent);
     color: white;
