@@ -144,10 +144,11 @@ const yearsOfExperience = currentYear - startYear;
 <style>
   .about-section {
     min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: clamp(1rem, 4vw, 2rem);
     position: relative;
     z-index: 1;
   }
@@ -157,9 +158,9 @@ const yearsOfExperience = currentYear - startYear;
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    border-radius: 30px;
-    padding: 4rem;
-    max-width: 1100px;
+    border-radius: clamp(16px, 3vw, 30px);
+    padding: clamp(1.5rem, 5vw, 4rem);
+    max-width: min(100%, 1100px);
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -196,20 +197,22 @@ const yearsOfExperience = currentYear - startYear;
 
   .content-wrapper {
     display: flex;
-    gap: 4rem;
+    gap: clamp(1.5rem, 5vw, 4rem);
     align-items: center;
+    flex-wrap: wrap;
   }
 
   /* Image Styles */
   .image-container {
-    flex-shrink: 0;
+    flex: 0 1 clamp(200px, 30vw, 320px);
     position: relative;
   }
 
   .image-frame {
-    width: 320px;
-    height: 420px;
-    border-radius: 20px;
+    width: 100%;
+    aspect-ratio: 3/4;
+    max-width: 320px;
+    border-radius: clamp(12px, 2vw, 20px);
     overflow: hidden;
     border: 1px solid var(--glass-border);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -240,13 +243,14 @@ const yearsOfExperience = currentYear - startYear;
 
   /* Text Styles */
   .text-container {
-    flex: 1;
+    flex: 1 1 300px;
+    min-width: 0;
   }
 
   .section-title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 800;
-    margin-bottom: 2rem;
+    margin-bottom: clamp(1rem, 3vw, 2rem);
     color: var(--color-text-primary);
     position: relative;
     display: inline-block;
@@ -257,98 +261,26 @@ const yearsOfExperience = currentYear - startYear;
     position: absolute;
     bottom: -10px;
     left: 0;
-    width: 60px;
+    width: clamp(40px, 8vw, 60px);
     height: 4px;
     background: var(--color-accent);
     border-radius: 2px;
   }
 
   .description-text {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     line-height: 1.5;
     color: var(--color-text-secondary);
     text-align: justify;
   }
 
-  /* Responsive Design */
-  @media (max-width: 1024px) {
-    .glass-container {
-      padding: 3rem;
-    }
-
-    .content-wrapper {
-      flex-direction: column;
-      text-align: center;
-      gap: 2.5rem;
-    }
-
-    .image-frame {
-      width: 280px;
-      height: 380px;
-      border-radius: 20px;
-      transform: rotate(-2deg);
-      margin: 0 auto;
-    }
-
-    .image-frame:hover {
-      transform: rotate(0deg) scale(1.02);
-    }
-
-    .section-title {
-      font-size: 2.8rem;
-    }
-
-    .section-title::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .description-text {
-      text-align: center;
-    }
-
-    .stats-container {
-      justify-content: center;
-    }
-
-    .action-container {
-      justify-content: center;
-    }
-
-    .skills-list {
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .about-section {
-      padding: 1rem;
-    }
-
-    .glass-container {
-      padding: 2rem;
-    }
-
-    .image-frame {
-      width: 240px;
-      height: 320px;
-    }
-
-    .stats-container {
-      gap: 1.5rem;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-    }
-  }
-
   /* Stats */
   .stats-container {
     display: flex;
-    gap: 3rem;
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    flex-wrap: wrap;
   }
 
   .stat-item {
@@ -357,14 +289,14 @@ const yearsOfExperience = currentYear - startYear;
   }
 
   .stat-number {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
     font-weight: 800;
     color: var(--color-accent);
     line-height: 1;
   }
 
   .stat-label {
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
     color: var(--color-text-secondary);
     margin-top: 0.5rem;
     text-transform: uppercase;
@@ -373,11 +305,11 @@ const yearsOfExperience = currentYear - startYear;
 
   /* Skills */
   .skills-container {
-    margin-bottom: 2.5rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   .skills-title {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     font-weight: 600;
     color: var(--color-text-primary);
     margin-bottom: 1rem;
@@ -386,15 +318,15 @@ const yearsOfExperience = currentYear - startYear;
   .skills-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8rem;
+    gap: clamp(0.5rem, 1.5vw, 0.8rem);
   }
 
   .skill-tag {
-    padding: 0.5rem 1rem;
+    padding: clamp(0.4rem, 1vw, 0.5rem) clamp(0.7rem, 1.5vw, 1rem);
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     color: var(--color-text-primary);
     transition: all 0.3s ease;
   }
@@ -407,14 +339,14 @@ const yearsOfExperience = currentYear - startYear;
 
   /* Action Button */
   .action-container {
-    margin-top: 2rem;
+    margin-top: clamp(1rem, 3vw, 2rem);
     height: 50px;
     display: flex;
     align-items: center;
   }
 
   .cv-position-wrapper {
-    width: 200px;
+    width: clamp(160px, 30vw, 200px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -430,8 +362,8 @@ const yearsOfExperience = currentYear - startYear;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    height: 48px;
-    min-width: 200px;
+    height: clamp(40px, 7vw, 48px);
+    min-width: clamp(160px, 25vw, 200px);
     cursor: pointer;
   }
 
@@ -456,12 +388,12 @@ const yearsOfExperience = currentYear - startYear;
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 0 2rem;
+    padding: 0 clamp(1rem, 3vw, 2rem);
     background: transparent;
     color: white;
     border: none;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     cursor: pointer;
     width: 100%;
     height: 100%;
@@ -533,7 +465,7 @@ const yearsOfExperience = currentYear - startYear;
     color: white;
     text-decoration: none;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
     padding: 0.5rem;
     transition: transform 0.2s;
   }
@@ -547,29 +479,41 @@ const yearsOfExperience = currentYear - startYear;
     font-weight: 300;
   }
 
-  @media (max-width: 768px) {
-    .glass-container {
-      padding: 2rem;
-      border-radius: 20px;
+  /* Responsive adjustments for centered layout on smaller screens */
+  @media (max-width: 900px) {
+    .content-wrapper {
+      justify-content: center;
     }
-
-    .section-title {
-      font-size: 2.2rem;
+    
+    .text-container {
+      text-align: center;
     }
-
+    
+    .section-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
     .description-text {
-      font-size: 1rem;
+      text-align: center;
     }
-  }
-
-  @media (max-width: 480px) {
-    .image-frame {
-      width: 240px;
-      height: 320px;
+    
+    .stats-container {
+      justify-content: center;
     }
-
-    .glass-container {
-      padding: 1.5rem;
+    
+    .skills-list {
+      justify-content: center;
+    }
+    
+    .action-container {
+      justify-content: center;
+    }
+    
+    .image-container {
+      flex: 0 1 auto;
+      display: flex;
+      justify-content: center;
     }
   }
 </style>

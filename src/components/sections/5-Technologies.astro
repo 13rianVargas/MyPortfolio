@@ -173,7 +173,8 @@ const technologies = {
 <style>
   .tech-section {
     min-height: 100vh;
-    padding: 6rem 2rem;
+    min-height: 100dvh;
+    padding: clamp(2rem, 6vw, 6rem) clamp(0.5rem, 2vw, 2rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -182,18 +183,18 @@ const technologies = {
   }
 
   .container {
-    max-width: 1200px;
+    max-width: min(100%, 1200px);
     width: 100%;
     margin: 0 auto;
   }
 
   .section-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: clamp(2rem, 5vw, 4rem);
   }
 
   .section-title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 800;
     color: var(--color-text-primary);
     display: inline-block;
@@ -206,7 +207,7 @@ const technologies = {
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
+    width: clamp(50px, 10vw, 80px);
     height: 4px;
     background: var(--color-accent);
     border-radius: 2px;
@@ -215,18 +216,18 @@ const technologies = {
   .docks-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: clamp(1.5rem, 4vw, 3rem);
   }
 
   .dock-category {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: clamp(0.5rem, 1.5vw, 1rem);
   }
 
   .category-title {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     color: var(--color-text-secondary);
     font-weight: 500;
     letter-spacing: 1px;
@@ -236,25 +237,29 @@ const technologies = {
     display: flex;
     justify-content: center;
     width: 100%;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
   }
 
   .dock {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    padding: 10px 20px;
+    border-radius: clamp(16px, 3vw, 24px);
+    padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2.5vw, 20px);
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: clamp(8px, 1.5vw, 10px);
     align-items: center;
-    height: 70px;
+    justify-content: center;
+    min-height: clamp(60px, 10vw, 70px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: width 0.3s ease;
+    transition: all 0.3s ease;
+    max-width: 100%;
   }
 
   .dock-item {
-    width: 48px;
-    height: 48px;
+    width: clamp(36px, 8vw, 48px);
+    height: clamp(36px, 8vw, 48px);
     position: relative;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     transform-origin: bottom center;
@@ -262,6 +267,7 @@ const technologies = {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    flex-shrink: 0;
   }
 
   /* Hitbox expansion to prevent flickering */
@@ -283,10 +289,13 @@ const technologies = {
     transition: all 0.3s ease;
   }
 
-  .dock-item:hover {
-    transform: scale(1.6) translateY(-15px);
-    margin: 0 15px;
-    z-index: 10;
+  /* Hover effect only on devices that support hover */
+  @media (hover: hover) and (pointer: fine) {
+    .dock-item:hover {
+      transform: scale(1.6) translateY(-15px);
+      margin: 0 15px;
+      z-index: 10;
+    }
   }
 
   /* Tooltip */
@@ -297,9 +306,9 @@ const technologies = {
     transform: translateX(-50%) scale(0.8);
     background: rgba(15, 23, 42, 0.9);
     color: #fff;
-    padding: 6px 12px;
+    padding: clamp(4px, 1vw, 6px) clamp(8px, 2vw, 12px);
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: clamp(0.7rem, 1.3vw, 0.85rem);
     font-weight: 500;
     opacity: 0;
     pointer-events: none;
@@ -322,38 +331,24 @@ const technologies = {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .dock-item:hover .dock-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-    top: -50px;
+  @media (hover: hover) and (pointer: fine) {
+    .dock-item:hover .dock-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+      top: -50px;
+    }
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .tech-section {
-      padding: 4rem 1rem;
+  /* Touch device adjustments - simpler interaction */
+  @media (hover: none) or (pointer: coarse) {
+    .dock-item:active {
+      transform: scale(1.15);
     }
-
-    .section-title {
-      font-size: 2rem;
-    }
-
-    .dock {
-      flex-wrap: wrap;
-      height: auto;
-      border-radius: 20px;
-      padding: 15px;
-      gap: 15px;
-    }
-
-    .dock-item {
-      width: 40px;
-      height: 40px;
-    }
-
-    .dock-item:hover {
-      transform: scale(1.2) translateY(-5px);
-      margin: 0;
+    
+    .dock-item:active .dock-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+      top: -45px;
     }
   }
 </style>

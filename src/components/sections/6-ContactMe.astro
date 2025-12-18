@@ -149,20 +149,24 @@ const { t } = Astro.props;
     };
 
     // Listen for language changes to update messages dynamically
-    document.addEventListener('language-change', (event) => {
+    document.addEventListener("language-change", (event) => {
       const { translations } = event.detail;
       if (translations) {
         msgs = {
-          success: translations['contactme.success'] || msgs.success,
-          error: translations['contactme.error'] || msgs.error,
-          sending: translations['contactme.sending'] || msgs.sending,
-          required: translations['contactme.required'] || msgs.required,
-          emailInvalid: translations['contactme.emailInvalid'] || msgs.emailInvalid,
+          success: translations["contactme.success"] || msgs.success,
+          error: translations["contactme.error"] || msgs.error,
+          sending: translations["contactme.sending"] || msgs.sending,
+          required: translations["contactme.required"] || msgs.required,
+          emailInvalid:
+            translations["contactme.emailInvalid"] || msgs.emailInvalid,
         };
 
         // Update original text for button to current language
-        if (translations['contactme.send']) {
-           submitBtn.setAttribute("data-original-text", translations['contactme.send']);
+        if (translations["contactme.send"]) {
+          submitBtn.setAttribute(
+            "data-original-text",
+            translations["contactme.send"]
+          );
         }
       }
     });
@@ -286,10 +290,11 @@ const { t } = Astro.props;
 <style>
   .contact-section {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
     position: relative;
     z-index: 1;
   }
@@ -299,9 +304,9 @@ const { t } = Astro.props;
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    border-radius: 30px;
-    padding: 2.5rem;
-    max-width: 600px;
+    border-radius: clamp(16px, 3vw, 30px);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    max-width: min(100%, 600px);
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -309,11 +314,11 @@ const { t } = Astro.props;
 
   .section-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
   }
 
   .section-title {
-    font-size: 3rem;
+    font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 800;
     color: var(--color-text-primary);
     display: inline-block;
@@ -326,7 +331,7 @@ const { t } = Astro.props;
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
+    width: clamp(40px, 8vw, 60px);
     height: 4px;
     background: var(--color-accent);
     border-radius: 2px;
@@ -335,7 +340,7 @@ const { t } = Astro.props;
   .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: clamp(0.75rem, 2vw, 1rem);
   }
 
   .form-group {
@@ -346,7 +351,7 @@ const { t } = Astro.props;
   }
 
   .form-label {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     font-weight: 600;
     color: var(--color-text-secondary);
     margin-left: 0.5rem;
@@ -360,12 +365,12 @@ const { t } = Astro.props;
 
   .form-input {
     width: 100%;
-    padding: 0.8rem 1.2rem;
+    padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(0.8rem, 2vw, 1.2rem);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
-    border-radius: 15px;
+    border-radius: clamp(10px, 2vw, 15px);
     color: var(--color-text-primary);
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
     transition: all 0.3s ease;
   }
 
@@ -378,7 +383,7 @@ const { t } = Astro.props;
 
   .textarea {
     resize: none;
-    min-height: 120px;
+    min-height: clamp(100px, 15vw, 120px);
   }
 
   /* Custom Scrollbar for Textarea */
@@ -405,19 +410,19 @@ const { t } = Astro.props;
 
   .char-counter {
     text-align: right;
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
     color: var(--color-text-secondary);
     margin-right: 0.5rem;
   }
 
   .submit-btn {
     margin-top: 0.5rem;
-    padding: 0.8rem;
+    padding: clamp(0.6rem, 1.5vw, 0.8rem);
     background: var(--color-accent);
     color: white;
     border: none;
-    border-radius: 15px;
-    font-size: 1.1rem;
+    border-radius: clamp(10px, 2vw, 15px);
+    font-size: clamp(1rem, 2vw, 1.1rem);
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -441,6 +446,8 @@ const { t } = Astro.props;
 
   .submit-btn svg {
     transition: transform 0.3s ease;
+    width: clamp(18px, 3vw, 20px);
+    height: clamp(18px, 3vw, 20px);
   }
 
   .submit-btn:hover:not(:disabled) svg {
@@ -448,8 +455,8 @@ const { t } = Astro.props;
   }
 
   .loader {
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 3vw, 20px);
+    height: clamp(16px, 3vw, 20px);
     border: 2px solid #ffffff;
     border-bottom-color: transparent;
     border-radius: 50%;
@@ -468,17 +475,17 @@ const { t } = Astro.props;
   }
 
   .social-connect {
-    margin-top: 2rem;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
-    padding-top: 1.5rem;
+    gap: clamp(1rem, 3vw, 1.5rem);
+    padding-top: clamp(1rem, 2vw, 1.5rem);
     border-top: 1px solid var(--glass-border);
   }
 
   .social-link {
-    width: 50px;
-    height: 50px;
+    width: clamp(40px, 8vw, 50px);
+    height: clamp(40px, 8vw, 50px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -494,25 +501,14 @@ const { t } = Astro.props;
   }
 
   .social-link img {
-    width: 24px;
-    height: 24px;
+    width: clamp(20px, 4vw, 24px);
+    height: clamp(20px, 4vw, 24px);
     filter: var(--icon-filter);
     transition: filter 0.3s ease;
   }
 
   .social-link:hover img {
     filter: brightness(0) invert(1);
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .glass-container {
-      padding: 2rem;
-    }
-
-    .section-title {
-      font-size: 2rem;
-    }
   }
 </style>
 
@@ -542,11 +538,11 @@ const { t } = Astro.props;
     border-radius: 50px;
     font-size: 1.2rem;
     font-weight: 700;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     gap: 15px;
-    
+
     /* Animation */
     opacity: 0;
     transform: scale(0.5);
@@ -561,10 +557,10 @@ const { t } = Astro.props;
   }
 
   .toast-success {
-    background-color: #00C853;
+    background-color: #00c853;
     color: white;
   }
-  
+
   .toast-success::before {
     content: "";
     display: block;
@@ -576,7 +572,7 @@ const { t } = Astro.props;
   }
 
   .toast-error {
-    background-color: #D50000;
+    background-color: #d50000;
     color: white;
   }
 
@@ -589,5 +585,4 @@ const { t } = Astro.props;
     background-size: contain;
     background-repeat: no-repeat;
   }
-</style>
 </style>

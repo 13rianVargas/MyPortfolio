@@ -41,34 +41,34 @@ function getNavUrl(sectionId: string): string {
 <style>
   /* ========================================
    * CSS CUSTOM PROPERTIES CONFIGURATION
+   * Using fluid values with clamp() for responsive design
    * ======================================== */
 
   :root {
     /* Global behavior settings */
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: clamp(4rem, 10vw, 5rem);
 
     /* ========================================
-     * LAYOUT DIMENSIONS
+     * FLUID LAYOUT DIMENSIONS
      * ======================================== */
 
-    /* Header sizing and positioning */
-    --header-height: 5rem;
-    --header-border-radius: 50px;
-    --header-padding: 1.5rem 2rem;
-    --header-margin-top: 0.5rem;
-    --header-gap: 1rem;
+    /* Header sizing and positioning - fluid values */
+    --header-height: clamp(3.5rem, 8vw, 5rem);
+    --header-border-radius: clamp(20px, 5vw, 50px);
+    --header-padding: clamp(0.75rem, 2vw, 1.5rem) clamp(0.75rem, 3vw, 2rem);
+    --header-margin-top: clamp(0.25rem, 1vw, 0.5rem);
+    --header-gap: clamp(0.5rem, 2vw, 1rem);
     --header-blur: blur(8px) saturate(140%);
 
     /* Navigation indicator dimensions */
-    --nav-indicator-height: 36px;
+    --nav-indicator-height: clamp(32px, 5vw, 36px);
     --nav-indicator-border-radius: 9999px;
-    --nav-link-padding: 0.5rem 1.25rem;
+    --nav-link-padding: clamp(0.4rem, 1vw, 0.5rem) clamp(0.75rem, 2vw, 1.25rem);
     --nav-link-border-radius: 9999px;
 
-    /* Mobile menu positioning */
-    /* 2.5rem (content) + 3rem (padding vertical) = 5.5rem */
-    --mobile-menu-top: calc(var(--header-margin-top) + 5.5rem);
+    /* Mobile menu positioning - calculated dynamically */
+    --mobile-menu-top: calc(var(--header-margin-top) + var(--header-height) + 0.5rem);
 
     /* ========================================
      * COLOR PALETTE
@@ -128,7 +128,7 @@ function getNavUrl(sectionId: string): string {
   /* Main glassmorphic navigation bar */
   .header {
     position: relative;
-    width: calc(100vw - 2rem);
+    width: min(100vw - clamp(0.5rem, 2vw, 2rem), 1400px);
     margin: var(--header-margin-top) 0 0 0;
     padding: var(--header-padding);
     background: var(--glass-bg);
@@ -270,7 +270,7 @@ function getNavUrl(sectionId: string): string {
     top: var(--mobile-menu-top);
     left: 50%;
     transform: translateX(-50%) translateY(-100px) scale(0.95);
-    width: calc(100vw - 2rem);
+    width: min(100vw - clamp(0.5rem, 2vw, 2rem), 1400px);
     min-height: 200px;
     z-index: 45; /* Below header z-index of 50 */
     opacity: 0;
@@ -285,7 +285,7 @@ function getNavUrl(sectionId: string): string {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     box-shadow: var(--glass-shadow);
-    padding: 1rem;
+    padding: var(--space-sm, 1rem);
     will-change: transform, opacity;
   }
 
@@ -425,85 +425,29 @@ function getNavUrl(sectionId: string): string {
 
   /* ========================================
 	 * RESPONSIVE BREAKPOINTS
+	 * Simplified using mobile-first with fluid values
 	 * ======================================== */
 
   /* 
-   * MOBILE DEVICES (≤480px)
-   * Compact layout for smartphones
+   * MOBILE & TABLET (up to 1024px)
+   * Show hamburger menu, hide desktop nav
    */
-  @media (max-width: 480px) {
-    :root {
-      --header-border-radius: 20px;
-      --header-padding: 0.75rem 0.5rem;
-      --header-margin-top: 0.25rem;
-      /* 2.5rem + 1.5rem = 4rem */
-      --mobile-menu-top: calc(0.25rem + 4rem);
-    }
-    .header,
-    .mobile-menu {
-      width: calc(100vw - 0.5rem);
-    }
+  @media (max-width: 1024px) {
     .header-nav {
       display: none !important;
     }
-    .header-title-container {
-      gap: 0.5rem;
-    }
+    
     .header-title {
-      font-size: 1rem !important;
-      line-height: 1.1 !important;
+      font-size: clamp(0.9rem, 3vw, 1.2rem) !important;
     }
-    /* Adjust Logo size for small screens */
+    
+    /* Adjust Logo size fluidly */
     .header-title-container > :global(svg),
     .header-title-container > *:not(h1) {
-      width: 2rem !important;
-      height: 2rem !important;
-      min-width: 2rem !important;
-      min-height: 2rem !important;
-      max-width: 2rem !important;
-      max-height: 2rem !important;
-    }
-  }
-
-  /* 
-   * TABLET PORTRAIT (481px - 768px)
-   * Balanced layout for larger phones and small tablets
-   */
-  @media (min-width: 481px) and (max-width: 768px) {
-    :root {
-      --header-border-radius: 25px;
-      /* 2.5rem + 2rem = 4.5rem */
-      --mobile-menu-top: calc(0.25rem + 4.5rem);
-      --header-padding: 1rem 1rem;
-      --header-margin-top: 0.25rem;
-    }
-    .header,
-    .mobile-menu {
-      width: calc(100vw - 1rem);
-    }
-    .header-nav {
-      display: none !important;
-    }
-  }
-
-  /* 
-   * TABLET LANDSCAPE / SMALL LAPTOP (769px - 1024px)
-   * Enhanced tablet experience, still using hamburger menu
-   */
-  @media (min-width: 769px) and (max-width: 1024px) {
-    :root {
-      --header-border-radius: 40px;
-      /* 2.5rem + 2.5rem = 5rem */
-      --mobile-menu-top: calc(0.5rem + 5rem);
-      --header-padding: 1.25rem 1.5rem;
-      --header-margin-top: 0.5rem;
-    }
-    .header,
-    .mobile-menu {
-      width: calc(100vw - 1.5rem);
-    }
-    .header-nav {
-      display: none !important;
+      width: clamp(1.75rem, 5vw, 3rem) !important;
+      height: clamp(1.75rem, 5vw, 3rem) !important;
+      min-width: clamp(1.75rem, 5vw, 3rem) !important;
+      min-height: clamp(1.75rem, 5vw, 3rem) !important;
     }
   }
 

@@ -418,16 +418,15 @@ const { t } = Astro.props;
 <style>
   /* ========================================
    * CSS CUSTOM PROPERTIES
-   * Centralized variables for consistency and maintainability
-   * All visual aspects can be controlled from this section
+   * Using fluid responsive values with clamp()
    * ======================================== */
   :root {
-    /* ===== CARD DIMENSIONS & LAYOUT ===== */
-    /* Base card dimensions - mobile values are overridden in media queries */
-    --card-width: 400px;
-    --card-height: 600px;
+    /* ===== FLUID CARD DIMENSIONS ===== */
+    /* Card scales fluidly from mobile (280px) to desktop (420px) */
+    --card-width: clamp(280px, 45vw, 420px);
+    --card-height: clamp(450px, 70vh, 620px);
     --card-perspective: 1000px;
-    --card-border-radius: 20px;
+    --card-border-radius: clamp(16px, 3vw, 20px);
 
     /* 3D rotation angles for different interaction states */
     --card-idle-rotate-y: -5deg;
@@ -438,50 +437,46 @@ const { t } = Astro.props;
     --card-flipped-rotate-y: 175deg;
     --card-flipped-hover-rotate-y: 178deg;
 
-    /* ===== SPACING SYSTEM ===== */
-    /* Consistent spacing hierarchy throughout the component */
-    --section-padding: 2rem;
-    --floating-header-offset: 0px;
-    --header-padding: 1.5rem;
-    --header-min-height: 90px;
-    --body-padding: 1.2rem 1.5rem;
-    --footer-padding: 1rem;
-    --element-gap: 1rem;
-    --element-gap-small: 0.5rem;
-    --element-gap-large: 1.5rem;
+    /* ===== FLUID SPACING SYSTEM ===== */
+    --section-padding: clamp(0.5rem, 3vw, 2rem);
+    --floating-header-offset: clamp(-150px, -15vw, -100px);
+    --header-padding: clamp(0.75rem, 2vw, 1.5rem);
+    --header-min-height: clamp(60px, 12vw, 90px);
+    --body-padding: clamp(0.75rem, 2vw, 1.2rem) clamp(0.75rem, 2.5vw, 1.5rem);
+    --footer-padding: clamp(0.75rem, 2vw, 1rem);
+    --element-gap: clamp(0.5rem, 2vw, 1rem);
+    --element-gap-small: clamp(0.25rem, 1vw, 0.5rem);
+    --element-gap-large: clamp(1rem, 3vw, 1.5rem);
 
-    /* ===== COMPONENT DIMENSIONS ===== */
-    /* Sizes for various UI elements */
-    --logo-size: 60px;
-    --profile-photo-size: 180px;
+    /* ===== FLUID COMPONENT DIMENSIONS ===== */
+    --logo-size: clamp(40px, 8vw, 60px);
+    --profile-photo-size: clamp(120px, 25vw, 180px);
     --profile-photo-border-radius: 50%;
-    --security-chip-width: 30px;
-    --security-chip-height: 20px;
-    --contact-btn-padding: 0.8rem;
-    --contact-icon-size: 18px;
+    --security-chip-width: clamp(24px, 4vw, 30px);
+    --security-chip-height: clamp(16px, 3vw, 20px);
+    --contact-btn-padding: clamp(0.5rem, 1.5vw, 0.8rem);
+    --contact-icon-size: clamp(14px, 3vw, 18px);
 
     /* QR code and related elements */
-    --qr-placeholder-size: 120px;
-    --qr-border-radius: 12px;
+    --qr-placeholder-size: clamp(80px, 15vw, 120px);
+    --qr-border-radius: clamp(8px, 1.5vw, 12px);
 
-    /* ===== TYPOGRAPHY SCALE ===== */
-    /* Consistent font sizing across all text elements */
-    --text-company-name: 1.2rem;
-    --text-employee-name: 1.8rem;
-    --text-employee-role: 1.1rem;
-    --text-employee-id: 0.9rem;
-    --text-flip-hint: 0.85rem;
-    --text-contact-btn: 0.9rem;
-    --text-contact-item: 0.9rem;
-    --text-security: 0.7rem;
-    --text-qr-instruction: 0.8rem;
-    --text-info-item: 0.9rem;
+    /* ===== FLUID TYPOGRAPHY SCALE ===== */
+    --text-company-name: clamp(0.9rem, 2vw, 1.2rem);
+    --text-employee-name: clamp(1.3rem, 3vw, 1.8rem);
+    --text-employee-role: clamp(0.9rem, 2vw, 1.1rem);
+    --text-employee-id: clamp(0.75rem, 1.5vw, 0.9rem);
+    --text-flip-hint: clamp(0.65rem, 1.2vw, 0.85rem);
+    --text-contact-btn: clamp(0.75rem, 1.5vw, 0.9rem);
+    --text-contact-item: clamp(0.75rem, 1.5vw, 0.9rem);
+    --text-security: clamp(0.6rem, 1.2vw, 0.7rem);
+    --text-qr-instruction: clamp(0.7rem, 1.3vw, 0.8rem);
+    --text-info-item: clamp(0.75rem, 1.5vw, 0.9rem);
 
     /* Icon and symbol sizes */
-    --flip-icon-size: 2rem;
+    --flip-icon-size: clamp(1.5rem, 3vw, 2rem);
 
     /* ===== ANIMATION & TRANSITION SYSTEM ===== */
-    /* Consistent timing and easing for all animations */
     --transition-card: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --transition-elements: all 0.3s ease;
     --transition-hover: all 0.2s ease-out;
@@ -490,7 +485,6 @@ const { t } = Astro.props;
     --animation-duration-shine: 6s;
 
     /* ===== SHADOW SYSTEM ===== */
-    /* Layered shadow effects for depth and elevation */
     --shadow-card:
       0 20px 40px var(--color-shadow), 0 0 0 1px var(--color-border),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -499,7 +493,6 @@ const { t } = Astro.props;
     --shadow-contact-btn: 0 2px 8px var(--color-shadow);
 
     /* ===== GRADIENT DEFINITIONS ===== */
-    /* Reusable gradient patterns for consistency */
     --gradient-header: linear-gradient(
       135deg,
       var(--color-accent) 0%,
@@ -520,7 +513,6 @@ const { t } = Astro.props;
     );
 
     /* ===== BORDER & OPACITY VALUES ===== */
-    /* Consistent border widths and opacity levels */
     --border-width-thin: 1px;
     --border-width-medium: 2px;
     --border-width-thick: 3px;
@@ -529,7 +521,6 @@ const { t } = Astro.props;
     --opacity-disabled: 0.6;
 
     /* ===== Z-INDEX LAYERS ===== */
-    /* Stacking context management */
     --z-index-base: 1;
     --z-index-overlay: 2;
     --z-index-floating: 3;
@@ -1266,185 +1257,39 @@ const { t } = Astro.props;
   }
 
   /* ========================================
-   * RESPONSIVE DESIGN SYSTEM
-   * Mobile-first approach with progressive enhancement
-   * Consistent with project-wide breakpoint strategy
+   * RESPONSIVE DESIGN - Simplified
+   * Using fluid values, only disable 3D effects on touch devices
    * ======================================== */
 
-  /* ========================================
-   * RESPONSIVE DESIGN SYSTEM
-   * Based on specific device dimensions:
-   * - Phones: 375px, 390px, 412px
-   * - Small Tablet: 768px
-   * - Big Tablet: 834px
-   * - Laptop: 1366px
-   * - Desktop: 1920px
-   * ======================================== */
-
-  /* ===== PHONES (375px - 412px) & SMALLER ===== */
-  /* Covers Small Phone (375), Medium Phone (390), Big Phone (412) */
-  @media (max-width: 480px) {
+  /* Disable 3D effects on touch devices for better performance */
+  @media (hover: none) and (pointer: coarse) {
     :root {
-      /* Compact dimensions for phones */
-      --card-width: 320px;
-      --card-height: 520px;
-      --section-padding: 0.5rem;
-      --floating-header-offset: -130px;
-      --header-padding: 1rem 0.75rem;
-      --body-padding: 0.8rem 0.75rem;
-
-      /* Optimized component sizes */
-      --profile-photo-size: 140px;
-      --header-min-height: 70px;
-      --qr-placeholder-size: 100px;
-      --contact-icon-size: 14px;
-
-      /* Typography */
-      --text-company-name: 1rem;
-      --text-employee-name: 1.4rem;
-      --text-flip-hint: 0.75rem;
-      --text-contact-btn: 0.75rem;
-      --text-qr-instruction: 0.75rem;
-      --text-info-item: 0.8rem;
-      --flip-icon-size: 1.6rem;
-      --card-hover-scale: 1.01;
-
-      /* Disable 3D effects for performance */
       --card-idle-rotate-y: 0deg;
       --card-idle-rotate-x: 0deg;
       --card-hover-rotate-y: 0deg;
       --card-hover-rotate-x: 0deg;
+      --card-hover-scale: 1.01;
     }
+  }
 
+  /* Small screens - ensure flip hint is accessible */
+  @media (max-width: 480px) {
     .flip-hint {
       right: var(--element-gap-small);
-      width: auto;
-      min-width: 100px;
-      line-height: 1;
+      padding: 4px 8px;
     }
-
+    
     .contact-links {
-      gap: var(--element-gap-small);
+      flex-direction: row;
     }
-
+    
     .contact-btn {
-      padding: 0.5rem 0.3rem;
-      gap: 0.3rem;
+      padding: 0.4rem;
+      gap: 0.2rem;
     }
-
-    .personal-info {
-      gap: 0.6rem;
-    }
-
-    .info-item {
-      padding: 0.5rem 0.8rem;
-    }
-  }
-
-  /* ===== ULTRA NARROW (Special Case < 320px) ===== */
-  @media (max-width: 320px) {
-    :root {
-      --card-width: 260px;
-      --card-height: 420px;
-      --profile-photo-size: 70px;
-      --logo-size: 40px;
-      --header-min-height: 60px;
-    }
-  }
-
-  /* ===== SMALL TABLET (768px) ===== */
-  /* Covers Small Tablet (768x1024) */
-  @media (min-width: 481px) and (max-width: 768px) {
-    :root {
-      --card-width: 350px;
-      --card-height: 550px;
-      --section-padding: 0.75rem;
-      --floating-header-offset: -130px;
-      --header-padding: 1.2rem 1rem;
-      --body-padding: 1rem 1rem;
-
-      --profile-photo-size: 160px;
-      --header-min-height: 75px;
-      --qr-placeholder-size: 110px;
-      --contact-icon-size: 16px;
-
-      --text-company-name: 1.1rem;
-      --text-employee-name: 1.6rem;
-      --text-flip-hint: 0.8rem;
-      --text-contact-btn: 0.8rem;
-      --text-qr-instruction: 0.8rem;
-      --text-info-item: 0.85rem;
-      --card-hover-scale: 1.02;
-
-      --card-idle-rotate-y: 0deg;
-      --card-idle-rotate-x: 0deg;
-      --card-hover-rotate-y: 0deg;
-      --card-hover-rotate-x: 0deg;
-    }
-
-    .flip-hint {
-      right: 0.75rem;
-      width: auto;
-      min-width: 110px;
-      line-height: 1.1;
-    }
-
-    .contact-links {
-      gap: 0.75rem;
-    }
-
-    .contact-btn {
-      padding: 0.6rem 0.4rem;
-    }
-
-    .personal-info {
-      gap: 0.7rem;
-    }
-
-    .info-item {
-      padding: 0.55rem 0.9rem;
-    }
-  }
-
-  /* ===== BIG TABLET (834px) ===== */
-  /* Covers Big Tablet (834x1194) */
-  @media (min-width: 769px) and (max-width: 1024px) {
-    :root {
-      --card-width: 380px;
-      --card-height: 580px;
-      --section-padding: 1.5rem;
-      --floating-header-offset: -130px;
-      --header-padding: 1.4rem 1.25rem;
-      --body-padding: 1.2rem 1.25rem;
-
-      --profile-photo-size: 150px;
-      --header-min-height: 80px;
-
-      --text-company-name: 1.15rem;
-      --text-employee-name: 1.7rem;
-      --text-flip-hint: 0.85rem;
-    }
-  }
-
-  /* ===== LAPTOP (1366px) ===== */
-  /* Covers Laptop (1366x768) */
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    :root {
-      /* Standard desktop/laptop sizes */
-      --card-width: 400px;
-      --card-height: 600px;
-      --floating-header-offset: -110px;
-    }
-  }
-
-  /* ===== DESKTOP (1920px) ===== */
-  /* Covers Desktop (1920x1080) */
-  @media (min-width: 1441px) {
-    :root {
-      /* Enhanced spacing for large screens */
-      --card-width: 420px;
-      --card-height: 620px;
-      --floating-header-offset: -130px;
+    
+    .contact-btn span {
+      display: none;
     }
   }
 
@@ -1565,6 +1410,26 @@ const { t } = Astro.props;
       /* iOS-specific back face positioning */
       -webkit-transform: rotateY(180deg) translate3d(0, 0, 0);
       transform: rotateY(180deg) translate3d(0, 0, 0);
+    }
+  }
+
+  /* ========================================
+   * MOBILE LANDSCAPE FIX
+   * Prevent header from covering content on landscape mobile
+   * ======================================== */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .home-section {
+      padding-top: 5rem; /* Space for header */
+      align-items: flex-start; /* Align top to respect padding */
+      min-height: 130vh; /* Ensure scrollability */
+      padding-bottom: 2rem;
+    }
+    
+    .business-card {
+      margin-top: 1rem;
+      /* Scale down slightly if needed to fit better */
+      transform: scale(0.85) perspective(var(--card-perspective))
+        rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x));
     }
   }
 </style>

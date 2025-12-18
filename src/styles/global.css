@@ -4,6 +4,47 @@
 /* Base styles and CSS reset */
 @layer base {
   :root {
+    /* ========================================
+     * FLUID RESPONSIVE SYSTEM
+     * Uses clamp() for smooth scaling across all viewports
+     * Base: 320px min | 768px preferred | 1920px max
+     * ======================================== */
+    
+    /* Fluid spacing scale */
+    --space-3xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem);
+    --space-2xs: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+    --space-xs: clamp(0.75rem, 0.6rem + 0.75vw, 1rem);
+    --space-sm: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+    --space-md: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+    --space-lg: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+    --space-xl: clamp(3rem, 2rem + 4vw, 5rem);
+    --space-2xl: clamp(4rem, 3rem + 5vw, 6rem);
+    
+    /* Fluid typography scale */
+    --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
+    --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
+    --text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+    --text-lg: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
+    --text-xl: clamp(1.2rem, 1rem + 1vw, 1.5rem);
+    --text-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+    --text-3xl: clamp(1.8rem, 1.4rem + 2vw, 2.5rem);
+    --text-4xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+    --text-5xl: clamp(2.5rem, 1.8rem + 3.5vw, 3.5rem);
+    
+    /* Fluid container widths */
+    --container-sm: min(100% - var(--space-md), 640px);
+    --container-md: min(100% - var(--space-md), 768px);
+    --container-lg: min(100% - var(--space-md), 1024px);
+    --container-xl: min(100% - var(--space-md), 1200px);
+    --container-2xl: min(100% - var(--space-md), 1400px);
+    
+    /* Fluid border radius */
+    --radius-sm: clamp(8px, 1vw, 12px);
+    --radius-md: clamp(12px, 1.5vw, 20px);
+    --radius-lg: clamp(16px, 2vw, 30px);
+    --radius-xl: clamp(20px, 2.5vw, 40px);
+    --radius-full: 9999px;
+    
     /* Light mode colors */
     --color-bg-primary: #ffffff;
     --color-bg-secondary: #f8fafc;
