@@ -19,7 +19,9 @@ const currentYear = new Date().getFullYear();
 
       <div class="footer-links">
         <a href="#home" class="footer-link" aria-label="Back to top">
-          <span class="scroll-text" data-translation-key="layout.scrollTop">{t("layout.scrollTop")}</span>
+          <span class="scroll-text" data-translation-key="layout.scrollTop"
+            >{t("layout.scrollTop")}</span
+          >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -133,7 +135,7 @@ const currentYear = new Date().getFullYear();
     .separator {
       display: none;
     }
-    
+
     .copyright {
       flex-direction: column;
       gap: 0.1rem;
@@ -142,12 +144,12 @@ const currentYear = new Date().getFullYear();
     .scroll-text {
       display: none; /* Ocultar texto en pantallas muy pequeñas para mantener el layout limpio */
     }
-    
+
     .footer-link {
-       padding: 0.5rem;
-       border-radius: 50%;
-       width: 36px;
-       height: 36px;
+      padding: 0.5rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
     }
   }
 </style>

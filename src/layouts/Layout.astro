@@ -14,6 +14,9 @@ const { lang, t } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <meta id="theme-color" name="theme-color" content="#f5f5f5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
     <link rel="icon" type="image/svg+xml" href="/icons/deerhead.svg" />
     <link rel="stylesheet" href="/src/styles/global.css" />
@@ -21,52 +24,84 @@ const { lang, t } = Astro.props;
     <title>{t("head.title")}</title>
 
     <script is:inline>
-      // Theme Manager - Inlined to prevent FOUC
+      // Theme Manager - Always follows system, button provides temporary override
       (function () {
-        const STORAGE_KEY = "theme";
         const DARK_CLASS = "dark";
         const THEME_EVENT = "basecoat:theme";
 
-        function getPreferredTheme() {
-          try {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) return saved;
-          } catch (e) {}
-          return window.matchMedia("(prefers-color-scheme: dark)").matches
+        // Media query for system preference
+        const systemDarkQuery = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        );
+
+        /**
+         * Get current system theme preference
+         */
+        function getSystemTheme() {
+          return systemDarkQuery.matches ? "dark" : "light";
+        }
+
+        /**
+         * Get current applied theme
+         */
+        function getCurrentTheme() {
+          return document.documentElement.classList.contains(DARK_CLASS)
             ? "dark"
             : "light";
         }
 
+        /**
+         * Apply theme and update meta tags
+         */
         function applyTheme(theme) {
+          const themeColorMeta = document.getElementById("theme-color");
+
           if (theme === "dark") {
             document.documentElement.classList.add(DARK_CLASS);
+            if (themeColorMeta)
+              themeColorMeta.setAttribute("content", "#171717");
           } else {
             document.documentElement.classList.remove(DARK_CLASS);
+            if (themeColorMeta)
+              themeColorMeta.setAttribute("content", "#f5f5f5");
           }
-          try {
-            localStorage.setItem(STORAGE_KEY, theme);
-          } catch (e) {}
         }
 
+        /**
+         * Toggle theme manually
+         */
         function toggleTheme() {
-          const isDark =
-            document.documentElement.classList.contains(DARK_CLASS);
-          applyTheme(isDark ? "light" : "dark");
+          const newTheme = getCurrentTheme() === "dark" ? "light" : "dark";
+          applyTheme(newTheme);
         }
 
-        applyTheme(getPreferredTheme());
+        /**
+         * Handle system theme change - ALWAYS follow system
+         */
+        function handleSystemThemeChange(event) {
+          const systemTheme = event.matches ? "dark" : "light";
+          applyTheme(systemTheme);
+        }
 
+        // Apply initial theme based on system preference
+        applyTheme(getSystemTheme());
+
+        // Listen for system theme changes (e.g., sunset/sunrise auto-switch or manual system change)
+        systemDarkQuery.addEventListener("change", handleSystemThemeChange);
+
+        // Listen for manual toggle events from button
         document.addEventListener(THEME_EVENT, function () {
           toggleTheme();
         });
 
+        // Expose theme manager API
         window.themeManager = {
           toggle: toggleTheme,
           set: applyTheme,
-          get: function () {
-            return document.documentElement.classList.contains(DARK_CLASS)
-              ? "dark"
-              : "light";
+          get: getCurrentTheme,
+          getSystemTheme: getSystemTheme,
+          syncWithSystem: function () {
+            applyTheme(getSystemTheme());
           },
         };
       })();

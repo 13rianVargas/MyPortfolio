@@ -95,7 +95,11 @@
   html {
     font-family: system-ui, sans-serif;
     scroll-behavior: smooth;
-    color-scheme: light dark;
+    color-scheme: light;
+  }
+  
+  html.dark {
+    color-scheme: dark;
   }
   
   body {

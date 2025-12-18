@@ -68,7 +68,9 @@ function getNavUrl(sectionId: string): string {
     --nav-link-border-radius: 9999px;
 
     /* Mobile menu positioning - calculated dynamically */
-    --mobile-menu-top: calc(var(--header-margin-top) + var(--header-height) + 0.5rem);
+    --mobile-menu-top: calc(
+      var(--header-margin-top) + var(--header-height) + 0.5rem
+    );
 
     /* ========================================
      * COLOR PALETTE
@@ -77,9 +79,6 @@ function getNavUrl(sectionId: string): string {
     /* Brand colors */
     --amber-color: #fbbf24;
     --amber-bg: rgba(251, 191, 36, 0.1);
-
-    /* Text colors */
-    --text-color: rgb(55, 65, 81);
 
     /* ========================================
      * ANIMATION TIMING
@@ -111,14 +110,6 @@ function getNavUrl(sectionId: string): string {
     100% {
       transform: translateX(-100%) translateY(-100%) rotate(45deg);
     }
-  }
-
-  /* ========================================
-   * DARK MODE THEME OVERRIDES
-   * ======================================== */
-
-  html.dark {
-    --text-color: rgb(209, 213, 219);
   }
 
   /* ========================================
@@ -228,7 +219,7 @@ function getNavUrl(sectionId: string): string {
 
   /* Unified styles for both desktop and mobile navigation links */
   .nav-link {
-    color: var(--text-color);
+    color: var(--color-text-primary);
     transition: color 0.2s ease;
     padding: var(--nav-link-padding);
     border-radius: var(--nav-link-border-radius);
@@ -256,7 +247,7 @@ function getNavUrl(sectionId: string): string {
 
   /* Hide initial server-side active states to prevent flash */
   .nav-links-hidden .nav-link-active {
-    color: var(--text-color) !important;
+    color: var(--color-text-primary) !important;
     font-weight: normal !important;
   }
 
@@ -368,7 +359,7 @@ function getNavUrl(sectionId: string): string {
   .hamburger span {
     width: 100%;
     height: 2px;
-    background-color: currentColor;
+    background-color: var(--color-text-primary);
     transition: var(--transition-smooth);
     transform-origin: center;
     display: block;
@@ -436,11 +427,11 @@ function getNavUrl(sectionId: string): string {
     .header-nav {
       display: none !important;
     }
-    
+
     .header-title {
       font-size: clamp(0.9rem, 3vw, 1.2rem) !important;
     }
-    
+
     /* Adjust Logo size fluidly */
     .header-title-container > :global(svg),
     .header-title-container > *:not(h1) {
@@ -514,7 +505,7 @@ function getNavUrl(sectionId: string): string {
       <!-- Mobile Menu Button + Actions -->
       <div class="header-actions">
         <button
-          class="mobile-menu-button text-gray-700 dark:text-gray-300 p-2"
+          class="mobile-menu-button"
           aria-label="Toggle mobile menu"
           type="button"
         >
