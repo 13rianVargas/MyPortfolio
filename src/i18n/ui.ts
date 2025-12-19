@@ -1,8 +1,8 @@
 export const languages = {
-    en: "🇬🇧",
-    es: "🇨🇴",
-    fr: "🇫🇷",
-    pt: "🇧🇷",
+    en: { name: "English", flag: "/icons/flags/gb.svg" },
+    es: { name: "Español", flag: "/icons/flags/co.svg" },
+    fr: { name: "Français", flag: "/icons/flags/fr.svg" },
+    pt: { name: "Português", flag: "/icons/flags/pt.svg" },
 };
 
 export const defaultLang = "en";
@@ -23,7 +23,7 @@ export const ui = {
         "home.clickToFlip": "Click to flip",
         "home.tapToFlip": "Tap to flip",
         "home.location": "🌍 Location:",
-        "home.locationValue": "Colombia 🇨🇴",
+        "home.locationValue": "Colombia",
         "home.workMode": "🕒 Work Mode:",
         "home.workModeValue": "On-site / Remote",
         "home.badgeText": "VERIFIED",
@@ -84,7 +84,7 @@ export const ui = {
         "home.clickToFlip": "Clic para voltear",
         "home.tapToFlip": "Toca para voltear",
         "home.location": "🌍 Ubicación:",
-        "home.locationValue": "Colombia 🇨🇴",
+        "home.locationValue": "Colombia",
         "home.workMode": "🕒 Modalidad:",
         "home.workModeValue": "En sitio / Remoto",
         "home.badgeText": "VERIFICADO",
@@ -145,7 +145,7 @@ export const ui = {
         "home.clickToFlip": "Cliquez pour retourner",
         "home.tapToFlip": "Touchez pour retourner",
         "home.location": "🌍 Lieu :",
-        "home.locationValue": "Colombie 🇨🇴",
+        "home.locationValue": "Colombie",
         "home.workMode": "🕒 Mode de travail :",
         "home.workModeValue": "Présentiel / Télétravail",
         "home.badgeText": "VÉRIFIÉ",
@@ -206,7 +206,7 @@ export const ui = {
         "home.clickToFlip": "Clique para virar",
         "home.tapToFlip": "Toque para virar",
         "home.location": "🌍 Localização:",
-        "home.locationValue": "Colômbia 🇨🇴",
+        "home.locationValue": "Colômbia",
         "home.workMode": "🕒 Modalidade:",
         "home.workModeValue": "Presencial / Remoto",
         "home.badgeText": "VERIFICADO",

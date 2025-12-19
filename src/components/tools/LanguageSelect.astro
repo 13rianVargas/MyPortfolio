@@ -35,14 +35,20 @@ const lang = getLangFromUrl(Astro.url);
   <div id="language-menu" class="language-menu hidden">
     <ul class="language-list">
       {
-        Object.entries(languages).map(([langCode, label]) => (
+        Object.entries(languages).map(([langCode, langData]) => (
           <li>
             <button
               class={`language-option ${lang === langCode ? "active" : ""}`}
               data-lang={langCode}
             >
-              <span class="lang-flag">{label}</span>
-              <span class="lang-name">{langCode.toUpperCase()}</span>
+              <img 
+                src={langData.flag} 
+                alt={`${langData.name} flag`} 
+                class="lang-flag-img"
+                width="20"
+                height="14"
+              />
+              <span class="lang-name">{langData.name}</span>
             </button>
           </li>
         ))
@@ -185,8 +191,12 @@ const lang = getLangFromUrl(Astro.url);
     font-weight: 600;
   }
 
-  .lang-flag {
-    font-size: 1.2rem;
+  .lang-flag-img {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   }
 
   .lang-name {
