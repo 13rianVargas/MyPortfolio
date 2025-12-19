@@ -41,9 +41,9 @@ const lang = getLangFromUrl(Astro.url);
               class={`language-option ${lang === langCode ? "active" : ""}`}
               data-lang={langCode}
             >
-              <img 
-                src={langData.flag} 
-                alt={`${langData.name} flag`} 
+              <img
+                src={langData.flag}
+                alt={`${langData.name} flag`}
                 class="lang-flag-img"
                 width="20"
                 height="14"
@@ -58,24 +58,24 @@ const lang = getLangFromUrl(Astro.url);
 </div>
 
 <script define:vars={{ translations: ui }}>
-  const STORAGE_KEY = 'preferred-language';
-  const AVAILABLE_LANGS = ['en', 'es', 'fr', 'pt'];
-  const DEFAULT_LANG = 'en';
+  const STORAGE_KEY = "preferred-language";
+  const AVAILABLE_LANGS = ["en", "es", "fr", "pt"];
+  const DEFAULT_LANG = "en";
 
   // Detect browser language and map to available languages
   function detectBrowserLanguage() {
     // Get browser languages (array of preferences)
     const browserLangs = navigator.languages || [navigator.language];
-    
+
     for (const browserLang of browserLangs) {
       // Get the primary language code (e.g., 'es-CO' -> 'es', 'pt-BR' -> 'pt')
-      const primaryLang = browserLang.split('-')[0].toLowerCase();
-      
+      const primaryLang = browserLang.split("-")[0].toLowerCase();
+
       if (AVAILABLE_LANGS.includes(primaryLang)) {
         return primaryLang;
       }
     }
-    
+
     // Default to English if no match found
     return DEFAULT_LANG;
   }
@@ -97,7 +97,7 @@ const lang = getLangFromUrl(Astro.url);
   // Apply language to the page
   function applyLanguage(lang) {
     if (!translations[lang]) return;
-    
+
     // Update active state in UI
     const options = document.querySelectorAll(".language-option");
     options.forEach((opt) => {
@@ -117,10 +117,10 @@ const lang = getLangFromUrl(Astro.url);
   // Initialize language on page load
   function initLanguage() {
     const preferredLang = getPreferredLanguage();
-    
+
     // Save the detected/preferred language
     saveLanguagePreference(preferredLang);
-    
+
     // Apply if different from default (en)
     if (preferredLang !== DEFAULT_LANG) {
       applyLanguage(preferredLang);
@@ -128,7 +128,10 @@ const lang = getLangFromUrl(Astro.url);
       // Still update UI to show correct active state
       const options = document.querySelectorAll(".language-option");
       options.forEach((opt) => {
-        opt.classList.toggle("active", opt.getAttribute("data-lang") === preferredLang);
+        opt.classList.toggle(
+          "active",
+          opt.getAttribute("data-lang") === preferredLang
+        );
       });
     }
   }
@@ -182,14 +185,14 @@ const lang = getLangFromUrl(Astro.url);
   });
 
   // Initialize language detection on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLanguage);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLanguage);
   } else {
     initLanguage();
   }
 
   // Re-initialize on Astro page transitions
-  document.addEventListener('astro:page-load', initLanguage);
+  document.addEventListener("astro:page-load", initLanguage);
 </script>
 
 <style>

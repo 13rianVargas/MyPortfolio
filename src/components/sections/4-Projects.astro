@@ -450,9 +450,11 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
     gap: clamp(1.5rem, 4vw, 2.5rem);
     justify-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
   .project-card {
@@ -468,7 +470,7 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
   }
 
   .project-card:hover {

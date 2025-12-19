@@ -96,6 +96,7 @@
     font-family: system-ui, sans-serif;
     scroll-behavior: smooth;
     color-scheme: light;
+    min-width: 330px;
   }
   
   html.dark {
@@ -110,9 +111,9 @@
     color: var(--color-text-primary);
     transition: color 0.3s ease;
     min-height: 100vh;
-    min-width: 320px;
+    min-width: 330px;
     position: relative;
-    overflow-x: hidden;
+    overflow-x: auto;
   }
   
   * {
