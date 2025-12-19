@@ -170,6 +170,81 @@ const technologies = {
 
 <script src="../../i18n/translator.ts"></script>
 
+<script>
+  // Dock zoom effect for touch devices (iPhone/iPad)
+  function initDockTouchEffects() {
+    const dockItems = document.querySelectorAll(".dock-item");
+
+    // Check if it's a touch device
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    if (!isTouchDevice) return;
+
+    dockItems.forEach((item) => {
+      const htmlItem = item as HTMLElement;
+
+      // Handle touch start - apply zoom
+      htmlItem.addEventListener(
+        "touchstart",
+        (e) => {
+          // Remove active state from all other items
+          dockItems.forEach((otherItem) => {
+            if (otherItem !== item) {
+              (otherItem as HTMLElement).classList.remove("touch-active");
+            }
+          });
+
+          // Add active state to current item
+          htmlItem.classList.add("touch-active");
+        },
+        { passive: true }
+      );
+
+      // Handle touch end - remove zoom after delay
+      htmlItem.addEventListener(
+        "touchend",
+        () => {
+          // Keep the effect visible for a moment
+          setTimeout(() => {
+            htmlItem.classList.remove("touch-active");
+          }, 300);
+        },
+        { passive: true }
+      );
+
+      // Handle touch cancel
+      htmlItem.addEventListener(
+        "touchcancel",
+        () => {
+          htmlItem.classList.remove("touch-active");
+        },
+        { passive: true }
+      );
+    });
+
+    // Remove active state when touching outside dock items
+    document.addEventListener(
+      "touchstart",
+      (e) => {
+        const target = e.target as Element;
+        if (!target.closest(".dock-item")) {
+          dockItems.forEach((item) => {
+            (item as HTMLElement).classList.remove("touch-active");
+          });
+        }
+      },
+      { passive: true }
+    );
+  }
+
+  // Initialize on DOM ready
+  document.addEventListener("DOMContentLoaded", initDockTouchEffects);
+
+  // Re-initialize on Astro page transitions (if using View Transitions)
+  document.addEventListener("astro:page-load", initDockTouchEffects);
+</script>
+
 <style>
   .tech-section {
     min-height: 100vh;
@@ -339,16 +414,23 @@ const technologies = {
     }
   }
 
-  /* Touch device adjustments - simpler interaction */
-  @media (hover: none) or (pointer: coarse) {
-    .dock-item:active {
-      transform: scale(1.15);
+  /* Touch device adjustments - JavaScript controlled */
+  @media (hover: none), (pointer: coarse) {
+    .dock-item.touch-active {
+      transform: scale(1.5) translateY(-12px);
+      margin: 0 12px;
+      z-index: 10;
     }
 
-    .dock-item:active .dock-tooltip {
+    .dock-item.touch-active .dock-tooltip {
       opacity: 1;
       transform: translateX(-50%) scale(1);
-      top: -45px;
+      top: -50px;
+    }
+
+    /* Fallback for :active (brief touch feedback) */
+    .dock-item:active:not(.touch-active) {
+      transform: scale(1.2);
     }
   }
 </style>
