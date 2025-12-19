@@ -172,8 +172,11 @@ const technologies = {
 
 <script>
   // Dock zoom effect for touch devices (iPhone/iPad)
+  // Supports both tap and swipe/drag interactions like macOS dock
   function initDockTouchEffects() {
     const dockItems = document.querySelectorAll(".dock-item");
+    let currentActiveItem: HTMLElement | null = null;
+    let isDragging = false;
 
     // Check if it's a touch device
     const isTouchDevice =
@@ -181,58 +184,88 @@ const technologies = {
 
     if (!isTouchDevice) return;
 
+    // Get the dock item element at a given touch point
+    function getItemAtPoint(x: number, y: number): HTMLElement | null {
+      const elementsAtPoint = document.elementsFromPoint(x, y);
+      for (const el of elementsAtPoint) {
+        const dockItem = el.closest(".dock-item") as HTMLElement;
+        if (dockItem) return dockItem;
+      }
+      return null;
+    }
+
+    // Activate a dock item (apply zoom effect)
+    function activateItem(item: HTMLElement | null) {
+      if (currentActiveItem === item) return;
+
+      // Deactivate previous item
+      if (currentActiveItem) {
+        currentActiveItem.classList.remove("touch-active");
+      }
+
+      // Activate new item
+      currentActiveItem = item;
+      if (item) {
+        item.classList.add("touch-active");
+      }
+    }
+
+    // Deactivate all items
+    function deactivateAll() {
+      dockItems.forEach((item) => {
+        (item as HTMLElement).classList.remove("touch-active");
+      });
+      currentActiveItem = null;
+      isDragging = false;
+    }
+
+    // Handle touch start on dock items
     dockItems.forEach((item) => {
       const htmlItem = item as HTMLElement;
 
-      // Handle touch start - apply zoom
       htmlItem.addEventListener(
         "touchstart",
         (e) => {
-          // Remove active state from all other items
-          dockItems.forEach((otherItem) => {
-            if (otherItem !== item) {
-              (otherItem as HTMLElement).classList.remove("touch-active");
-            }
-          });
-
-          // Add active state to current item
-          htmlItem.classList.add("touch-active");
-        },
-        { passive: true }
-      );
-
-      // Handle touch end - remove zoom after delay
-      htmlItem.addEventListener(
-        "touchend",
-        () => {
-          // Keep the effect visible for a moment
-          setTimeout(() => {
-            htmlItem.classList.remove("touch-active");
-          }, 300);
-        },
-        { passive: true }
-      );
-
-      // Handle touch cancel
-      htmlItem.addEventListener(
-        "touchcancel",
-        () => {
-          htmlItem.classList.remove("touch-active");
+          isDragging = true;
+          activateItem(htmlItem);
         },
         { passive: true }
       );
     });
 
-    // Remove active state when touching outside dock items
+    // Handle touch move - detect which item is under the finger
     document.addEventListener(
-      "touchstart",
+      "touchmove",
       (e) => {
-        const target = e.target as Element;
-        if (!target.closest(".dock-item")) {
-          dockItems.forEach((item) => {
-            (item as HTMLElement).classList.remove("touch-active");
-          });
+        if (!isDragging) return;
+
+        const touch = e.touches[0];
+        const itemUnderFinger = getItemAtPoint(touch.clientX, touch.clientY);
+        activateItem(itemUnderFinger);
+      },
+      { passive: true }
+    );
+
+    // Handle touch end - keep effect briefly then remove
+    document.addEventListener(
+      "touchend",
+      () => {
+        if (currentActiveItem) {
+          // Keep the effect visible for a moment
+          setTimeout(() => {
+            deactivateAll();
+          }, 400);
         }
+        isDragging = false;
+      },
+      { passive: true }
+    );
+
+    // Handle touch cancel
+    document.addEventListener(
+      "touchcancel",
+      () => {
+        deactivateAll();
       },
       { passive: true }
     );
