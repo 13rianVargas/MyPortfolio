@@ -35,7 +35,7 @@ const technologies = {
     { name: "GitHub", icon: "/icons/github.svg" },
 
     //{ name: "Docker", icon: "docker.svg" },
-    { name: "Linux", icon: "linux.svg" },
+    { name: "Linux CLI", icon: "linux.svg" },
     //{ name: "CI/CD (GitHub Actions)", icon: "github-actions.svg" },
 
     //{ name: "AWS (EC2, S3, RDS)", icon: "aws.svg" },
@@ -229,7 +229,7 @@ const technologies = {
           isDragging = true;
           activateItem(htmlItem);
         },
-        { passive: true }
+        { passive: true },
       );
     });
 
@@ -243,7 +243,7 @@ const technologies = {
         const itemUnderFinger = getItemAtPoint(touch.clientX, touch.clientY);
         activateItem(itemUnderFinger);
       },
-      { passive: true }
+      { passive: true },
     );
 
     // Handle touch end - keep effect briefly then remove
@@ -258,7 +258,7 @@ const technologies = {
         }
         isDragging = false;
       },
-      { passive: true }
+      { passive: true },
     );
 
     // Handle touch cancel
@@ -267,7 +267,7 @@ const technologies = {
       () => {
         deactivateAll();
       },
-      { passive: true }
+      { passive: true },
     );
   }
 

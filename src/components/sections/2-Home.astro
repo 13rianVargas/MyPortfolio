@@ -58,7 +58,13 @@ const { t } = Astro.props;
               <h2 class="employee-role" data-translation-key="home.role">
                 {t("home.role")}
               </h2>
-              <div class="employee-id">ID: 000-013</div>
+              <div
+                class="employee-id"
+                title={t("home.tooltipDecoration")}
+                data-translation-key-title="home.tooltipDecoration"
+              >
+                ID: 000-013
+              </div>
             </div>
           </div>
         </div>
@@ -86,7 +92,12 @@ const { t } = Astro.props;
             </a>
           </div>
           <div class="card-security">
-            <div class="security-chip"></div>
+            <div
+              class="security-chip"
+              title={t("home.tooltipDecoration")}
+              data-translation-key-title="home.tooltipDecoration"
+            >
+            </div>
             <span class="security-text" data-translation-key="home.securityText"
               >{t("home.securityText")}</span
             >
@@ -190,7 +201,11 @@ const { t } = Astro.props;
             </div>
           </div>
           <div class="card-security">
-            <div class="security-badge">
+            <div
+              class="security-badge"
+              title={t("home.tooltipDecoration")}
+              data-translation-key-title="home.tooltipDecoration"
+            >
               <span class="badge-text" data-translation-key="home.badgeText"
                 >{t("home.badgeText")}</span
               >
@@ -353,7 +368,7 @@ const { t } = Astro.props;
      */
     updateAll() {
       const flipTextElements = document.querySelectorAll(
-        CONFIG.SELECTORS.flipText
+        CONFIG.SELECTORS.flipText,
       );
       const deviceType = DeviceDetector.getDeviceType();
       const newText = LanguageManager.getFlipText(deviceType);
@@ -424,7 +439,8 @@ const { t } = Astro.props;
     /* ===== FLUID CARD DIMENSIONS ===== */
     /* Card scales fluidly from mobile (280px) to desktop (420px) */
     --card-width: clamp(280px, 45vw, 420px);
-    --card-height: clamp(450px, 70vh, 620px);
+    /* Fixed height based on viewport width to prevent ANY movement on mobile scroll */
+    --card-height: clamp(450px, 90vw, 620px);
     --card-perspective: 1000px;
     --card-border-radius: clamp(16px, 3vw, 20px);
 
@@ -534,7 +550,8 @@ const { t } = Astro.props;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    /* Changed min-height from 100vh to 100svh for better mobile stability */
+    min-height: 100svh;
     padding: var(--section-padding);
     background: transparent;
     perspective: var(--card-perspective);
@@ -558,7 +575,8 @@ const { t } = Astro.props;
    * ======================================== */
   .business-card {
     width: var(--card-width);
-    height: var(--card-height);
+    /* Auto height based on content instead of fixed */
+    /* height: var(--card-height); */
     position: relative;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
@@ -607,9 +625,9 @@ const { t } = Astro.props;
    * ======================================== */
   .card-front,
   .card-back {
-    position: absolute;
+    /* Position removed from shared style to allow different positioning */
     width: 100%;
-    height: 100%;
+    /* Height removed to allow content to dictate height */
     /* Critical: backface-visibility for proper 3D flip on Safari/iOS */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -636,11 +654,16 @@ const { t } = Astro.props;
 
   /* Front face - default position */
   .card-front {
+    position: relative; /* Driven by content */
     z-index: 2;
   }
 
   /* Back face - rotated 180 degrees */
   .card-back {
+    position: absolute; /* Overlays front */
+    top: 0;
+    left: 0;
+    height: 100%; /* Matches container height */
     transform: rotateY(180deg) translateZ(0);
     -webkit-transform: rotateY(180deg) translateZ(0);
     /* Glass effect inherited from .card-front, .card-back */
@@ -660,6 +683,8 @@ const { t } = Astro.props;
     gap: var(--element-gap);
     position: relative;
     overflow: hidden;
+    /* Prevent shrinking when viewport changes */
+    flex-shrink: 0;
   }
 
   .back-header {
@@ -890,10 +915,11 @@ const { t } = Astro.props;
    * ======================================== */
   .card-body {
     padding: var(--body-padding);
-    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* Prevent expansion/shrinking when mobile viewport changes */
+    flex: 0 0 auto;
   }
 
   .profile-section {
@@ -901,6 +927,8 @@ const { t } = Astro.props;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    /* Prevent this section from growing excessively */
+    flex-shrink: 0;
   }
 
   /* Professional profile photo with enhanced styling */
@@ -964,6 +992,8 @@ const { t } = Astro.props;
     border-radius: 20px;
     display: inline-block;
     border: var(--border-width-thin) solid var(--color-border);
+    cursor: default;
+    user-select: none;
   }
 
   /* ========================================
@@ -1000,6 +1030,12 @@ const { t } = Astro.props;
     height: 100%;
     object-fit: contain;
     border-radius: 8px;
+  }
+
+  /* Ensure QR is visible in dark mode by using a softer cream background */
+  :global(.dark) .qr-placeholder {
+    background: #fdf6e3;
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   /* Hover effect for QR container */
@@ -1079,6 +1115,8 @@ const { t } = Astro.props;
     background: var(--color-bg-secondary);
     padding: var(--footer-padding);
     margin-top: auto;
+    /* Prevent shrinking when viewport changes */
+    flex-shrink: 0;
   }
 
   /* Contact button container with consistent spacing */
@@ -1158,6 +1196,11 @@ const { t } = Astro.props;
     transition: var(--transition-hover);
   }
 
+  /* In dark mode, icons should be white by default */
+  :global(.dark) .contact-btn img {
+    filter: brightness(0) invert(1);
+  }
+
   /* Icon color inversion on hover for better contrast */
   .contact-btn:hover img {
     filter: brightness(0) invert(1);
@@ -1214,6 +1257,8 @@ const { t } = Astro.props;
     border-radius: 4px;
     position: relative;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    cursor: default;
+    user-select: none;
   }
 
   /* Inner chip detail for realistic effect */
@@ -1237,11 +1282,15 @@ const { t } = Astro.props;
   .security-badge {
     background: var(--gradient-security-badge);
     color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
+    padding: 0.2rem 1rem 0.2rem 0.6rem;
     font-size: var(--text-security);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.1em;
+    cursor: default;
+    user-select: none;
+    /* Non-button shape: a pointed tag/badge */
+    clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
+    border-radius: 2px 0 0 2px;
   }
 
   /* Badge text with enhanced readability */
@@ -1281,15 +1330,21 @@ const { t } = Astro.props;
 
     .contact-links {
       flex-direction: row;
+      gap: 0.5rem;
     }
 
     .contact-btn {
-      padding: 0.4rem;
-      gap: 0.2rem;
+      padding: 0.5rem 0.2rem;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+      text-align: center;
+      min-height: 44px;
     }
 
     .contact-btn span {
-      display: none;
+      display: inline-block;
+      font-size: 0.75rem;
+      line-height: 1;
     }
   }
 
@@ -1297,8 +1352,8 @@ const { t } = Astro.props;
    * DARK MODE ENHANCEMENTS
    * Theme-specific visual adjustments
    * ======================================== */
-  .dark .card-front,
-  .dark .card-back {
+  :global(.dark) .card-front,
+  :global(.dark) .card-back {
     box-shadow:
       0 20px 40px rgba(0, 0, 0, 0.4),
       0 0 0 1px var(--color-border),

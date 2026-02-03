@@ -24,6 +24,13 @@ export function updateTranslations(translations: Record<string, string>) {
             updateAttribute(element, key, 'placeholder', translations);
         }
     });
+
+    document.querySelectorAll<HTMLElement>('[data-translation-key-title]').forEach(element => {
+        const key = element.dataset.translationKeyTitle;
+        if (key) {
+            updateAttribute(element, key, 'title', translations);
+        }
+    });
 }
 
 document.addEventListener('language-change', (event) => {

@@ -103,11 +103,11 @@ const yearsOfExperience = currentYear - startYear;
               </button>
               <div class="cv-options">
                 <a href="/Brian_Vargas_CV_ES.pdf" class="cv-option" download
-                  >ES</a
+                  >Español</a
                 >
                 <span class="separator">|</span>
                 <a href="/Brian_Vargas_CV_EN.pdf" class="cv-option" download
-                  >EN</a
+                  >English</a
                 >
               </div>
             </div>
@@ -373,13 +373,13 @@ const yearsOfExperience = currentYear - startYear;
   }
 
   .cv-wrapper.expanded {
-    min-width: 160px;
+    min-width: 200px;
     background: var(--color-accent);
   }
 
   @media (hover: hover) {
     .cv-wrapper:hover {
-      min-width: 160px;
+      min-width: 200px;
       background: var(--color-accent);
     }
   }
@@ -428,10 +428,11 @@ const yearsOfExperience = currentYear - startYear;
 
   .cv-options {
     position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.7rem;
     opacity: 0;
     transform: translateY(20px);
     transition:
@@ -465,13 +466,13 @@ const yearsOfExperience = currentYear - startYear;
     color: white;
     text-decoration: none;
     font-weight: 700;
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-    padding: 0.5rem;
-    transition: transform 0.2s;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.25rem;
+    transition: all 0.2s ease;
   }
 
   .cv-option:hover {
-    transform: scale(1.2);
+    color: #1e293b;
   }
 
   .separator {

@@ -94,6 +94,14 @@ function getNavUrl(sectionId: string): string {
       width 0.5s cubic-bezier(0.2, 0.6, 0.2, 1.15), opacity 0.3s ease;
 
     --animation-duration-shine: 10s;
+
+    /* Text stroke for better legibility on transparent backgrounds */
+    --nav-link-stroke: #ffffff;
+  }
+
+  /* Dark mode override for text stroke */
+  :global(.dark) {
+    --nav-link-stroke: #000000;
   }
 
   /* ========================================
@@ -179,6 +187,7 @@ function getNavUrl(sectionId: string): string {
     border-bottom-right-radius: 0;
     border-bottom: none;
     box-shadow: var(--glass-shadow-top);
+    background: color-mix(in srgb, var(--amber-color) 15%, var(--glass-bg));
     z-index: 55; /* Above mobile menu */
   }
 
@@ -262,13 +271,13 @@ function getNavUrl(sectionId: string): string {
     left: 50%;
     transform: translateX(-50%) translateY(-100px) scale(0.95);
     width: min(100vw - clamp(0.5rem, 2vw, 2rem), 1400px);
-    min-height: 200px;
+    min-height: 245px;
     z-index: 45; /* Below header z-index of 50 */
     opacity: 0;
     visibility: hidden;
     transition: var(--transition-menu);
     pointer-events: none;
-    background: var(--glass-bg);
+    background: color-mix(in srgb, var(--amber-color) 15%, var(--glass-bg));
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
     border-top: none; /* Seamless connection with header */
@@ -276,8 +285,21 @@ function getNavUrl(sectionId: string): string {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     box-shadow: var(--glass-shadow);
-    padding: var(--space-sm, 1rem);
+    padding: 2rem 1rem 1rem 1rem;
+    max-height: calc(100vh - var(--mobile-menu-top) - 2rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--amber-color) transparent;
     will-change: transform, opacity;
+  }
+
+  .mobile-menu::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .mobile-menu::-webkit-scrollbar-thumb {
+    background: var(--amber-color);
+    border-radius: 10px;
   }
 
   /* Mobile menu active state - seamless glassmorphic connection */
@@ -306,11 +328,15 @@ function getNavUrl(sectionId: string): string {
     display: inline-block;
     width: auto;
     min-width: 200px;
-    padding: 0.875rem 1.5rem;
-    margin: 0.25rem 0;
+    padding: 0.6rem 1.5rem;
+    margin: 0.1rem 0;
     text-align: center;
     transform: translateY(10px);
     opacity: 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    -webkit-text-stroke: 2px var(--nav-link-stroke);
+    paint-order: stroke fill;
   }
 
   /* Staggered animation for mobile menu links */
@@ -630,7 +656,7 @@ function getNavUrl(sectionId: string): string {
    * Safely get a DOM element by selector
    */
   function getElement<T extends HTMLElement = HTMLElement>(
-    selector: string
+    selector: string,
   ): T | null {
     return document.querySelector<T>(selector);
   }
@@ -639,7 +665,7 @@ function getNavUrl(sectionId: string): string {
    * Get multiple DOM elements by selector
    */
   function getElements<T extends HTMLElement = HTMLElement>(
-    selector: string
+    selector: string,
   ): NodeListOf<T> {
     return document.querySelectorAll<T>(selector);
   }
@@ -670,7 +696,7 @@ function getNavUrl(sectionId: string): string {
   function toggleClasses(
     elements: (HTMLElement | null)[],
     className: string,
-    action: "add" | "remove"
+    action: "add" | "remove",
   ): void {
     elements.forEach((element) => {
       if (element) {
@@ -810,7 +836,7 @@ function getNavUrl(sectionId: string): string {
   function moveOvalToActiveLink(sectionId: string): void {
     const ovalIndicator = getElement(SELECTORS.ovalIndicator);
     const activeLink = getElement<HTMLElement>(
-      `a[data-section="${sectionId}"]`
+      `a[data-section="${sectionId}"]`,
     );
 
     if (!ovalIndicator || !activeLink) return;

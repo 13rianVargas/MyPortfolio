@@ -104,6 +104,7 @@ const { t } = Astro.props;
         aria-label="LinkedIn"
       >
         <img src="/icons/linkedin.svg" alt="LinkedIn" />
+        <span class="social-text">LinkedIn</span>
       </a>
       <a
         href="https://github.com/13rianVargas"
@@ -112,6 +113,7 @@ const { t } = Astro.props;
         aria-label="GitHub"
       >
         <img src="/icons/github.svg" alt="GitHub" />
+        <span class="social-text">GitHub</span>
       </a>
     </div>
 
@@ -165,7 +167,7 @@ const { t } = Astro.props;
         if (translations["contactme.send"]) {
           submitBtn.setAttribute(
             "data-original-text",
-            translations["contactme.send"]
+            translations["contactme.send"],
           );
         }
       }
@@ -484,27 +486,39 @@ const { t } = Astro.props;
   }
 
   .social-link {
-    width: clamp(40px, 8vw, 50px);
-    height: clamp(40px, 8vw, 50px);
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
-    border-radius: 50%;
+    border-radius: 30px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    font-weight: 500;
   }
 
   .social-link:hover {
     background: var(--color-accent);
+    color: white;
     transform: translateY(-5px);
   }
 
+  .social-text {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+
   .social-link img {
-    width: clamp(20px, 4vw, 24px);
-    height: clamp(20px, 4vw, 24px);
+    width: clamp(18px, 4vw, 22px);
+    height: clamp(18px, 4vw, 22px);
     filter: var(--icon-filter);
     transition: filter 0.3s ease;
+  }
+
+  /* Ensure icons are white in dark mode */
+  :global(.dark) .social-link img {
+    filter: brightness(0) invert(1);
   }
 
   .social-link:hover img {
