@@ -130,7 +130,7 @@ const lang = getLangFromUrl(Astro.url);
       options.forEach((opt) => {
         opt.classList.toggle(
           "active",
-          opt.getAttribute("data-lang") === preferredLang
+          opt.getAttribute("data-lang") === preferredLang,
         );
       });
     }
@@ -196,6 +196,14 @@ const lang = getLangFromUrl(Astro.url);
 </script>
 
 <style>
+  :root {
+    --nav-link-stroke: #ffffff;
+  }
+
+  :global(.dark) {
+    --nav-link-stroke: #000000;
+  }
+
   .language-dropdown-container {
     position: relative;
     display: inline-block;
@@ -227,8 +235,9 @@ const lang = getLangFromUrl(Astro.url);
     top: calc(100% + 1.5rem);
     left: 50%;
     width: max-content;
-    background: var(--glass-bg);
+    background: color-mix(in srgb, var(--amber-color) 15%, var(--glass-bg));
     backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     box-shadow: var(--glass-shadow);
@@ -267,19 +276,30 @@ const lang = getLangFromUrl(Astro.url);
     color: var(--color-text-primary);
     cursor: pointer;
     border-radius: 8px;
-    transition: background 0.2s ease;
     font-size: 0.9rem;
     text-align: left;
+    /* Ensure all color properties transition simultaneously */
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      -webkit-text-stroke 0.2s ease;
   }
 
   .language-option:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--amber-bg);
+    color: var(--amber-color);
   }
 
   .language-option.active {
     background: var(--amber-bg);
     color: var(--amber-color);
     font-weight: 600;
+  }
+
+  /* Fix for active items contrast in light mode - force black stroke on yellow text */
+  :global(html:not(.dark)) .language-option.active .lang-name,
+  :global(html:not(.dark)) .language-option:hover .lang-name {
+    -webkit-text-stroke: 1.5px #000000;
   }
 
   .lang-flag-img {
@@ -292,6 +312,11 @@ const lang = getLangFromUrl(Astro.url);
 
   .lang-name {
     font-size: 0.85rem;
+    font-weight: 700;
+    -webkit-text-stroke: 1.5px var(--nav-link-stroke);
+    paint-order: stroke fill;
+    /* Explicitly transition text stroke in sync with parent */
+    transition: -webkit-text-stroke 0.2s ease;
   }
 
   /* Dark mode adjustments */

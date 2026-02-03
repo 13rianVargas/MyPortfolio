@@ -19,8 +19,8 @@ const { t } = Astro.props;
             class="flip-hint"
             onclick="this.closest('.business-card').classList.toggle('flipped')"
           >
-            <span class="flip-text" data-translation-key="home.clickToFlip"
-              >{t("home.clickToFlip")}</span
+            <span class="flip-text" data-translation-key="home.flipCardButton"
+              >{t("home.flipCardButton")}</span
             >
             <div class="flip-icon">
               <svg
@@ -116,8 +116,8 @@ const { t } = Astro.props;
             class="flip-hint"
             onclick="this.closest('.business-card').classList.toggle('flipped')"
           >
-            <span class="flip-text" data-translation-key="home.tapToFlip"
-              >{t("home.tapToFlip")}</span
+            <span class="flip-text" data-translation-key="home.flipCardButton"
+              >{t("home.flipCardButton")}</span
             >
             <div class="flip-icon">
               <svg
@@ -220,6 +220,72 @@ const { t } = Astro.props;
   </div>
 </section>
 
+<!-- QR Code Modal Preview -->
+<div id="qr-modal" class="qr-modal">
+  <div class="qr-modal-overlay"></div>
+  <div class="qr-modal-content">
+    <button id="close-qr-modal" class="close-modal-btn" aria-label="Close">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="qr-modal-image-container">
+      <img src={portfolioQR.src} alt="QR Code Preview" class="qr-modal-image" />
+    </div>
+    <div class="qr-modal-actions">
+      <button id="share-qr-btn" class="modal-action-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+          <polyline points="16 6 12 2 8 6"></polyline>
+          <line x1="12" y1="2" x2="12" y2="15"></line>
+        </svg>
+        <span data-translation-key="home.shareQR">{t("home.shareQR")}</span>
+      </button>
+      <button id="download-qr-btn" class="modal-action-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span data-translation-key="home.downloadQR"
+          >{t("home.downloadQR")}</span
+        >
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
   /**
    * ========================================
@@ -244,188 +310,164 @@ const { t } = Astro.props;
   // Centralized configuration for easy maintenance
   // ========================================
   const CONFIG = {
-    // Device detection parameters
-    DEVICE_DETECTION: {
-      mobileBreakpoint: 768,
-      mobileUserAgents:
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i,
-      touchPointsThreshold: 1,
-    },
-
-    // Internationalized text content for different languages and device types
-    FLIP_TEXTS: {
-      es: {
-        mobile: "Toca para voltear",
-        desktop: "Clic para voltear",
-      },
-      en: {
-        mobile: "Tap to flip",
-        desktop: "Click to flip",
-      },
-    },
-
     // DOM element selectors
     SELECTORS: {
       flipText: ".flip-text",
       documentElement: document.documentElement,
     },
-
-    // Default fallback values for error handling
-    DEFAULTS: {
-      language: "es",
-      deviceType: "desktop",
-    },
   };
 
   /**
    * ========================================
-   * DEVICE DETECTION MODULE
+   * FLIP ICON ANIMATION MANAGEMENT
    * ========================================
-   * Handles detection of user's device type for adaptive UI
+   * Handles dynamic interactions for the flip icon
    */
-  const DeviceDetector = {
+  const FlipIconManager = {
     /**
-     * Determines if the current device is mobile using multiple detection methods
-     * @returns {boolean} True if mobile device is detected
+     * Placeholder for any future dynamic icon logic
+     * Currently handled primarily by CSS transitions
      */
-    isMobile() {
-      const { mobileUserAgents, mobileBreakpoint, touchPointsThreshold } =
-        CONFIG.DEVICE_DETECTION;
-
-      return (
-        // User agent string detection
-        mobileUserAgents.test(navigator.userAgent) ||
-        // Touch capability detection
-        (navigator.maxTouchPoints &&
-          navigator.maxTouchPoints > touchPointsThreshold) ||
-        // Screen width detection
-        window.innerWidth <= mobileBreakpoint
-      );
-    },
-
-    /**
-     * Returns device type as string for text lookup
-     * @returns {'mobile' | 'desktop'} Either 'mobile' or 'desktop'
-     */
-    getDeviceType(): "mobile" | "desktop" {
-      return this.isMobile() ? "mobile" : "desktop";
-    },
-  };
-
-  /**
-   * ========================================
-   * LANGUAGE MANAGEMENT MODULE
-   * ========================================
-   * Handles language detection and localized text retrieval
-   */
-  const LanguageManager = {
-    /**
-     * Retrieves the current document language from HTML lang attribute
-     * @returns {string} Language code (e.g., 'es', 'en')
-     */
-    getCurrentLanguage() {
-      return CONFIG.SELECTORS.documentElement.lang || CONFIG.DEFAULTS.language;
-    },
-
-    /**
-     * Gets the appropriate flip text based on current language and device type
-     * Uses type-safe lookups to prevent runtime errors
-     * @param {('mobile'|'desktop')} deviceType - Either 'mobile' or 'desktop'
-     * @returns {string} Localized flip instruction text
-     */
-    getFlipText(deviceType: "mobile" | "desktop"): string {
-      const currentLang = this.getCurrentLanguage();
-      const flipTexts = CONFIG.FLIP_TEXTS;
-
-      // Type-safe text retrieval with fallback handling
-      if (currentLang === "es" && flipTexts.es) {
-        return deviceType === "mobile"
-          ? flipTexts.es.mobile
-          : flipTexts.es.desktop;
-      } else if (currentLang === "en" && flipTexts.en) {
-        return deviceType === "mobile"
-          ? flipTexts.en.mobile
-          : flipTexts.en.desktop;
-      } else {
-        // Fallback to Spanish if language not found
-        return deviceType === "mobile"
-          ? flipTexts.es.mobile
-          : flipTexts.es.desktop;
-      }
-    },
-  };
-
-  /**
-   * ========================================
-   * FLIP TEXT UPDATER MODULE
-   * ========================================
-   * Manages dynamic text updates for flip hint elements
-   */
-  const FlipTextUpdater = {
-    /**
-     * Updates all flip text elements with appropriate content
-     * Based on current device type and document language
-     */
-    updateAll() {
-      const flipTextElements = document.querySelectorAll(
-        CONFIG.SELECTORS.flipText,
-      );
-      const deviceType = DeviceDetector.getDeviceType();
-      const newText = LanguageManager.getFlipText(deviceType);
-
-      // Update each flip text element found in the DOM
-      flipTextElements.forEach((element) => {
-        if (element && element.textContent !== newText) {
-          element.textContent = newText;
-        }
-      });
-    },
-
-    /**
-     * Initializes all event listeners for dynamic text updates
-     * Sets up observers for DOM changes, window resize, and language changes
-     */
-    initializeEventListeners() {
-      // Update text when DOM content is fully loaded
-      document.addEventListener("DOMContentLoaded", () => this.updateAll());
-
-      // Update on window resize to handle orientation changes and responsive breakpoints
-      window.addEventListener("resize", () => this.updateAll());
-
-      // Set up mutation observer for language attribute changes
-      this.initializeLanguageObserver();
-    },
-
-    /**
-     * Sets up a MutationObserver to watch for language attribute changes
-     * Automatically updates text when the document language is switched
-     */
-    initializeLanguageObserver() {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (
-            mutation.type === "attributes" &&
-            mutation.attributeName === "lang"
-          ) {
-            // Language changed, update all flip text elements
-            this.updateAll();
-          }
-        });
-      });
-
-      // Observe the document element for lang attribute changes
-      observer.observe(CONFIG.SELECTORS.documentElement, {
-        attributes: true,
-        attributeFilter: ["lang"],
-      });
+    initialize() {
+      // Icon rotation on hover is handled by CSS
     },
   };
 
   // ========================================
   // MODULE INITIALIZATION
-  // Start the flip text functionality when script loads
   // ========================================
-  FlipTextUpdater.initializeEventListeners();
+  FlipIconManager.initialize();
+
+  /**
+   * ========================================
+   * QR CODE MODAL PREVIEW LOGIC
+   * ========================================
+   */
+  const QRModalManager = {
+    selectors: {
+      qrContainer: ".qr-placeholder",
+      modal: "#qr-modal",
+      overlay: ".qr-modal-overlay",
+      closeBtn: "#close-qr-modal",
+      shareBtn: "#share-qr-btn",
+      downloadBtn: "#download-qr-btn",
+      qrImage: ".qr-modal-image",
+    },
+
+    init() {
+      const qrContainer = document.querySelector(this.selectors.qrContainer);
+      const modal = document.querySelector(this.selectors.modal);
+      const overlay = document.querySelector(this.selectors.overlay);
+      const closeBtn = document.querySelector(this.selectors.closeBtn);
+      const shareBtn = document.querySelector(this.selectors.shareBtn);
+      const downloadBtn = document.querySelector(this.selectors.downloadBtn);
+      const qrImage = document.querySelector(this.selectors.qrImage);
+
+      if (!qrContainer || !modal || !overlay || !closeBtn) return;
+
+      qrContainer.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.openModal(modal);
+      });
+
+      overlay.addEventListener("click", () => this.closeModal(modal));
+      closeBtn.addEventListener("click", () => this.closeModal(modal));
+
+      // Share functionality
+      if (shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+          const shareData = {
+            title: document.title,
+            text: "Check out my portfolio!",
+            url: window.location.href,
+          };
+
+          try {
+            if (navigator.share) {
+              await navigator.share(shareData);
+            } else {
+              // Fallback: Copy link to clipboard
+              await navigator.clipboard.writeText(window.location.href);
+              alert("Portfolio link copied to clipboard!");
+            }
+          } catch (err) {
+            console.error("Error sharing:", err);
+          }
+        });
+      }
+
+      // Download functionality
+      if (downloadBtn && qrImage) {
+        downloadBtn.addEventListener("click", () => {
+          const originalSrc = (qrImage as HTMLImageElement).src;
+          const img = new Image();
+
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            // Set a high resolution for the QR (1024x1024)
+            const size = 1024;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext("2d");
+
+            if (ctx) {
+              // Draw white background (important for QR scanners)
+              ctx.fillStyle = "white";
+              ctx.fillRect(0, 0, size, size);
+              // Draw the SVG image onto the canvas
+              ctx.drawImage(img, 0, 0, size, size);
+
+              try {
+                // Convert canvas to PNG Data URL
+                const pngUrl = canvas.toDataURL("image/png");
+                const downloadLink = document.createElement("a");
+                downloadLink.href = pngUrl;
+                downloadLink.download = "BrianVargasPortfolioQR.png";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+              } catch (e) {
+                console.error("Error generating PNG:", e);
+                // Fallback: download as SVG if PNG conversion fails
+                const link = document.createElement("a");
+                link.href = originalSrc;
+                link.download = "BrianVargasPortfolioQR.svg";
+                link.click();
+              }
+            }
+          };
+
+          img.onerror = () => {
+            console.error("Failed to load QR image for conversion");
+          };
+
+          img.src = originalSrc;
+        });
+      }
+
+      // Close on Escape key
+      document.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+          this.closeModal(modal);
+        }
+      });
+    },
+
+    openModal(modal: Element) {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+    },
+
+    closeModal(modal: Element) {
+      modal.classList.remove("active");
+      document.body.style.overflow = ""; // Restore scrolling
+    },
+  };
+
+  // Initialize on DOM ready
+  document.addEventListener("DOMContentLoaded", () => QRModalManager.init());
+  // Re-initialize for View Transitions
+  document.addEventListener("astro:page-load", () => QRModalManager.init());
 </script>
 
 <script src="../../i18n/translator.ts"></script>
@@ -757,10 +799,7 @@ const { t } = Astro.props;
    * User guidance for card interaction with adaptive text
    * ======================================== */
   .flip-hint {
-    position: absolute;
-    top: 50%;
-    right: var(--element-gap);
-    transform: translateY(-50%);
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -775,16 +814,17 @@ const { t } = Astro.props;
     transition: all 0.3s ease;
     backdrop-filter: blur(4px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
 
   .flip-hint:hover {
     background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-50%) scale(1.05);
+    transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   }
 
   .flip-hint:active {
-    transform: translateY(-50%) scale(0.95);
+    transform: scale(0.95);
   }
 
   .flip-text {
@@ -810,7 +850,6 @@ const { t } = Astro.props;
 
   .flip-icon {
     font-size: var(--flip-icon-size);
-    margin-top: 0.3rem;
     animation: rotate var(--animation-duration-rotate) ease-in-out infinite;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
   }
@@ -957,7 +996,7 @@ const { t } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(1.35);
+    transform: scale(1.2) translateY(5%);
   }
 
   .profile-info {
@@ -1022,6 +1061,7 @@ const { t } = Astro.props;
     overflow: hidden;
     padding: 0.5rem;
     transition: var(--transition-hover);
+    cursor: pointer;
   }
 
   /* QR code image with optimized display */
@@ -1040,7 +1080,7 @@ const { t } = Astro.props;
 
   /* Hover effect for QR container */
   .qr-placeholder:hover {
-    transform: scale(1.02);
+    transform: scale(1.15);
     box-shadow: var(--shadow-hover);
   }
 
@@ -1052,6 +1092,143 @@ const { t } = Astro.props;
     font-style: italic;
     margin: 0;
     line-height: 1.3;
+  }
+
+  /* ========================================
+   * QR CODE MODAL PREVIEW
+   * Full-screen preview logic for QR code
+   * ======================================== */
+  .qr-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .qr-modal.active {
+    display: flex;
+  }
+
+  .qr-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+  }
+
+  .qr-modal-content {
+    position: relative;
+    z-index: 10000;
+    max-width: min(500px, 90vw);
+    width: 100%;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .qr-modal.active .qr-modal-content {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .qr-modal-image-container {
+    background: #fdf6e3; /* Light background for QR visibility */
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .qr-modal-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(1.1); /* Slightly increase brightness */
+  }
+
+  .qr-modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  .modal-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-action-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .modal-action-btn:active {
+    transform: translateY(0);
+  }
+
+  .close-modal-btn {
+    position: absolute;
+    top: -2.5rem;
+    right: -2.5rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .close-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+  }
+
+  /* Responsive adjustments for modal */
+  @media (max-width: 480px) {
+    .qr-modal-image-container {
+      padding: 1.5rem;
+    }
+    .close-modal-btn {
+      top: -3.5rem;
+      right: 50%;
+      transform: translateX(50%);
+    }
+    .close-modal-btn:hover {
+      transform: translateX(50%) scale(1.1);
+    }
   }
 
   /* ========================================
