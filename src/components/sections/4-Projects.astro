@@ -5,14 +5,22 @@ const { t } = Astro.props;
 const REPOSITORIES = [
   {
     slug: "K-Forge/KForge-Home",
-    tech: ["Angular", "TypeScript", "Tailwind CSS"],
+    tech: ["Angular", "TypeScript", "Tailwind CSS", "HTML", "CSS"],
   },
   {
     slug: "K-Forge/K-APP",
   },
   {
     slug: "K-Forge/Gretta",
-    tech: ["Angular", "TypeScript", "Java", "Spring Boot", "MySQL"],
+    tech: [
+      "Angular",
+      "TypeScript",
+      "Java",
+      "Spring Boot",
+      "MySQL",
+      "HTML",
+      "CSS",
+    ],
   },
   {
     slug: "K-Forge/Tienda-K",
@@ -22,6 +30,7 @@ const REPOSITORIES = [
   },
   {
     slug: "13rianVargas/MyPortfolio",
+    tech: ["Astro", "TypeScript", "Tailwind CSS", "HTML", "CSS"],
   },
 ];
 
@@ -165,10 +174,22 @@ async function fetchProjectData(repoConfig: any) {
     const imageUrl = repoConfig.image || screenshotUrl || null;
 
     // Process Tech Stack
-    let techStack =
-      repoConfig.tech ||
+    const detectedTech =
       (languages.length > 0 ? languages : data.topics) ||
       [data.language].filter(Boolean);
+
+    let techStack = [
+      ...detectedTech.filter(Boolean),
+      ...(repoConfig.tech || []).filter(Boolean),
+    ];
+
+    // Remove duplicates while keeping first occurrence
+    techStack = techStack.filter(
+      (tech: string, index: number, list: string[]) =>
+        list.findIndex(
+          (item: string) => item.toLowerCase() === tech.toLowerCase(),
+        ) === index,
+    );
 
     // 1. Java -> Add Spring
     const hasJava = techStack.some(
@@ -205,13 +226,13 @@ async function fetchProjectData(repoConfig: any) {
     return {
       title: repoConfig.title || data.name,
       description: repoConfig.description || data.description,
-      tech: techStack,
       link: data.homepage, // Only if homepage is set
       github: data.html_url,
       image: imageUrl,
       stars: data.stargazers_count,
       forks: data.forks_count,
       ...repoConfig,
+      tech: techStack,
     };
   } catch (error) {
     console.error(`Error fetching ${repoConfig.slug}:`, error);
