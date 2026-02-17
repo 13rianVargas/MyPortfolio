@@ -50,7 +50,7 @@ export const ui = {
         "projects.title": "Projects",
         "projects.description":
             "Here are some of the projects I've worked on. Each one represents a challenge solved and a new skill mastered. Take a look at the code and see how I can contribute to your team!",
-        "projects.imageAbducted": "Image Abducted",
+        "projects.imageAbducted": "[WIP] Work In Progress",
         "projects.liveDemo": "Live Demo",
         "projects.code": "Code",
         "projects.liveDemoUnavailable": "Live demo unavailable",
@@ -117,7 +117,7 @@ export const ui = {
         "projects.title": "Proyectos",
         "projects.description":
             "Aquí presento algunos de los proyectos en los que he trabajado. Cada uno representa un desafío resuelto y una nueva habilidad dominada. ¡Echa un vistazo al código y descubre cómo puedo aportar valor a tu equipo!",
-        "projects.imageAbducted": "Imagen Abducida",
+        "projects.imageAbducted": "[WIP] En Construcción",
         "projects.liveDemo": "Demo en vivo",
         "projects.code": "Código",
         "projects.liveDemoUnavailable": "Demo no disponible",
@@ -184,7 +184,7 @@ export const ui = {
         "projects.title": "Projets",
         "projects.description":
             "Voici quelques-uns des projets sur lesquels j'ai travaillé. Chacun représente un défi relevé et une nouvelle compétence maîtrisée. Jetez un œil au code et voyez comment je peux contribuer à votre équipe !",
-        "projects.imageAbducted": "Image Enlevée",
+        "projects.imageAbducted": "[WIP] En Construction",
         "projects.liveDemo": "Démo en direct",
         "projects.code": "Code",
         "projects.liveDemoUnavailable": "Démo non disponible",
@@ -251,7 +251,7 @@ export const ui = {
         "projects.title": "Projetos",
         "projects.description":
             "Aqui estão alguns dos projetos em que trabalhei. Cada um representa um desafio resolvido e uma nova habilidade dominada. Dê uma olhada no código e veja como posso contribuir para a sua equipe!",
-        "projects.imageAbducted": "Imagem Abduzida",
+        "projects.imageAbducted": "[WIP] Em Construção",
         "projects.liveDemo": "Demo ao vivo",
         "projects.code": "Código",
         "projects.liveDemoUnavailable": "Demo indisponível",

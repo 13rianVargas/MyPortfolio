@@ -3,24 +3,26 @@ const { t } = Astro.props;
 
 // Configuration for projects to display
 const REPOSITORIES = [
-  // {
-  //   slug: "K-Forge/Tienda-K",
-  // },
-  // {
-  //   slug: "K-Forge/K-APP",
-  // },
-  // {
-  //   slug: "K-Forge/Gretta",
-  // },
   {
     slug: "K-Forge/KForge-Home",
+    tech: ["Angular", "TypeScript", "Tailwind CSS"],
+  },
+  {
+    slug: "K-Forge/K-APP",
+  },
+  {
+    slug: "K-Forge/Gretta",
+    tech: ["Angular", "TypeScript", "Java", "Spring Boot", "MySQL"],
+  },
+  {
+    slug: "K-Forge/Tienda-K",
   },
   {
     slug: "13rianVargas/SpemTraductor",
   },
-  // {
-  //   slug: "13rianVargas/MyPortfolio",
-  // },
+  {
+    slug: "13rianVargas/MyPortfolio",
+  },
 ];
 
 // Order of technologies for sorting
@@ -78,23 +80,20 @@ function getTechIconFilename(tech: string) {
   if (key.includes("astro")) return "astro.svg";
   if (key.includes("python")) return "python.svg";
   if (key.includes("java") && !key.includes("script")) return "java.svg";
-  if (
-    key.includes("plpgsql") ||
-    key.includes("postgres") ||
-    key.includes("sql")
-  )
+  if (key.includes("mysql")) return "mysql.svg";
+  if (key.includes("plpgsql") || key.includes("postgres"))
     return "postgresql.svg";
   if (key.includes("type") && key.includes("script")) return "typescript.svg";
   if (key.includes("java") && key.includes("script")) return "javascript.svg";
   if (key.includes("html")) return "html.svg";
   if (key.includes("scss") || key.includes("sass")) return "scss.svg";
+  if (key.includes("tailwind")) return "tailwind.svg";
   if (key.includes("css")) return "css.svg";
   if (key.includes("angular")) return "angular.svg";
   if (key.includes("docker")) return "docker.svg";
   if (key.includes("gitkraken")) return "gitkraken.svg";
   if (key.includes("github")) return "../github.svg";
   if (key.includes("git")) return "git.svg";
-  if (key.includes("mysql")) return "mysql.svg";
   if (key.includes("spring")) return "spring.svg";
 
   // Default: use the tech name as filename (e.g. "rust" -> "rust.svg")
@@ -147,19 +146,23 @@ async function fetchProjectData(repoConfig: any) {
       console.warn(`Could not fetch languages for ${repoConfig.slug}`);
     }
 
-    // Check if a cover image exists in the repo
-    let imageUrl = repoConfig.image;
-    if (!imageUrl) {
-      const potentialImage = `https://raw.githubusercontent.com/${repoConfig.slug}/${data.default_branch}/portfolio-cover.png`;
-      try {
-        const imgCheck = await fetch(potentialImage, { method: "HEAD" });
-        if (imgCheck.ok) {
-          imageUrl = potentialImage;
-        }
-      } catch (e) {
-        console.warn(`Could not check image for ${repoConfig.slug}`);
-      }
-    }
+    // Resolve project cover image:
+    // 1) Explicit image from config
+    // 2) Automatic screenshot from production URL (homepage)
+    // 3) GitHub Open Graph image (auto-generated per repository)
+    const productionUrl = repoConfig.link || data.homepage;
+    const normalizedProductionUrl = productionUrl
+      ? /^https?:\/\//i.test(productionUrl)
+        ? productionUrl
+        : `https://${productionUrl}`
+      : null;
+    const screenshotUrl = normalizedProductionUrl
+      ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(normalizedProductionUrl)}?w=1200`
+      : null;
+
+    // Only use explicit image or WordPress screenshot — no OG fallback.
+    // If neither exists, imageUrl stays null and the UFO placeholder shows.
+    const imageUrl = repoConfig.image || screenshotUrl || null;
 
     // Process Tech Stack
     let techStack =
@@ -235,44 +238,54 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
         projects.map((project: any) => (
           <div class="project-card">
             <div class="card-image">
-              {project.image ? (
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  class="project-img"
-                  loading="lazy"
-                />
-              ) : (
-                <div class="fun-placeholder ufo-scene">
-                  <div class="ufo-container">
-                    <div class="ufo-ship">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+              <div class="card-image-inner">
+                {project.image ? (
+                  <>
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      class="project-img"
+                      loading="lazy"
+                      data-project-title={project.title}
+                      data-project-slug={project.slug}
+                      onload="handleProjectImageLoad(this)"
+                      onerror="handleProjectImageError(this)"
+                    />
+                    <div class="fun-placeholder wip-scene image-fallback-hidden">
+                      <div class="construction-tape top-tape" />
+                      <div class="wip-content">
+                        <div class="hardhat">
+                          <img src="/icons/helmet.svg" alt="WIP" />
+                        </div>
+                        <span
+                          class="placeholder-text"
+                          data-translation-key="projects.imageAbducted"
+                        >
+                          {t("projects.imageAbducted")}
+                        </span>
+                      </div>
+                      <div class="construction-tape bottom-tape" />
+                    </div>
+                  </>
+                ) : (
+                  <div class="fun-placeholder wip-scene">
+                    <div class="construction-tape top-tape" />
+                    <div class="wip-content">
+                      <div class="hardhat">
+                        <img src="/icons/helmet.svg" alt="WIP" />
+                      </div>
+                      <span
+                        class="placeholder-text"
+                        data-translation-key="projects.imageAbducted"
                       >
-                        <path d="M2 12h20" />
-                        <path d="M7 12a5 5 0 0 1 10 0" />
-                        <path d="M4 12c0 3 2 5 8 5s8-2 8-5" />
-                        <circle cx="12" cy="12" r="1" fill="currentColor" />
-                      </svg>
+                        {t("projects.imageAbducted")}
+                      </span>
                     </div>
-                    <div class="beam-container">
-                      <div class="beam" />
-                    </div>
+                    <div class="construction-tape bottom-tape" />
                   </div>
-                  <span
-                    class="placeholder-text"
-                    data-translation-key="projects.imageAbducted"
-                  >
-                    {t("projects.imageAbducted")}
-                  </span>
-                </div>
-              )}
-              <div class="overlay" />
+                )}
+                <div class="overlay" />
+              </div>
             </div>
 
             <div class="card-content">
@@ -399,6 +412,29 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
       toast.className = toast.className.replace("show", "");
     }, 3000);
   }
+
+  function handleProjectImageLoad(img) {
+    // Image loaded successfully — no dynamic sizing needed,
+    // frame uses object-fit: cover to fill the area.
+  }
+
+  function handleProjectImageError(img) {
+    img.style.display = "none";
+
+    const fallback = img.nextElementSibling;
+    if (fallback && fallback.classList.contains("fun-placeholder")) {
+      fallback.style.display = "flex";
+    }
+
+    const projectTitle = img.dataset.projectTitle || "unknown-title";
+    const projectSlug = img.dataset.projectSlug || "unknown-slug";
+    const attemptedUrl = img.currentSrc || img.src;
+
+    console.warn(
+      `[Projects] Screenshot missing or unreachable for ${projectTitle} (${projectSlug})`,
+      attemptedUrl,
+    );
+  }
 </script>
 
 <script src="../../i18n/translator.ts"></script>
@@ -481,28 +517,60 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
   }
 
   .card-image {
-    height: clamp(150px, 25vw, 200px);
+    --media-frame-gap: clamp(0.5rem, 1.2vw, 0.75rem);
+    --media-radius: clamp(8px, 1.4vw, 14px);
+    aspect-ratio: 16 / 9;
+    max-height: 320px;
     width: 100%;
     position: relative;
+    padding: var(--media-frame-gap);
+    background:
+      radial-gradient(
+        circle at 15% 15%,
+        rgba(124, 58, 237, 0.15),
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 85% 85%,
+        rgba(59, 130, 246, 0.12),
+        transparent 40%
+      ),
+      rgba(2, 6, 23, 0.6);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  /* Inner frame that clips the image & hover zoom */
+  .card-image-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--media-radius);
     overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 6px 18px rgba(15, 23, 42, 0.3);
   }
 
   .project-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top center;
+    display: block;
     transition: transform 0.5s ease;
   }
 
   .project-card:hover .project-img {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.15);
     transition: background 0.3s ease;
+    z-index: 1;
   }
 
   .fun-placeholder {
@@ -512,107 +580,85 @@ const projects = await Promise.all(REPOSITORIES.map(fetchProjectData));
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    background: linear-gradient(to bottom, #0f172a, #334155);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
     overflow: hidden;
     position: relative;
+    border-radius: var(--media-radius);
   }
 
-  .ufo-container {
-    position: relative;
+  .image-fallback-hidden {
+    display: none;
+  }
+
+  /* === Construction tape stripes === */
+  .construction-tape {
+    width: 100%;
+    height: clamp(7px, 1.5vw, 10px);
+    background: repeating-linear-gradient(
+      -45deg,
+      #fbbf24,
+      #fbbf24 8px,
+      #1a1a1a 8px,
+      #1a1a1a 16px
+    );
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  .top-tape {
+    border-radius: var(--media-radius) var(--media-radius) 0 0;
+  }
+
+  .bottom-tape {
+    border-radius: 0 0 var(--media-radius) var(--media-radius);
+  }
+
+  /* === WIP center content === */
+  .wip-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: hover 3s ease-in-out infinite;
-  }
-
-  .ufo-ship {
-    width: clamp(60px, 12vw, 80px);
-    height: clamp(36px, 7vw, 48px);
-    color: #fbbf24;
-    position: relative;
+    justify-content: center;
+    gap: clamp(0.4rem, 1.5vw, 0.8rem);
     z-index: 2;
   }
 
-  .ufo-ship svg {
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+  .hardhat {
+    width: clamp(60px, 14vw, 90px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.35));
+    animation: hardhat-float 3s ease-in-out infinite;
   }
 
-  .beam-container {
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 100px;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .beam {
+  .hardhat img {
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      to bottom,
-      rgba(251, 191, 36, 0.3),
-      transparent
-    );
-    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-    animation: pulse-beam 2s infinite alternate;
   }
 
   .placeholder-text {
     font-family: monospace;
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
-    color: #fef3c7;
+    font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+    font-weight: 700;
+    color: #fbbf24;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    animation: glitch 1.5s infinite;
+    letter-spacing: 3px;
     z-index: 2;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    text-shadow:
+      0 0 8px rgba(251, 191, 36, 0.4),
+      0 1px 2px rgba(0, 0, 0, 0.6);
   }
 
-  @keyframes hover {
+  /* === Keyframes === */
+  @keyframes hardhat-float {
     0%,
     100% {
       transform: translateY(0);
     }
     50% {
       transform: translateY(-10px);
-    }
-  }
-
-  @keyframes pulse-beam {
-    0% {
-      opacity: 0.3;
-      transform: scaleY(0.9);
-    }
-    100% {
-      opacity: 0.7;
-      transform: scaleY(1.1);
-    }
-  }
-
-  @keyframes glitch {
-    0%,
-    90%,
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    92% {
-      opacity: 0.8;
-      transform: translateX(2px);
-    }
-    94% {
-      opacity: 1;
-      transform: translateX(-2px);
-    }
-    96% {
-      opacity: 0.5;
-      transform: translateX(0);
     }
   }
 
