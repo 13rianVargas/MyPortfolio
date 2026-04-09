@@ -28,6 +28,21 @@ Personal portfolio website showcasing my projects, skills, and professional expe
 - `src/layouts`: Responsive base layouts.
 - `public/icons/flags`: SVG assets for internationalization.
 
+## ⚙️ Local Setup
+
+```bash
+# Install tools (one-time)
+corepack enable && corepack prepare pnpm@latest --activate
+curl -fsSL https://bun.sh/install | bash
+
+# Install dependencies
+pnpm install
+
+# Run project scripts with Bun
+bun dev
+bun run build
+```
+
 ---
 
 Built with 💛 by [13rian Vargas](https://github.com/13rianVargas)
