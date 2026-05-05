@@ -1,35 +1,12 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    /* Language and Environment */
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "allowJs": true,
-    "jsx": "preserve",
-
-    /* Modules */
-    "module": "ESNext",
-    "resolveJsonModule": true,
-
-    /* Emit */
-    "noEmit": true,
     "sourceMap": true,
-
-    /* Interop Constraints */
-    "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-
-    /* Type Checking */
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-
-    /* Completeness */
-    "skipLibCheck": true
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     ".astro/types.d.ts",
