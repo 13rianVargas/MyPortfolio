@@ -240,6 +240,16 @@ const { t } = Astro.props;
       btn.addEventListener("click", () => {
         const flipped = card.classList.toggle("flipped");
         btn.setAttribute("aria-expanded", String(flipped));
+
+        card.classList.add("is-flipping");
+        const done = (e: TransitionEvent) => {
+          if (e.target !== card || e.propertyName !== "transform") return;
+          card.classList.remove("is-flipping");
+          card.removeEventListener("transitionend", done as EventListener);
+        };
+        card.addEventListener("transitionend", done as EventListener);
+        // Safety net: transitionend does not fire if the tab is backgrounded.
+        window.setTimeout(() => card.classList.remove("is-flipping"), 1000);
       });
     });
   }
@@ -559,12 +569,22 @@ const { t } = Astro.props;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .business-card:hover {
+    .business-card:not(.is-flipping):hover {
       transform: rotateY(-9deg) rotateX(3deg) scale(1.02);
     }
-    .business-card.flipped:hover {
+    .business-card.flipped:not(.is-flipping):hover {
       transform: rotateY(-189deg) rotateX(3deg) scale(1.02);
     }
+  }
+
+  /* Also ignore the pointer while the card turns, so moving onto it mid-flip
+   * cannot retrigger hover on the frame the transition ends. */
+  .business-card.is-flipping {
+    pointer-events: none;
+  }
+
+  .business-card.is-flipping .flip-hint {
+    pointer-events: auto;
   }
 
   /* Flat on touch: the tilt reads as a rendering glitch on small screens. */

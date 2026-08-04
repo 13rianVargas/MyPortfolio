@@ -17,8 +17,8 @@ export const ui = {
         "layout.home": "Home",
         "layout.about": "About",
         "layout.projects": "Projects",
-        "layout.technologies": "Stack",
-        "layout.credentials": "Credentials",
+        "layout.technologies": "Technologies",
+        "layout.credentials": "Education",
         "layout.awards": "Awards",
         "layout.contact": "Contact",
         "layout.footer": "Made by 13rian Vargas",
@@ -40,7 +40,6 @@ export const ui = {
         "home.shareQR": "Share",
         "home.downloadQR": "Download",
         "home.qrCopied": "Link copied to clipboard",
-        "home.tooltipDecoration": "This is not a button, just decoration",
         "home.factFocus": "Focus",
         "home.factFocusValue": "Backend · Microservices",
         "home.factStudy": "Education",
@@ -49,7 +48,7 @@ export const ui = {
         "home.factRoleValue": "Founder & Lead, K-Forge",
 
         "aboutme.eyebrow": "Profile",
-        "aboutme.title": "About Me",
+        "aboutme.title": "About",
         "aboutme.description":
             "I'm a software developer with 3+ years building applications, focused on Java and Spring Boot on the backend and full stack capable with Angular and TypeScript. I design REST APIs, model relational databases and deploy with Docker. My profile is hybrid: I bring networking (CCNA) and cybersecurity (CCST) foundations alongside cloud (Google Cloud).",
         "aboutme.downloadCV": "Download CV",
@@ -58,7 +57,7 @@ export const ui = {
         "aboutme.softSkills": "Soft Skills",
         "aboutme.experience": "Years of Experience",
         "aboutme.technologies": "Technologies",
-        "aboutme.certifications": "Certifications",
+        "aboutme.certifications": "Courses & certificates",
         "aboutme.skill.leadership": "Leadership & team management",
         "aboutme.skill.problemSolving": "Problem solving",
         "aboutme.skill.communication": "Effective communication",
@@ -70,13 +69,12 @@ export const ui = {
         "projects.title": "Projects",
         "projects.description":
             "Systems I designed, built and shipped. Each one solved a real problem for real users — the code is public where the client allows it.",
-        "projects.imageAbducted": "[WIP] Work In Progress",
         "projects.videoSoon": "Video soon",
         "projects.playVideo": "Play video walkthrough",
         "projects.liveDemo": "Live Demo",
+        "projects.prototype": "Prototype",
         "projects.watchDemo": "Watch demo",
         "projects.code": "Code",
-        "projects.liveDemoUnavailable": "No live demo for this project yet",
         "projects.repo.kforge.title": "K-Forge — Club landing page",
         "projects.repo.kforge":
             "Institutional site for the university software development club I founded and lead. Built with Angular and Tailwind, it pulls member projects live from the GitHub API.",
@@ -103,10 +101,9 @@ export const ui = {
         "technologies.tools": "Tools & DevOps",
 
         "credentials.eyebrow": "Verified",
-        "credentials.title": "Education & Certifications",
+        "credentials.title": "Education",
         "credentials.description":
             "Formal training and certifications, with the exams and scores behind them.",
-        "credentials.present": "Present",
         "credentials.highlight": "Highlight",
         "credentials.degree.title": "Systems Engineering",
         "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
@@ -144,8 +141,8 @@ export const ui = {
         "credentials.one.desc":
             "Programming and logic fundamentals with a focus on JavaScript and web development. This is where my path began.",
 
-        "awards.eyebrow": "Recognition",
-        "awards.title": "Awards & Recognition",
+        "awards.eyebrow": "Along the way",
+        "awards.title": "Awards",
         "awards.description":
             "Competitions, distinctions and decorations earned along the way.",
         "awards.cyber.title": "Cisco Cyber Challenge",
@@ -170,7 +167,7 @@ export const ui = {
             "The Scout Movement's highest youth recognition (BP) for exceptional leadership and commitment, and the Daniel Isaza Isaza decoration for distinguished service in the movement's development in Colombia.",
 
         "contactme.eyebrow": "Get in touch",
-        "contactme.title": "Contact Me",
+        "contactme.title": "Contact",
         "contactme.description":
             "Open to backend, full stack, DevOps and cybersecurity roles — and to any project with something new to learn. Write to me and I'll reply.",
         "contactme.name": "Name",
@@ -199,7 +196,7 @@ export const ui = {
         "layout.home": "Inicio",
         "layout.about": "Sobre mí",
         "layout.projects": "Proyectos",
-        "layout.technologies": "Stack",
+        "layout.technologies": "Tecnologías",
         "layout.credentials": "Formación",
         "layout.awards": "Reconocimientos",
         "layout.contact": "Contacto",
@@ -222,7 +219,6 @@ export const ui = {
         "home.shareQR": "Compartir",
         "home.downloadQR": "Descargar",
         "home.qrCopied": "Enlace copiado al portapapeles",
-        "home.tooltipDecoration": "Esto no es un botón, solo decoración",
         "home.factFocus": "Enfoque",
         "home.factFocusValue": "Backend · Microservicios",
         "home.factStudy": "Formación",
@@ -231,7 +227,7 @@ export const ui = {
         "home.factRoleValue": "Fundador y líder, K-Forge",
 
         "aboutme.eyebrow": "Perfil",
-        "aboutme.title": "Sobre Mí",
+        "aboutme.title": "Sobre mí",
         "aboutme.description":
             "Soy desarrollador de software con más de 3 años construyendo aplicaciones, enfocado en Java y Spring Boot en el backend y con capacidad full stack en Angular y TypeScript. Diseño APIs REST, modelo bases de datos relacionales y despliego con Docker. Mi perfil es híbrido: sumo fundamentos de redes (CCNA) y ciberseguridad (CCST) junto a cloud (Google Cloud).",
         "aboutme.downloadCV": "Descargar CV",
@@ -240,7 +236,7 @@ export const ui = {
         "aboutme.softSkills": "Habilidades Blandas",
         "aboutme.experience": "Años de Experiencia",
         "aboutme.technologies": "Tecnologías",
-        "aboutme.certifications": "Certificaciones",
+        "aboutme.certifications": "Cursos y certificados",
         "aboutme.skill.leadership": "Liderazgo y gestión de equipos",
         "aboutme.skill.problemSolving": "Resolución de problemas",
         "aboutme.skill.communication": "Comunicación efectiva",
@@ -252,13 +248,12 @@ export const ui = {
         "projects.title": "Proyectos",
         "projects.description":
             "Sistemas que diseñé, construí y puse en producción. Cada uno resolvió un problema real para usuarios reales — el código es público donde el cliente lo permite.",
-        "projects.imageAbducted": "[WIP] En Construcción",
         "projects.videoSoon": "Video pronto",
         "projects.playVideo": "Reproducir video demostrativo",
         "projects.liveDemo": "Demo en vivo",
+        "projects.prototype": "Prototipo",
         "projects.watchDemo": "Ver demo",
         "projects.code": "Código",
-        "projects.liveDemoUnavailable": "Este proyecto aún no tiene demo en vivo",
         "projects.repo.kforge.title": "K-Forge — Landing del club",
         "projects.repo.kforge":
             "Sitio institucional del club universitario de desarrollo que fundé y lidero. Hecho con Angular y Tailwind, trae los proyectos de los miembros en vivo desde la API de GitHub.",
@@ -285,10 +280,9 @@ export const ui = {
         "technologies.tools": "Herramientas y DevOps",
 
         "credentials.eyebrow": "Verificado",
-        "credentials.title": "Formación y Certificaciones",
+        "credentials.title": "Formación",
         "credentials.description":
             "Formación formal y certificaciones, con los exámenes y puntajes que las respaldan.",
-        "credentials.present": "Actualidad",
         "credentials.highlight": "Destacado",
         "credentials.degree.title": "Ingeniería de Sistemas",
         "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
@@ -326,7 +320,7 @@ export const ui = {
         "credentials.one.desc":
             "Fundamentos de programación y lógica con enfoque en JavaScript y desarrollo web. Aquí empezó mi camino.",
 
-        "awards.eyebrow": "Reconocimientos",
+        "awards.eyebrow": "En el camino",
         "awards.title": "Reconocimientos",
         "awards.description":
             "Competencias, distinciones y condecoraciones ganadas en el camino.",
@@ -352,7 +346,7 @@ export const ui = {
             "El máximo reconocimiento juvenil del Movimiento Scout (BP) por liderazgo y compromiso excepcionales, y la condecoración Daniel Isaza Isaza por servicio distinguido en el desarrollo del movimiento en Colombia.",
 
         "contactme.eyebrow": "Hablemos",
-        "contactme.title": "Contáctame",
+        "contactme.title": "Contacto",
         "contactme.description":
             "Abierto a roles de backend, full stack, DevOps y ciberseguridad — y a proyectos donde haya algo nuevo que aprender. Escríbeme y te respondo.",
         "contactme.name": "Nombre",
@@ -381,7 +375,7 @@ export const ui = {
         "layout.home": "Accueil",
         "layout.about": "À propos",
         "layout.projects": "Projets",
-        "layout.technologies": "Stack",
+        "layout.technologies": "Technologies",
         "layout.credentials": "Formation",
         "layout.awards": "Distinctions",
         "layout.contact": "Contact",
@@ -404,7 +398,6 @@ export const ui = {
         "home.shareQR": "Partager",
         "home.downloadQR": "Télécharger",
         "home.qrCopied": "Lien copié dans le presse-papiers",
-        "home.tooltipDecoration": "Ce n'est pas un bouton, juste une décoration",
         "home.factFocus": "Domaine",
         "home.factFocusValue": "Backend · Microservices",
         "home.factStudy": "Formation",
@@ -413,7 +406,7 @@ export const ui = {
         "home.factRoleValue": "Fondateur et responsable, K-Forge",
 
         "aboutme.eyebrow": "Profil",
-        "aboutme.title": "À propos de moi",
+        "aboutme.title": "À propos",
         "aboutme.description":
             "Je suis développeur logiciel avec plus de 3 ans à construire des applications, axé sur Java et Spring Boot côté backend et capable en full stack avec Angular et TypeScript. Je conçois des API REST, modélise des bases de données relationnelles et déploie avec Docker. Mon profil est hybride : j'apporte des bases en réseaux (CCNA) et cybersécurité (CCST) ainsi qu'en cloud (Google Cloud).",
         "aboutme.downloadCV": "Télécharger le CV",
@@ -422,7 +415,7 @@ export const ui = {
         "aboutme.softSkills": "Compétences humaines",
         "aboutme.experience": "Années d'expérience",
         "aboutme.technologies": "Technologies",
-        "aboutme.certifications": "Certifications",
+        "aboutme.certifications": "Cours et certificats",
         "aboutme.skill.leadership": "Leadership et gestion d'équipe",
         "aboutme.skill.problemSolving": "Résolution de problèmes",
         "aboutme.skill.communication": "Communication efficace",
@@ -434,13 +427,12 @@ export const ui = {
         "projects.title": "Projets",
         "projects.description":
             "Des systèmes que j'ai conçus, construits et mis en production. Chacun a résolu un problème réel pour de vrais utilisateurs — le code est public là où le client l'autorise.",
-        "projects.imageAbducted": "[WIP] En construction",
         "projects.videoSoon": "Vidéo bientôt",
         "projects.playVideo": "Lire la vidéo de démonstration",
         "projects.liveDemo": "Démo en direct",
+        "projects.prototype": "Prototype",
         "projects.watchDemo": "Voir la démo",
         "projects.code": "Code",
-        "projects.liveDemoUnavailable": "Ce projet n'a pas encore de démo en direct",
         "projects.repo.kforge.title": "K-Forge — Page du club",
         "projects.repo.kforge":
             "Site institutionnel du club universitaire de développement que j'ai fondé et que je dirige. Réalisé avec Angular et Tailwind, il récupère les projets des membres en direct via l'API GitHub.",
@@ -467,10 +459,9 @@ export const ui = {
         "technologies.tools": "Outils et DevOps",
 
         "credentials.eyebrow": "Vérifié",
-        "credentials.title": "Formation et Certifications",
+        "credentials.title": "Formation",
         "credentials.description":
             "Formation académique et certifications, avec les examens et les scores qui les appuient.",
-        "credentials.present": "Aujourd'hui",
         "credentials.highlight": "À souligner",
         "credentials.degree.title": "Ingénierie des Systèmes",
         "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
@@ -508,7 +499,7 @@ export const ui = {
         "credentials.one.desc":
             "Fondamentaux de programmation et de logique axés sur JavaScript et le développement web. C'est là que mon parcours a commencé.",
 
-        "awards.eyebrow": "Distinctions",
+        "awards.eyebrow": "En chemin",
         "awards.title": "Distinctions",
         "awards.description":
             "Compétitions, distinctions et décorations obtenues en chemin.",
@@ -534,7 +525,7 @@ export const ui = {
             "La plus haute distinction jeunesse du Mouvement Scout (BP) pour un leadership et un engagement exceptionnels, et la décoration Daniel Isaza Isaza pour services distingués au développement du mouvement en Colombie.",
 
         "contactme.eyebrow": "Parlons-en",
-        "contactme.title": "Contactez-moi",
+        "contactme.title": "Contact",
         "contactme.description":
             "Ouvert aux postes backend, full stack, DevOps et cybersécurité — et à tout projet avec quelque chose de nouveau à apprendre. Écrivez-moi et je vous réponds.",
         "contactme.name": "Nom",
@@ -563,7 +554,7 @@ export const ui = {
         "layout.home": "Início",
         "layout.about": "Sobre mim",
         "layout.projects": "Projetos",
-        "layout.technologies": "Stack",
+        "layout.technologies": "Tecnologias",
         "layout.credentials": "Formação",
         "layout.awards": "Reconhecimentos",
         "layout.contact": "Contato",
@@ -586,7 +577,6 @@ export const ui = {
         "home.shareQR": "Compartilhar",
         "home.downloadQR": "Baixar",
         "home.qrCopied": "Link copiado para a área de transferência",
-        "home.tooltipDecoration": "Isto não é um botão, apenas decoração",
         "home.factFocus": "Foco",
         "home.factFocusValue": "Backend · Microsserviços",
         "home.factStudy": "Formação",
@@ -595,7 +585,7 @@ export const ui = {
         "home.factRoleValue": "Fundador e líder, K-Forge",
 
         "aboutme.eyebrow": "Perfil",
-        "aboutme.title": "Sobre Mim",
+        "aboutme.title": "Sobre mim",
         "aboutme.description":
             "Sou desenvolvedor de software com mais de 3 anos construindo aplicações, focado em Java e Spring Boot no backend e com capacidade full stack em Angular e TypeScript. Projeto APIs REST, modelo bancos de dados relacionais e faço deploy com Docker. Meu perfil é híbrido: somo fundamentos de redes (CCNA) e cibersegurança (CCST) junto a cloud (Google Cloud).",
         "aboutme.downloadCV": "Baixar CV",
@@ -604,7 +594,7 @@ export const ui = {
         "aboutme.softSkills": "Habilidades Interpessoais",
         "aboutme.experience": "Anos de Experiência",
         "aboutme.technologies": "Tecnologias",
-        "aboutme.certifications": "Certificações",
+        "aboutme.certifications": "Cursos e certificados",
         "aboutme.skill.leadership": "Liderança e gestão de equipes",
         "aboutme.skill.problemSolving": "Resolução de problemas",
         "aboutme.skill.communication": "Comunicação eficaz",
@@ -616,13 +606,12 @@ export const ui = {
         "projects.title": "Projetos",
         "projects.description":
             "Sistemas que projetei, construí e coloquei em produção. Cada um resolveu um problema real para usuários reais — o código é público onde o cliente permite.",
-        "projects.imageAbducted": "[WIP] Em Construção",
         "projects.videoSoon": "Vídeo em breve",
         "projects.playVideo": "Reproduzir vídeo demonstrativo",
         "projects.liveDemo": "Demo ao vivo",
+        "projects.prototype": "Protótipo",
         "projects.watchDemo": "Ver demo",
         "projects.code": "Código",
-        "projects.liveDemoUnavailable": "Este projeto ainda não tem demo ao vivo",
         "projects.repo.kforge.title": "K-Forge — Landing do clube",
         "projects.repo.kforge":
             "Site institucional do clube universitário de desenvolvimento que fundei e lidero. Feito com Angular e Tailwind, traz os projetos dos membros ao vivo pela API do GitHub.",
@@ -649,10 +638,9 @@ export const ui = {
         "technologies.tools": "Ferramentas e DevOps",
 
         "credentials.eyebrow": "Verificado",
-        "credentials.title": "Formação e Certificações",
+        "credentials.title": "Formação",
         "credentials.description":
             "Formação acadêmica e certificações, com os exames e notas que as respaldam.",
-        "credentials.present": "Atual",
         "credentials.highlight": "Destaque",
         "credentials.degree.title": "Engenharia de Sistemas",
         "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
@@ -690,7 +678,7 @@ export const ui = {
         "credentials.one.desc":
             "Fundamentos de programação e lógica com foco em JavaScript e desenvolvimento web. Foi aqui que meu caminho começou.",
 
-        "awards.eyebrow": "Reconhecimentos",
+        "awards.eyebrow": "No caminho",
         "awards.title": "Reconhecimentos",
         "awards.description":
             "Competições, distinções e condecorações conquistadas no caminho.",

@@ -26,6 +26,7 @@ const PROJECTS = [
     cover: kappCover,
     repo: "https://github.com/K-Forge/KApp",
     demo: "https://kapp-black.vercel.app",
+    demoLabel: "projects.prototype", // front-end prototype, not a live product
     video: "",
     tech: [
       "Java",
@@ -44,6 +45,7 @@ const PROJECTS = [
     cover: amodelCover,
     repo: "https://github.com/13rianVargas/A-Minecraft-Ordinary-Differential-Equation-Lab",
     demo: null,
+    demoLabel: "projects.liveDemo",
     video: "", // ← paste the YouTube id here when the walkthrough is ready
     tech: [
       "Python",
@@ -63,6 +65,7 @@ const PROJECTS = [
     cover: kforgeCover,
     repo: "https://github.com/K-Forge/K-Forge",
     demo: "https://kforge.vercel.app",
+    demoLabel: "projects.liveDemo",
     video: "",
     tech: [
       "Angular",
@@ -80,6 +83,7 @@ const PROJECTS = [
     cover: spemCover,
     repo: "https://github.com/13rianVargas/SpemTraductor",
     demo: "https://spem-traductor.vercel.app",
+    demoLabel: "projects.liveDemo",
     video: "",
     tech: ["JavaScript", "HTML", "CSS", "Vercel"],
   },
@@ -88,6 +92,7 @@ const PROJECTS = [
     cover: portfolioCover,
     repo: "https://github.com/13rianVargas/MyPortfolio",
     demo: "https://13rian-vargas.vercel.app",
+    demoLabel: "projects.liveDemo",
     video: "",
     tech: [
       "Astro",
@@ -243,8 +248,8 @@ function iconFor(tech: string): string | null {
                     rel="noopener noreferrer"
                     class="btn btn-primary"
                   >
-                    <span data-translation-key="projects.liveDemo">
-                      {t("projects.liveDemo")}
+                    <span data-translation-key={project.demoLabel}>
+                      {t(project.demoLabel)}
                     </span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
