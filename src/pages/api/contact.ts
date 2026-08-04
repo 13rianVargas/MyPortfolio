@@ -138,8 +138,19 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     );
 
     if (!upstream.ok) {
-      console.error("[contact] upstream responded", upstream.status);
-      return json({ ok: false, reason: "upstream" }, 502);
+      const detail = await upstream.text().catch(() => "");
+      console.error("[contact] upstream responded", upstream.status, detail);
+      // TEMPORARY diagnostic: surface the upstream status so the failure can
+      // be identified without access to the platform logs. Remove once fixed.
+      return json(
+        {
+          ok: false,
+          reason: "upstream",
+          upstreamStatus: upstream.status,
+          upstreamBody: detail.slice(0, 200),
+        },
+        502,
+      );
     }
 
     return json({ ok: true }, 200);
