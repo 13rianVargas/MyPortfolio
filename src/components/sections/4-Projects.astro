@@ -49,7 +49,7 @@ const PROJECTS = [
     repo: "https://github.com/13rianVargas/A-Minecraft-Ordinary-Differential-Equation-Lab",
     demo: null,
     demoLabel: "projects.liveDemo",
-    video: "", // ← paste the YouTube id here when the walkthrough is ready
+    video: "jNQXAC9IVRw", // TEST — replace with the real walkthrough id here when the walkthrough is ready
     tech: [
       "Python",
       "NumPy",
@@ -366,9 +366,6 @@ function iconFor(tech: string): string | null {
     const actions = card.querySelector<HTMLElement>(".card-actions");
     if (!media || !actions) return;
 
-    // Real video already configured? Then the egg has nothing to borrow.
-    if (media.querySelector(".video-facade, iframe")) return;
-
     const originalMedia = media.innerHTML;
     const originalButton = actions.lastElementChild!.outerHTML;
     let clicks = 0;
@@ -399,6 +396,13 @@ function iconFor(tech: string): string | null {
       actions!.lastElementChild!.outerHTML = originalButton;
       card!.classList.remove("egg-active");
       clicks = 0;
+      // Restoring by innerHTML drops the facade's listener. The saved markup
+      // was captured after binding, so it still carries data-bound and the
+      // rebinder would skip it — clear the flag first.
+      media!
+        .querySelectorAll<HTMLElement>(".video-facade")
+        .forEach((f) => delete f.dataset.bound);
+      initVideoFacades();
     }
 
     function trigger() {
@@ -436,9 +440,13 @@ function iconFor(tech: string): string | null {
       for (const attr of previous.getAttributeNames()) {
         if (attr.startsWith("data-astro-cid-")) stop.setAttribute(attr, "");
       }
+      // Inline sizing on purpose: this SVG is injected, so it carries no
+      // data-astro-cid-* attribute and no scoped rule can size it. Left to the
+      // global `svg { height: auto }` reset it collapsed to 0x0.
       stop.innerHTML =
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" ' +
-        'stroke-linecap="round" width="16" height="16" aria-hidden="true">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" ' +
+        'stroke-linecap="round" aria-hidden="true" ' +
+        'style="width:20px;height:20px;flex-shrink:0">' +
         '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
         `<span>${cancelLabel}</span>`;
       stop.addEventListener("click", restore);
