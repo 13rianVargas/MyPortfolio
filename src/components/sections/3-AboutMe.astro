@@ -84,8 +84,8 @@ const SKILLS = [
             }
           </ul>
 
-          <div class="cv" id="cv-widget">
-            <button class="cv-trigger" type="button" aria-expanded="false" aria-controls="cv-langs">
+          <div class="cv">
+            <span class="cv-trigger">
               <span data-translation-key="aboutme.downloadCV">
                 {t("aboutme.downloadCV")}
               </span>
@@ -94,8 +94,8 @@ const SKILLS = [
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-            </button>
-            <div class="cv-langs" id="cv-langs">
+            </span>
+            <div class="cv-langs">
               <a href="/Brian_Vargas_CV_ES.pdf" download class="cv-link">
                 <span class="lang-long" data-translation-key="aboutme.cvEs">{t("aboutme.cvEs")}</span>
                 <span class="lang-short">ES</span>
@@ -114,35 +114,6 @@ const SKILLS = [
 
 <script src="../../i18n/translator.ts"></script>
 
-<script>
-  // Expands on hover for pointers and on click/keyboard for everyone else.
-  // The previous version only reacted to :hover, so on touch the two language
-  // links were unreachable.
-  function initCv() {
-    const widget = document.getElementById("cv-widget");
-    const trigger = widget?.querySelector<HTMLButtonElement>(".cv-trigger");
-    if (!widget || !trigger || widget.dataset.bound) return;
-    widget.dataset.bound = "true";
-
-    const setOpen = (open: boolean) => {
-      widget.classList.toggle("open", open);
-      trigger.setAttribute("aria-expanded", String(open));
-    };
-
-    trigger.addEventListener("click", () =>
-      setOpen(!widget.classList.contains("open")),
-    );
-    document.addEventListener("click", (e) => {
-      if (!widget.contains(e.target as Node)) setOpen(false);
-    });
-    widget.addEventListener("keydown", (e) => {
-      if ((e as KeyboardEvent).key === "Escape") setOpen(false);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", initCv);
-  document.addEventListener("astro:page-load", initCv);
-</script>
 
 <style>
   .about-panel {
@@ -298,17 +269,15 @@ const SKILLS = [
    * the original design, but reachable by click and keyboard, not hover only,
    * and with dark text on amber instead of white at 1.67:1. */
   .cv {
-    position: relative;
     display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
     margin-top: var(--space-md);
     border-radius: var(--radius-full);
     background: var(--color-accent);
     box-shadow: 0 6px 18px
       color-mix(in srgb, var(--color-accent) 40%, transparent);
     align-self: center;
-    overflow: hidden;
-    transition: background var(--transition-fast);
   }
 
   @media (min-width: 900px) {
@@ -317,62 +286,25 @@ const SKILLS = [
     }
   }
 
-  .cv:hover {
-    background: var(--color-accent-hover);
-  }
-
   .cv-trigger {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.7rem 1.4rem;
+    padding: 0.55rem 1.1rem;
     font-size: var(--text-sm);
     font-weight: 800;
     color: var(--color-on-accent);
     white-space: nowrap;
   }
 
-  /* Animating max-width made the pill jump: the value is an upper bound, not
-   * the real width, so the easing curve did not match the content. A 0fr -> 1fr
-   * grid track animates the actual measured width, so the expansion is smooth. */
   .cv-langs {
-    display: grid;
-    grid-template-columns: 0fr;
-    opacity: 0;
-    transition:
-      grid-template-columns 0.32s var(--ease-out),
-      opacity 0.2s var(--ease-out),
-      padding-right 0.32s var(--ease-out);
-    padding-right: 0;
-  }
-
-  .cv-langs > * {
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .cv.open .cv-langs {
-    grid-template-columns: 1fr;
-    opacity: 1;
-    padding-right: 0.45rem;
-  }
-
-  @media (hover: hover) {
-    .cv:hover .cv-langs,
-    .cv:focus-within .cv-langs {
-      grid-template-columns: 1fr;
-      opacity: 1;
-      padding-right: 0.45rem;
-    }
-  }
-
-  .cv-langs > * {
     display: flex;
-    gap: 0.35rem;
+    align-items: center;
+    gap: 0.4rem;
   }
 
   .cv-link {
-    padding: 0.4rem 0.85rem;
+    padding: 0.45rem 1rem;
     border-radius: var(--radius-full);
     background: var(--color-on-accent);
     color: var(--color-accent);
@@ -380,7 +312,14 @@ const SKILLS = [
     font-weight: 800;
     letter-spacing: 0.04em;
     white-space: nowrap;
-    transition: transform var(--transition-fast);
+    transition:
+      transform var(--transition-fast),
+      background var(--transition-fast);
+  }
+
+  .cv-link:hover {
+    transform: translateY(-2px);
+    background: #000;
   }
 
   /* Full language names when there is room, two-letter codes when there is not. */
