@@ -1,35 +1,19 @@
 // @ts-check
-import { defineConfig, envField } from "astro/config";
-import vercel from "@astrojs/vercel";
+import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://13rian-vargas.vercel.app",
 
-  // Static by default. Only src/pages/api/contact.ts opts out via
-  // `export const prerender = false`, so it runs as a Vercel function and can
-  // hold WEB3FORMS_KEY server-side instead of shipping it to the browser.
+  // Fully static. The contact form posts straight to FormSubmit from the
+  // browser: routing it through a server function looked better on paper, but
+  // FormSubmit sits behind Cloudflare and answers datacenter IPs with a 403
+  // challenge, so the endpoint could never deliver from Vercel. Web3Forms
+  // refuses server-side calls on its free tier for the same class of reason.
   output: "static",
-  adapter: vercel(),
 
   integrations: [sitemap()],
-
-  // access: "secret" means Astro reads this at RUNTIME on the server and never
-  // inlines the value into any bundle — client or server. Set the same name in
-  // Vercel (Settings -> Environment Variables), with no PUBLIC_ prefix.
-  //
-  // Keeping the destination address here rather than in the markup is the whole
-  // point: previously it sat in the client JS as a plain string.
-  env: {
-    schema: {
-      CONTACT_EMAIL: envField.string({
-        context: "server",
-        access: "secret",
-        optional: true,
-      }),
-    },
-  },
 
   devToolbar: { enabled: false },
 
