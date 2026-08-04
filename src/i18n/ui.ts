@@ -82,7 +82,7 @@ export const ui = {
             "Institutional site for the university software development club I founded and lead. Built with Angular and Tailwind, it pulls member projects live from the GitHub API.",
         "projects.repo.kapp.title": "KApp — University mobile app",
         "projects.repo.kapp":
-            "My thesis project: six Java 21 microservices behind an API Gateway that centralizes routing and JWT validation, with Eureka discovery, OpenFeign inter-service calls and PostgreSQL auditing. Native Kotlin and Swift clients plus a deployed web demo.",
+            "My thesis project, still in progress: six Java 21 microservices behind an API Gateway that centralizes routing and JWT validation, with Eureka discovery, OpenFeign inter-service calls and PostgreSQL auditing. Native Kotlin and Swift clients are in development — the deployed demo is a front-end prototype with sample data, not yet wired to the backend.",
         "projects.repo.amodel.title": "AMODEL — Differential equations lab",
         "projects.repo.amodel":
             "A Minecraft server instrumented as an ecology lab: 27,648 measurements calibrate a logistic ODE with harvesting. The experiment falsified the classical model — a Holling Type II response cuts error by 81–91% in the supercritical regime, where the original predicted a collapse that never happened.",
@@ -264,7 +264,7 @@ export const ui = {
             "Sitio institucional del club universitario de desarrollo que fundé y lidero. Hecho con Angular y Tailwind, trae los proyectos de los miembros en vivo desde la API de GitHub.",
         "projects.repo.kapp.title": "KApp — App móvil universitaria",
         "projects.repo.kapp":
-            "Mi proyecto de grado: seis microservicios en Java 21 tras un API Gateway que centraliza el enrutamiento y la validación JWT, con descubrimiento Eureka, llamadas entre servicios con OpenFeign y auditoría en PostgreSQL. Clientes nativos en Kotlin y Swift más una demo web desplegada.",
+            "Mi proyecto de grado, aún en construcción: seis microservicios en Java 21 tras un API Gateway que centraliza el enrutamiento y la validación JWT, con descubrimiento Eureka, llamadas entre servicios con OpenFeign y auditoría en PostgreSQL. Los clientes nativos en Kotlin y Swift están en desarrollo — la demo desplegada es un prototipo del front con datos de ejemplo, todavía sin backend conectado.",
         "projects.repo.amodel.title": "AMODEL — Lab de ecuaciones diferenciales",
         "projects.repo.amodel":
             "Un servidor de Minecraft instrumentado como laboratorio de ecología: 27.648 mediciones calibran una EDO logística con cosecha. El experimento falsó el modelo clásico — una respuesta Holling Tipo II reduce el error entre 81% y 91% en el régimen supercrítico, donde el original predecía un colapso que nunca ocurrió.",
@@ -446,7 +446,7 @@ export const ui = {
             "Site institutionnel du club universitaire de développement que j'ai fondé et que je dirige. Réalisé avec Angular et Tailwind, il récupère les projets des membres en direct via l'API GitHub.",
         "projects.repo.kapp.title": "KApp — Application mobile universitaire",
         "projects.repo.kapp":
-            "Mon projet de fin d'études : six microservices en Java 21 derrière une API Gateway qui centralise le routage et la validation JWT, avec découverte Eureka, appels inter-services OpenFeign et audit PostgreSQL. Clients natifs Kotlin et Swift plus une démo web déployée.",
+            "Mon projet de fin d'études, encore en construction : six microservices en Java 21 derrière une API Gateway qui centralise le routage et la validation JWT, avec découverte Eureka, appels inter-services OpenFeign et audit PostgreSQL. Les clients natifs Kotlin et Swift sont en développement — la démo déployée est un prototype front avec des données d'exemple, pas encore relié au backend.",
         "projects.repo.amodel.title": "AMODEL — Labo d'équations différentielles",
         "projects.repo.amodel":
             "Un serveur Minecraft instrumenté comme laboratoire d'écologie : 27 648 mesures calibrent une EDO logistique avec récolte. L'expérience a falsifié le modèle classique — une réponse Holling de type II réduit l'erreur de 81 à 91 % dans le régime supercritique, où l'original prédisait un effondrement qui n'a jamais eu lieu.",
@@ -628,7 +628,7 @@ export const ui = {
             "Site institucional do clube universitário de desenvolvimento que fundei e lidero. Feito com Angular e Tailwind, traz os projetos dos membros ao vivo pela API do GitHub.",
         "projects.repo.kapp.title": "KApp — App móvel universitário",
         "projects.repo.kapp":
-            "Meu trabalho de conclusão: seis microsserviços em Java 21 atrás de um API Gateway que centraliza o roteamento e a validação JWT, com descoberta Eureka, chamadas entre serviços com OpenFeign e auditoria no PostgreSQL. Clientes nativos em Kotlin e Swift mais uma demo web publicada.",
+            "Meu trabalho de conclusão, ainda em construção: seis microsserviços em Java 21 atrás de um API Gateway que centraliza o roteamento e a validação JWT, com descoberta Eureka, chamadas entre serviços com OpenFeign e auditoria no PostgreSQL. Os clientes nativos em Kotlin e Swift estão em desenvolvimento — a demo publicada é um protótipo do front com dados de exemplo, ainda sem backend conectado.",
         "projects.repo.amodel.title": "AMODEL — Lab de equações diferenciais",
         "projects.repo.amodel":
             "Um servidor de Minecraft instrumentado como laboratório de ecologia: 27.648 medições calibram uma EDO logística com colheita. O experimento falseou o modelo clássico — uma resposta Holling Tipo II reduz o erro entre 81% e 91% no regime supercrítico, onde o original previa um colapso que nunca aconteceu.",
