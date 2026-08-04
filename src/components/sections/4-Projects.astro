@@ -166,7 +166,10 @@ function iconFor(tech: string): string | null {
       </p>
     </header>
 
-    <div class="projects-grid">
+    <div
+      class="projects-grid"
+      data-cancel-egg={t("projects.cancelEgg")}
+    >
       {
         PROJECTS.map((project) => (
           <article class="project-card" data-project={project.id}>
@@ -370,11 +373,27 @@ function iconFor(tech: string): string | null {
     const originalButton = actions.lastElementChild!.outerHTML;
     let clicks = 0;
     let onMessage: ((e: MessageEvent) => void) | null = null;
+    let blockHomeJump: ((e: MouseEvent) => void) | null = null;
+
+    const grid = card.closest<HTMLElement>(".projects-grid");
+    let cancelLabel = grid?.dataset.cancelEgg ?? "Cancel Easter Egg";
+    document.addEventListener("language-change", (event) => {
+      const { translations } = (event as CustomEvent).detail ?? {};
+      const next = translations?.["projects.cancelEgg"];
+      if (!next) return;
+      cancelLabel = next;
+      const live = card.querySelector<HTMLElement>(".btn-danger span");
+      if (live) live.textContent = next;
+    });
 
     function restore() {
       if (onMessage) {
         window.removeEventListener("message", onMessage);
         onMessage = null;
+      }
+      if (blockHomeJump) {
+        document.removeEventListener("click", blockHomeJump, true);
+        blockHomeJump = null;
       }
       media!.innerHTML = originalMedia;
       actions!.lastElementChild!.outerHTML = originalButton;
@@ -384,6 +403,20 @@ function iconFor(tech: string): string | null {
 
     function trigger() {
       card!.classList.add("egg-active");
+
+      // The header logo sits inside <a href="#home">, so its click would jump
+      // the page to the top and cancel the scroll we are about to do. Capture
+      // phase, so this runs before the header's own smooth-scroll handler.
+      // Removed again in restore(), leaving normal navigation intact.
+      blockHomeJump = (event: MouseEvent) => {
+        const link = (event.target as HTMLElement)?.closest?.('a[href="#home"]');
+        if (link?.querySelector("[data-egg-trigger]")) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      };
+      document.addEventListener("click", blockHomeJump, true);
+
       card!.scrollIntoView({ behavior: "smooth", block: "center" });
 
       const frame = document.createElement("iframe");
@@ -396,11 +429,18 @@ function iconFor(tech: string): string | null {
       media!.replaceChildren(frame);
 
       // Swap the dead placeholder for a real button that undoes this.
+      const previous = actions!.lastElementChild!;
       const stop = document.createElement("button");
       stop.type = "button";
-      stop.className = "btn btn-primary";
+      stop.className = "btn btn-danger";
+      for (const attr of previous.getAttributeNames()) {
+        if (attr.startsWith("data-astro-cid-")) stop.setAttribute(attr, "");
+      }
       stop.innerHTML =
-        '<img src="/icons/youtube.svg" alt="" width="16" height="16" class="yt-icon" /><span>Never gonna give you up</span>';
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" ' +
+        'stroke-linecap="round" width="16" height="16" aria-hidden="true">' +
+        '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+        `<span>${cancelLabel}</span>`;
       stop.addEventListener("click", restore);
       actions!.lastElementChild!.replaceWith(stop);
 
@@ -624,6 +664,19 @@ function iconFor(tech: string): string | null {
 
   .btn-primary:hover {
     background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* YouTube red. Note: #ff0000 with white text measures 3.99:1, under the
+   * 4.5:1 AA floor for body-size text — see the note in the commit. */
+  .btn-danger {
+    background: #ff0000;
+    color: #fff;
+    border: 1px solid transparent;
+  }
+
+  .btn-danger:hover {
+    background: #cc0000;
     transform: translateY(-2px);
   }
 
