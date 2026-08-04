@@ -173,36 +173,18 @@ function iconFor(tech: string): string | null {
       {
         PROJECTS.map((project) => (
           <article class="project-card" data-project={project.id}>
-            <div class="card-media">
-              {project.video ? (
-                <button
-                  class="video-facade"
-                  data-video-id={project.video}
-                  aria-label={t("projects.playVideo")}
-                >
-                  <img
-                    src={`https://i.ytimg.com/vi/${project.video}/hqdefault.jpg`}
-                    alt=""
-                    width="480"
-                    height="270"
-                    loading="lazy"
-                  />
-                  <span class="play-badge" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </button>
-              ) : (
-                <Image
-                  src={project.cover}
-                  alt=""
-                  widths={[400, 700]}
-                  sizes="(min-width: 900px) 420px, 100vw"
-                        loading="lazy"
-                  class="cover"
-                />
-              )}
+            {/* The cover is always the resting state. Video only ever appears
+                after someone asks for it, and the card returns here when it
+                ends. No YouTube thumbnail, no third-party request on load. */}
+            <div class="card-media" data-video-id={project.video || null}>
+              <Image
+                src={project.cover}
+                alt=""
+                widths={[400, 700]}
+                sizes="(min-width: 900px) 420px, 100vw"
+                loading="lazy"
+                class="cover"
+              />
             </div>
 
             <div class="card-body">
@@ -264,7 +246,7 @@ function iconFor(tech: string): string | null {
                     </svg>
                   </a>
                 ) : project.video ? (
-                  <button class="btn btn-primary js-scroll-video" type="button">
+                  <button class="btn btn-primary js-play-video" type="button">
                     <img
                       src="/icons/youtube.svg"
                       alt=""
@@ -303,189 +285,174 @@ function iconFor(tech: string): string | null {
 
 <script>
   /**
-   * Click-to-load YouTube.
+   * Project media has exactly three states, and the cover is home base:
    *
-   * A normal embed pulls ~700 KB of third-party JS on every page load even if
-   * nobody presses play. The facade costs one thumbnail; the iframe is only
-   * created on click.
+   *   cover  --[ Video button ]-->  real walkthrough
+   *   cover  --[ 13 logo clicks ]->  rickroll        (easter egg)
+   *   any video --[ ends / STOP ]-->  cover
+   *
+   * Nothing is embedded until someone asks. A YouTube iframe pulls ~700 KB of
+   * third-party JS on load, so the card ships an image and swaps it in place.
    */
-  function initVideoFacades() {
-    document.querySelectorAll<HTMLButtonElement>(".video-facade").forEach((facade) => {
-      if (facade.dataset.bound) return;
-      facade.dataset.bound = "true";
+  const YT_ORIGIN = "https://www.youtube-nocookie.com";
+  const RICKROLL = "dQw4w9WgXcQ";
+  const CLICKS_TO_ARM = 13;
 
-      facade.addEventListener("click", () => {
-        const id = facade.dataset.videoId;
-        if (!id) return;
-
-        const iframe = document.createElement("iframe");
-        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
-        iframe.title = facade.getAttribute("aria-label") ?? "Video";
-        iframe.allow =
-          "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
-        iframe.allowFullscreen = true;
-        iframe.loading = "lazy";
-        facade.replaceWith(iframe);
-      });
-    });
-
-    document.querySelectorAll(".js-scroll-video").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const facade = btn
-          .closest(".project-card")
-          ?.querySelector<HTMLElement>(".video-facade");
-        facade?.scrollIntoView({ block: "center" });
-        facade?.click();
-      });
-    });
+  interface CardState {
+    card: HTMLElement;
+    media: HTMLElement;
+    actions: HTMLElement;
+    coverHTML: string;
+    buttonHTML: string;
+    realVideo: string | null;
+    cancelLabel: string;
+    onMessage: ((e: MessageEvent) => void) | null;
+    blockHomeJump: ((e: MouseEvent) => void) | null;
+    clicks: number;
   }
 
-  /**
-   * ------------------------------------------------------------------
-   * Easter egg: 13 clicks on the deer logo (13rian, naturally) rickrolls
-   * the AMODEL card.
-   *
-   * It swaps the cover for an autoplaying embed and turns the disabled
-   * "Video soon" placeholder into a working restore button. It restores
-   * itself when the song ends, and it never touches `video` in the config —
-   * so the day a real walkthrough is published, this steals nothing.
-   * ------------------------------------------------------------------
-   */
-  const EGG = {
-    clicksNeeded: 13,
-    videoId: "dQw4w9WgXcQ",
-    origin: "https://www.youtube-nocookie.com",
-  };
+  function mountPlayer(state: CardState, videoId: string, onEnded: () => void) {
+    const frame = document.createElement("iframe");
+    frame.src =
+      `${YT_ORIGIN}/embed/${videoId}` +
+      `?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+    frame.title = "Video";
+    frame.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
+    frame.allowFullscreen = true;
+    state.media.replaceChildren(frame);
 
-  function initEasterEgg() {
-    const card = document.querySelector<HTMLElement>('[data-project="amodel"]');
-    if (!card || card.dataset.eggBound) return;
-    card.dataset.eggBound = "true";
-
-    const media = card.querySelector<HTMLElement>(".card-media");
-    const actions = card.querySelector<HTMLElement>(".card-actions");
-    if (!media || !actions) return;
-
-    const originalMedia = media.innerHTML;
-    const originalButton = actions.lastElementChild!.outerHTML;
-    let clicks = 0;
-    let onMessage: ((e: MessageEvent) => void) | null = null;
-    let blockHomeJump: ((e: MouseEvent) => void) | null = null;
-
-    const grid = card.closest<HTMLElement>(".projects-grid");
-    let cancelLabel = grid?.dataset.cancelEgg ?? "Cancel Easter Egg";
-    document.addEventListener("language-change", (event) => {
-      const { translations } = (event as CustomEvent).detail ?? {};
-      const next = translations?.["projects.cancelEgg"];
-      if (!next) return;
-      cancelLabel = next;
-      const live = card.querySelector<HTMLElement>(".btn-danger span");
-      if (live) live.textContent = next;
+    // Subscribing over the player's own postMessage channel avoids loading the
+    // YouTube iframe API just to learn when playback finished.
+    frame.addEventListener("load", () => {
+      frame.contentWindow?.postMessage(
+        JSON.stringify({ event: "listening", id: 1, channel: "widget" }),
+        YT_ORIGIN,
+      );
     });
 
-    function restore() {
-      if (onMessage) {
-        window.removeEventListener("message", onMessage);
-        onMessage = null;
+    state.onMessage = (event: MessageEvent) => {
+      if (event.origin !== YT_ORIGIN) return; // only trust the player itself
+      try {
+        const data = JSON.parse(event.data);
+        if (data?.info?.playerState === 0) onEnded(); // 0 === ENDED
+      } catch {
+        /* the player also emits non-JSON chatter */
       }
-      if (blockHomeJump) {
-        document.removeEventListener("click", blockHomeJump, true);
-        blockHomeJump = null;
-      }
-      media!.innerHTML = originalMedia;
-      actions!.lastElementChild!.outerHTML = originalButton;
-      card!.classList.remove("egg-active");
-      clicks = 0;
-      // Restoring by innerHTML drops the facade's listener. The saved markup
-      // was captured after binding, so it still carries data-bound and the
-      // rebinder would skip it — clear the flag first.
-      media!
-        .querySelectorAll<HTMLElement>(".video-facade")
-        .forEach((f) => delete f.dataset.bound);
-      initVideoFacades();
+    };
+    window.addEventListener("message", state.onMessage);
+  }
+
+  function showCover(state: CardState) {
+    if (state.onMessage) {
+      window.removeEventListener("message", state.onMessage);
+      state.onMessage = null;
     }
-
-    function trigger() {
-      card!.classList.add("egg-active");
-
-      // The header logo sits inside <a href="#home">, so its click would jump
-      // the page to the top and cancel the scroll we are about to do. Capture
-      // phase, so this runs before the header's own smooth-scroll handler.
-      // Removed again in restore(), leaving normal navigation intact.
-      blockHomeJump = (event: MouseEvent) => {
-        const link = (event.target as HTMLElement)?.closest?.('a[href="#home"]');
-        if (link?.querySelector("[data-egg-trigger]")) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-      };
-      document.addEventListener("click", blockHomeJump, true);
-
-      card!.scrollIntoView({ behavior: "smooth", block: "center" });
-
-      const frame = document.createElement("iframe");
-      frame.src =
-        `${EGG.origin}/embed/${EGG.videoId}` +
-        `?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
-      frame.title = "Never Gonna Give You Up";
-      frame.allow = "autoplay; encrypted-media; picture-in-picture";
-      frame.allowFullscreen = true;
-      media!.replaceChildren(frame);
-
-      // Swap the dead placeholder for a real button that undoes this.
-      const previous = actions!.lastElementChild!;
-      const stop = document.createElement("button");
-      stop.type = "button";
-      stop.className = "btn btn-danger";
-      for (const attr of previous.getAttributeNames()) {
-        if (attr.startsWith("data-astro-cid-")) stop.setAttribute(attr, "");
-      }
-      // Inline sizing on purpose: this SVG is injected, so it carries no
-      // data-astro-cid-* attribute and no scoped rule can size it. Left to the
-      // global `svg { height: auto }` reset it collapsed to 0x0.
-      stop.innerHTML =
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" ' +
-        'stroke-linecap="round" aria-hidden="true" ' +
-        'style="width:20px;height:20px;flex-shrink:0">' +
-        '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
-        `<span>${cancelLabel}</span>`;
-      stop.addEventListener("click", restore);
-      actions!.lastElementChild!.replaceWith(stop);
-
-      // Ask the player to report state changes, then restore when it ends.
-      // Using postMessage directly avoids pulling in the YouTube iframe API.
-      frame.addEventListener("load", () => {
-        frame.contentWindow?.postMessage(
-          JSON.stringify({ event: "listening", id: 1, channel: "widget" }),
-          EGG.origin,
-        );
-      });
-
-      onMessage = (event: MessageEvent) => {
-        // Only trust the player's own origin.
-        if (event.origin !== EGG.origin) return;
-        try {
-          const data = JSON.parse(event.data);
-          // 0 === ENDED
-          if (data?.info?.playerState === 0) restore();
-        } catch {
-          /* the player also emits non-JSON chatter; ignore it */
-        }
-      };
-      window.addEventListener("message", onMessage);
+    if (state.blockHomeJump) {
+      document.removeEventListener("click", state.blockHomeJump, true);
+      state.blockHomeJump = null;
     }
+    state.media.innerHTML = state.coverHTML;
+    state.actions.lastElementChild!.outerHTML = state.buttonHTML;
+    state.card.classList.remove("egg-active");
+    state.clicks = 0;
+    bindVideoButton(state);
+  }
 
-    document.querySelectorAll<HTMLElement>("[data-egg-trigger]").forEach((logo) => {
-      logo.addEventListener("click", () => {
-        if (card.classList.contains("egg-active")) return;
-        if (++clicks >= EGG.clicksNeeded) trigger();
-      });
-    });
+  function bindVideoButton(state: CardState) {
+    if (!state.realVideo) return;
+    const button = state.actions.querySelector<HTMLButtonElement>(".js-play-video");
+    button?.addEventListener("click", () =>
+      mountPlayer(state, state.realVideo!, () => showCover(state)),
+    );
+  }
+
+  function armEasterEgg(state: CardState) {
+    state.card.classList.add("egg-active");
+
+    // The header logo sits inside <a href="#home">; without this the click
+    // would jump to the top and cancel the scroll below. Capture phase, so it
+    // runs before the header's own handler. Released again in showCover().
+    state.blockHomeJump = (event: MouseEvent) => {
+      const link = (event.target as HTMLElement)?.closest?.('a[href="#home"]');
+      if (link?.querySelector("[data-egg-trigger]")) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+    document.addEventListener("click", state.blockHomeJump, true);
+
+    state.card.scrollIntoView({ behavior: "smooth", block: "center" });
+    mountPlayer(state, RICKROLL, () => showCover(state));
+
+    const previous = state.actions.lastElementChild!;
+    const stop = document.createElement("button");
+    stop.type = "button";
+    stop.className = "btn btn-danger";
+    // Astro scopes component CSS with a data-astro-cid-* attribute. A node
+    // built here has none, so no scoped .btn rule would reach it.
+    for (const attr of previous.getAttributeNames()) {
+      if (attr.startsWith("data-astro-cid-")) stop.setAttribute(attr, "");
+    }
+    // Sized inline for the same reason, plus the global `svg { height: auto }`
+    // reset would otherwise collapse it to 0x0.
+    stop.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" ' +
+      'stroke-linecap="round" aria-hidden="true" ' +
+      'style="width:20px;height:20px;flex-shrink:0">' +
+      '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+      `<span>${state.cancelLabel}</span>`;
+    stop.addEventListener("click", () => showCover(state));
+    previous.replaceWith(stop);
   }
 
   function initProjects() {
-    initVideoFacades();
-    initEasterEgg();
+    const grid = document.querySelector<HTMLElement>(".projects-grid");
+    if (!grid || grid.dataset.bound) return;
+    grid.dataset.bound = "true";
+
+    grid.querySelectorAll<HTMLElement>(".project-card").forEach((card) => {
+      const media = card.querySelector<HTMLElement>(".card-media");
+      const actions = card.querySelector<HTMLElement>(".card-actions");
+      if (!media || !actions) return;
+
+      const state: CardState = {
+        card,
+        media,
+        actions,
+        coverHTML: media.innerHTML,
+        buttonHTML: actions.lastElementChild!.outerHTML,
+        realVideo: media.dataset.videoId || null,
+        cancelLabel: grid.dataset.cancelEgg ?? "STOP Rickroll",
+        onMessage: null,
+        blockHomeJump: null,
+        clicks: 0,
+      };
+
+      bindVideoButton(state);
+
+      // Only AMODEL carries the egg.
+      if (card.dataset.project !== "amodel") return;
+
+      document
+        .querySelectorAll<HTMLElement>("[data-egg-trigger]")
+        .forEach((logo) =>
+          logo.addEventListener("click", () => {
+            if (card.classList.contains("egg-active")) return;
+            if (++state.clicks >= CLICKS_TO_ARM) armEasterEgg(state);
+          }),
+        );
+
+      document.addEventListener("language-change", (event) => {
+        const label = (event as CustomEvent).detail?.translations?.[
+          "projects.cancelEgg"
+        ];
+        if (!label) return;
+        state.cancelLabel = label;
+        const live = card.querySelector<HTMLElement>(".btn-danger span");
+        if (live) live.textContent = label;
+      });
+    });
   }
 
   document.addEventListener("DOMContentLoaded", initProjects);
@@ -550,8 +517,7 @@ function iconFor(tech: string): string | null {
   }
 
   .card-media :global(.cover),
-  .card-media :global(iframe),
-  .video-facade img {
+  .card-media :global(iframe) {
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -559,31 +525,8 @@ function iconFor(tech: string): string | null {
     border: 0;
   }
 
-  .video-facade {
-    display: block;
-    position: relative;
-    width: 100%;
-    padding: 0;
-  }
 
-  .play-badge {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 62px;
-    height: 62px;
-    display: grid;
-    place-items: center;
-    border-radius: var(--radius-full);
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    transition: transform var(--transition-fast);
-  }
 
-  .video-facade:hover .play-badge {
-    transform: scale(1.1);
-  }
 
   .card-body {
     display: flex;
