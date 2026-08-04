@@ -169,7 +169,7 @@ function iconFor(tech: string): string | null {
     <div class="projects-grid">
       {
         PROJECTS.map((project) => (
-          <article class="project-card">
+          <article class="project-card" data-project={project.id}>
             <div class="card-media">
               {project.video ? (
                 <button
@@ -337,8 +337,111 @@ function iconFor(tech: string): string | null {
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initVideoFacades);
-  document.addEventListener("astro:page-load", initVideoFacades);
+  /**
+   * ------------------------------------------------------------------
+   * Easter egg: 13 clicks on the deer logo (13rian, naturally) rickrolls
+   * the AMODEL card.
+   *
+   * It swaps the cover for an autoplaying embed and turns the disabled
+   * "Video soon" placeholder into a working restore button. It restores
+   * itself when the song ends, and it never touches `video` in the config —
+   * so the day a real walkthrough is published, this steals nothing.
+   * ------------------------------------------------------------------
+   */
+  const EGG = {
+    clicksNeeded: 13,
+    videoId: "dQw4w9WgXcQ",
+    origin: "https://www.youtube-nocookie.com",
+  };
+
+  function initEasterEgg() {
+    const card = document.querySelector<HTMLElement>('[data-project="amodel"]');
+    if (!card || card.dataset.eggBound) return;
+    card.dataset.eggBound = "true";
+
+    const media = card.querySelector<HTMLElement>(".card-media");
+    const actions = card.querySelector<HTMLElement>(".card-actions");
+    if (!media || !actions) return;
+
+    // Real video already configured? Then the egg has nothing to borrow.
+    if (media.querySelector(".video-facade, iframe")) return;
+
+    const originalMedia = media.innerHTML;
+    const originalButton = actions.lastElementChild!.outerHTML;
+    let clicks = 0;
+    let onMessage: ((e: MessageEvent) => void) | null = null;
+
+    function restore() {
+      if (onMessage) {
+        window.removeEventListener("message", onMessage);
+        onMessage = null;
+      }
+      media!.innerHTML = originalMedia;
+      actions!.lastElementChild!.outerHTML = originalButton;
+      card!.classList.remove("egg-active");
+      clicks = 0;
+    }
+
+    function trigger() {
+      card!.classList.add("egg-active");
+      card!.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      const frame = document.createElement("iframe");
+      frame.src =
+        `${EGG.origin}/embed/${EGG.videoId}` +
+        `?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+      frame.title = "Never Gonna Give You Up";
+      frame.allow = "autoplay; encrypted-media; picture-in-picture";
+      frame.allowFullscreen = true;
+      media!.replaceChildren(frame);
+
+      // Swap the dead placeholder for a real button that undoes this.
+      const stop = document.createElement("button");
+      stop.type = "button";
+      stop.className = "btn btn-primary";
+      stop.innerHTML =
+        '<img src="/icons/youtube.svg" alt="" width="16" height="16" class="yt-icon" /><span>Never gonna give you up</span>';
+      stop.addEventListener("click", restore);
+      actions!.lastElementChild!.replaceWith(stop);
+
+      // Ask the player to report state changes, then restore when it ends.
+      // Using postMessage directly avoids pulling in the YouTube iframe API.
+      frame.addEventListener("load", () => {
+        frame.contentWindow?.postMessage(
+          JSON.stringify({ event: "listening", id: 1, channel: "widget" }),
+          EGG.origin,
+        );
+      });
+
+      onMessage = (event: MessageEvent) => {
+        // Only trust the player's own origin.
+        if (event.origin !== EGG.origin) return;
+        try {
+          const data = JSON.parse(event.data);
+          // 0 === ENDED
+          if (data?.info?.playerState === 0) restore();
+        } catch {
+          /* the player also emits non-JSON chatter; ignore it */
+        }
+      };
+      window.addEventListener("message", onMessage);
+    }
+
+    document.querySelectorAll<HTMLElement>("[data-egg-trigger]").forEach((logo) => {
+      logo.addEventListener("click", () => {
+        if (card.classList.contains("egg-active")) return;
+        if (++clicks >= EGG.clicksNeeded) trigger();
+      });
+    });
+  }
+
+  function initProjects() {
+    initVideoFacades();
+    initEasterEgg();
+  }
+
+  document.addEventListener("DOMContentLoaded", initProjects);
+  document.addEventListener("astro:page-load", initProjects);
 </script>
 
 <style>
@@ -389,6 +492,13 @@ function iconFor(tech: string): string | null {
     position: relative;
     background: #171717;
     overflow: hidden;
+  }
+
+  .card-media :global(iframe) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
   }
 
   .card-media :global(.cover),
