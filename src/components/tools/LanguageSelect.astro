@@ -196,14 +196,6 @@ const lang = getLangFromUrl(Astro.url);
 </script>
 
 <style>
-  :root {
-    --nav-link-stroke: #ffffff;
-  }
-
-  :global(.dark) {
-    --nav-link-stroke: #000000;
-  }
-
   .language-dropdown-container {
     position: relative;
     display: inline-block;
@@ -232,10 +224,10 @@ const lang = getLangFromUrl(Astro.url);
 
   .language-menu {
     position: absolute;
-    top: calc(100% + 1.5rem);
+    top: calc(100% + 1rem);
     left: 50%;
     width: max-content;
-    background: color-mix(in srgb, var(--amber-color) 15%, var(--glass-bg));
+    background: var(--glass-bg-strong);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
@@ -278,28 +270,20 @@ const lang = getLangFromUrl(Astro.url);
     border-radius: 8px;
     font-size: 0.9rem;
     text-align: left;
-    /* Ensure all color properties transition simultaneously */
     transition:
-      background 0.2s ease,
-      color 0.2s ease,
-      -webkit-text-stroke 0.2s ease;
+      background var(--transition-fast),
+      color var(--transition-fast);
   }
 
   .language-option:hover {
-    background: var(--amber-bg);
-    color: var(--amber-color);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    color: var(--color-accent-text);
   }
 
   .language-option.active {
-    background: var(--amber-bg);
-    color: var(--amber-color);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    color: var(--color-accent-text);
     font-weight: 600;
-  }
-
-  /* Fix for active items contrast in light mode - force black stroke on yellow text */
-  :global(html:not(.dark)) .language-option.active .lang-name,
-  :global(html:not(.dark)) .language-option:hover .lang-name {
-    -webkit-text-stroke: 1.5px #000000;
   }
 
   .lang-flag-img {
@@ -311,12 +295,8 @@ const lang = getLangFromUrl(Astro.url);
   }
 
   .lang-name {
-    font-size: 0.85rem;
-    font-weight: 700;
-    -webkit-text-stroke: 1.5px var(--nav-link-stroke);
-    paint-order: stroke fill;
-    /* Explicitly transition text stroke in sync with parent */
-    transition: -webkit-text-stroke 0.2s ease;
+    font-size: var(--text-sm);
+    font-weight: 600;
   }
 
   /* Dark mode adjustments */

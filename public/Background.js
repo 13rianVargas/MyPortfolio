@@ -1,53 +1,58 @@
-(function() {
+(function () {
+  "use strict";
+
+  // Respect the OS setting: no decorative ripples for reduced-motion users.
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Clicking a control should do that control's job, not spawn a ripple.
+  var INTERACTIVE = [
+    "a",
+    "button",
+    "input",
+    "textarea",
+    "select",
+    "label",
+    "iframe",
+    "[role='button']",
+    "[role='dialog']",
+    "header",
+    "footer",
+    "nav",
+    ".business-card",
+    ".card-stage",
+    ".glass-panel",
+    ".project-card",
+    ".dock",
+    ".qr-modal",
+    ".mobile-menu",
+  ].join(", ");
+
   function createRipple(x, y) {
-    const container = document.getElementById('ripples-container');
+    var container = document.getElementById("ripples-container");
     if (!container) return;
-    
-    const spawnRing = (delay) => {
-      setTimeout(() => {
-        const ripple = document.createElement('div');
-        ripple.className = 'ripple';
-        
-        // Tamaño del ripple basado en el viewport
-        const size = Math.max(window.innerWidth, window.innerHeight) * 0.6;
-        ripple.style.width = size + 'px';
-        ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
 
-        container.appendChild(ripple);
+    var ripple = document.createElement("div");
+    ripple.className = "ripple";
 
-        // Remover el elemento después de la animación
-        setTimeout(function() {
-          if (ripple.parentNode) {
-            ripple.remove();
-          }
-        }, 2000);
-      }, delay);
-    };
+    var size = Math.max(window.innerWidth, window.innerHeight) * 0.6;
+    ripple.style.width = size + "px";
+    ripple.style.height = size + "px";
+    ripple.style.left = x + "px";
+    ripple.style.top = y + "px";
 
-    // Crear 1 onda para efecto de agua más limpio
-    spawnRing(0);
+    container.appendChild(ripple);
+    ripple.addEventListener("animationend", function () {
+      ripple.remove();
+    });
   }
 
   function handleClick(e) {
-    const target = e.target;
-    
-    // Lista de selectores de elementos interactivos
-    const interactiveSelectors = 'button, a, input, textarea, select, [role="button"], .business-card, .card-container, .card-front, .card-back, .flip-hint, nav, header, footer, .scene, .profile-photo, img, svg, path, .glass-container, .project-card, .dock';
-    
-    // Verificar si el click fue en un elemento interactivo
-    if (target.closest && target.closest(interactiveSelectors)) {
-      return;
-    }
-
-    createRipple(e.pageX, e.pageY);
+    if (reduced.matches) return;
+    if (e.target.closest && e.target.closest(INTERACTIVE)) return;
+    // clientX/Y, not pageX/Y: the container is position:fixed, so its
+    // coordinate space is the viewport.
+    createRipple(e.clientX, e.clientY);
   }
 
-  // Usar setTimeout para asegurar que el DOM esté listo
-  setTimeout(function() {
-    // Remover listener previo si existe
-    document.removeEventListener('click', handleClick);
-    document.addEventListener('click', handleClick);
-  }, 100);
+  document.addEventListener("click", handleClick, { passive: true });
 })();

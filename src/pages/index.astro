@@ -1,21 +1,25 @@
 ---
+import Layout from "../layouts/Layout.astro";
 import Home from "../components/sections/2-Home.astro";
 import AboutMe from "../components/sections/3-AboutMe.astro";
 import Projects from "../components/sections/4-Projects.astro";
 import Technologies from "../components/sections/5-Technologies.astro";
-import ContactMe from "../components/sections/6-ContactMe.astro";
-import Layout from "../layouts/Layout.astro";
+import Credentials from "../components/sections/6-Credentials.astro";
+import Awards from "../components/sections/7-Awards.astro";
+import ContactMe from "../components/sections/8-ContactMe.astro";
 
-import { getLangFromUrl, useTranslations } from '../i18n/utils'; 
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
 <Layout lang={lang} t={t}>
-	<Home t={t}/>
-	<AboutMe t={t}/>
-	<Projects t={t}/>
-	<Technologies t={t}/>
-	<ContactMe t={t}/>
+  <Home t={t} />
+  <AboutMe t={t} />
+  <Projects t={t} />
+  <Technologies t={t} />
+  <Credentials t={t} />
+  <Awards t={t} />
+  <ContactMe t={t} />
 </Layout>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PL/SQL">
+  <!-- Vendor-neutral: PL/SQL, PL/pgSQL and friends all share this shape. -->
+  <ellipse cx="32" cy="14" rx="21" ry="8" fill="#4b8bbe"/>
+  <path fill="#356b94" d="M11 14v12c0 4.4 9.4 8 21 8s21-3.6 21-8V14c0 4.4-9.4 8-21 8s-21-3.6-21-8z"/>
+  <path fill="#4b8bbe" d="M11 30v12c0 4.4 9.4 8 21 8s21-3.6 21-8V30c0 4.4-9.4 8-21 8s-21-3.6-21-8z"/>
+  <g fill="#fff" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">
+    <text x="32" y="47">SQL</text>
+  </g>
+</svg>

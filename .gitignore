@@ -1,5 +1,6 @@
 # Build output
 dist/
+.vercel/
 
 # Generated types
 .astro/
@@ -26,4 +27,11 @@ pnpm-debug.log*
 *.swp
 *.swo
 
-# Note: bun.lock / bun.lockb should NOT be ignored as they ensure reproducible builds.
+# Single lockfile only. pnpm is declared in package.json's `packageManager`
+# field; a second lockfile makes the deploy target guess, and a stale bun.lock
+# is what broke every Vercel build on this branch.
+bun.lock
+bun.lockb
+
+# Temp scripts
+tmp/
