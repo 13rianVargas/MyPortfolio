@@ -1,10 +1,11 @@
 ---
 const { t } = Astro.props;
 
+// Reading order across the 2 x 2 grid: left to right, top to bottom.
 const AWARDS = [
   { key: "cyber", icon: "shield" },
-  { key: "marathon", icon: "code" },
   { key: "honor", icon: "star" },
+  { key: "marathon", icon: "code" },
   { key: "scout", icon: "medal" },
 ] as const;
 ---

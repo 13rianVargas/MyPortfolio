@@ -256,11 +256,10 @@ select {
  * the fixed header, jumping to a section left the heading stranded near the
  * bottom of the viewport. */
 .section-shell {
-  padding-block: var(--space-lg) var(--space-xl);
+  padding-block: var(--space-md) var(--space-xl);
   padding-inline: var(--space-sm);
   position: relative;
   z-index: 1;
-  scroll-margin-top: var(--header-height);
 }
 
 .section-container {

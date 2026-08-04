@@ -96,8 +96,14 @@ const SKILLS = [
               </svg>
             </button>
             <div class="cv-langs" id="cv-langs">
-              <a href="/Brian_Vargas_CV_ES.pdf" download class="cv-link">ES</a>
-              <a href="/Brian_Vargas_CV_EN.pdf" download class="cv-link">EN</a>
+              <a href="/Brian_Vargas_CV_ES.pdf" download class="cv-link">
+                <span class="lang-long" data-translation-key="aboutme.cvEs">{t("aboutme.cvEs")}</span>
+                <span class="lang-short">ES</span>
+              </a>
+              <a href="/Brian_Vargas_CV_EN.pdf" download class="cv-link">
+                <span class="lang-long" data-translation-key="aboutme.cvEn">{t("aboutme.cvEn")}</span>
+                <span class="lang-short">EN</span>
+              </a>
             </div>
           </div>
         </div>
@@ -326,22 +332,27 @@ const SKILLS = [
     white-space: nowrap;
   }
 
+  /* Animating max-width made the pill jump: the value is an upper bound, not
+   * the real width, so the easing curve did not match the content. A 0fr -> 1fr
+   * grid track animates the actual measured width, so the expansion is smooth. */
   .cv-langs {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    max-width: 0;
-    padding-right: 0;
+    display: grid;
+    grid-template-columns: 0fr;
     opacity: 0;
-    overflow: hidden;
     transition:
-      max-width 0.35s var(--ease-out),
-      opacity 0.25s var(--ease-out),
-      padding-right 0.35s var(--ease-out);
+      grid-template-columns 0.32s var(--ease-out),
+      opacity 0.2s var(--ease-out),
+      padding-right 0.32s var(--ease-out);
+    padding-right: 0;
+  }
+
+  .cv-langs > * {
+    min-width: 0;
+    overflow: hidden;
   }
 
   .cv.open .cv-langs {
-    max-width: 160px;
+    grid-template-columns: 1fr;
     opacity: 1;
     padding-right: 0.45rem;
   }
@@ -349,10 +360,15 @@ const SKILLS = [
   @media (hover: hover) {
     .cv:hover .cv-langs,
     .cv:focus-within .cv-langs {
-      max-width: 160px;
+      grid-template-columns: 1fr;
       opacity: 1;
       padding-right: 0.45rem;
     }
+  }
+
+  .cv-langs > * {
+    display: flex;
+    gap: 0.35rem;
   }
 
   .cv-link {
@@ -362,8 +378,23 @@ const SKILLS = [
     color: var(--color-accent);
     font-size: var(--text-xs);
     font-weight: 800;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
     transition: transform var(--transition-fast);
+  }
+
+  /* Full language names when there is room, two-letter codes when there is not. */
+  .lang-short {
+    display: none;
+  }
+
+  @media (max-width: 420px) {
+    .lang-long {
+      display: none;
+    }
+    .lang-short {
+      display: inline;
+    }
   }
 
   .cv-link:hover {

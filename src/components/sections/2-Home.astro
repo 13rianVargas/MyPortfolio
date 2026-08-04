@@ -160,7 +160,7 @@ const { t } = Astro.props;
           <div class="card-body back-body">
             <div class="qr-block">
               <button class="qr-frame" type="button" id="qr-open" aria-label={t("home.qrInstruction")}>
-                <img src={portfolioQR.src} alt="" width="96" height="96" />
+                <img src={portfolioQR.src} alt="" width="168" height="168" />
               </button>
               <p class="qr-caption" data-translation-key="home.qrInstruction">
                 {t("home.qrInstruction")}
@@ -796,15 +796,17 @@ const { t } = Astro.props;
 
   .qr-block {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
     gap: var(--space-2xs);
-    padding-bottom: var(--space-2xs);
+    padding-bottom: var(--space-xs);
     border-bottom: 1px solid var(--color-border);
   }
 
   .qr-frame {
-    width: 84px;
-    height: 84px;
+    width: 178px;
+    height: 178px;
     flex-shrink: 0;
     display: grid;
     place-items: center;
@@ -830,6 +832,7 @@ const { t } = Astro.props;
     line-height: 1.4;
     color: var(--color-text-secondary);
     margin: 0;
+    max-width: 24ch;
   }
 
   /* Label / value rows — reads like an actual credential instead of a list of

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NumPy">
+  <path fill="#4DABCF" d="M32 4 12 14v20l20 10 20-10V14z" opacity=".85"/>
+  <path fill="#4D77CF" d="M32 24 12 14v20l20 10z"/>
+  <path fill="#4DABCF" d="M32 24v20l20-10V14z"/>
+  <path fill="#4D77CF" d="M20 42v12l12 6 12-6V42l-12 6z" opacity=".9"/>
+</svg>

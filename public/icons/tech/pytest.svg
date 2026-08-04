@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="pytest">
+  <rect x="6" y="8" width="52" height="7" rx="2" fill="#009FE3"/>
+  <g fill="#3E4A55">
+    <rect x="11" y="19" width="7" height="26" rx="2"/>
+    <rect x="21.5" y="19" width="7" height="37" rx="2"/>
+    <rect x="32" y="19" width="7" height="20" rx="2"/>
+    <rect x="42.5" y="19" width="7" height="31" rx="2"/>
+  </g>
+</svg>
