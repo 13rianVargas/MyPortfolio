@@ -16,13 +16,12 @@ Personal portfolio website for Brian Vargas (@13rianVargas). Showcases projects,
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Astro 5.x |
-| Styling | Tailwind CSS 4.x |
+| Framework | Astro 5.x (static, one on-demand route) |
+| Styling | Plain CSS + custom properties (Tailwind removed — its v4 config was never loaded and it was used in ~6 classes) |
 | Language | TypeScript |
-| Scripting | Bun |
 | Package manager | pnpm |
-| Deploy | Vercel |
-| External data | GitHub API (dynamic project listing) |
+| Deploy | Vercel (`@astrojs/vercel`) |
+| Contact form | FormSubmit via server-side `/api/contact` |
 
 ---
 
@@ -66,20 +65,21 @@ bun run build
 
 ## Key Features
 
-- Interactive 3D identity card (CSS transforms + device orientation).
-- Dynamic water ripple background.
-- i18n: English, Spanish, French, Portuguese via custom translation system.
-- Projects fetched dynamically from GitHub API (real-time stars, language, metadata).
-- Dark/light mode via CSS variables + localStorage.
-- Astro partial hydration for performance.
+- Interactive 3D identity card (CSS 3D transforms; flat on touch).
+- Interactive ripple background, off under `prefers-reduced-motion`.
+- i18n: English, Spanish, French, Portuguese — client-side dictionary.
+- Projects come from local config in `4-Projects.astro`, not the GitHub API.
+- Dark/light mode via CSS variables, persisted in `localStorage`.
+- WCAG AA contrast verified by measurement in both themes.
 
 ---
 
 ## Conventions
 
-- i18n: all user-facing text must exist in all 4 languages (`en`, `es`, `fr`, `pt`) in `src/i18n/`.
-- Components go in `src/components/sections/` for page sections.
-- Use Tailwind utility classes — no inline styles.
+- i18n: all user-facing text must exist in all 4 languages (`en`, `es`, `fr`, `pt`) in `src/i18n/ui.ts`. Verify key parity after editing.
+- Components go in `src/components/sections/`, numbered in render order.
+- Design tokens live in `src/styles/global.css`. Component `<style>` is scoped, but `:root` inside it leaks globally — never define tokens there.
+- Amber is a surface colour. Use `--color-on-accent` for text on it and `--color-accent-text` for amber-as-text; raw `--color-accent` as text fails contrast.
 - TypeScript for all non-markup files.
 - Commits: Conventional Commits, English, lowercase.
   ```
@@ -94,6 +94,15 @@ bun run build
 
 - This is a personal project. No team or club conventions apply.
 - Respect existing i18n structure — add all 4 languages when adding text.
-- GitHub API calls are unauthenticated — rate limits apply. Do not add unnecessary fetches.
+- Project data is local. Do not reintroduce build-time GitHub API fetches: repos get renamed and the build then depends on a token.
+- `CONTACT_EMAIL` is a server-side secret declared in `astro.config.mjs`. Never give an env var a `PUBLIC_` prefix unless the value is meant to be in the page source.
 - Do not add tracking scripts, analytics, or third-party services without explicit request.
 - No automatic commits. Present changes for review first.
+
+
+---
+
+## Temporary Files
+
+- `tmp/` is gitignored. Store one-off scripts and throwaway files there.
+- Delete after use. Never commit anything from `tmp/`.

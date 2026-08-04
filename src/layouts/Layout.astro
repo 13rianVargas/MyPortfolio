@@ -1,11 +1,71 @@
 ---
 import "../styles/global.css";
 import Header from "../components/sections/1-Header.astro";
-import Footer from "../components/sections/7-Footer.astro";
+import Footer from "../components/sections/9-Footer.astro";
 import Background from "../components/Background.astro";
-import { ui } from "../i18n/ui";
+
+interface Props {
+  lang: string;
+  t: (key: any) => string;
+}
 
 const { lang, t } = Astro.props;
+
+const SITE = "https://13rian-vargas.vercel.app";
+const OG_IMAGE = `${SITE}/og-cover.jpg`;
+const canonical = new URL(Astro.url.pathname, SITE).href;
+
+const title = t("head.title");
+const description = t("head.description");
+
+const languages = ["en", "es", "fr", "pt"] as const;
+
+// Structured data: lets search engines and AI assistants state the hard facts
+// (role, school, credential) instead of guessing them from prose.
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Brian Vargas",
+  alternateName: "13rian",
+  jobTitle: "Java Backend Developer | Full Stack",
+  url: SITE,
+  image: `${SITE}/og-cover.jpg`,
+  // No `email` field on purpose. The whole reason the contact form moved
+  // server-side was to keep the address out of the page; publishing it in
+  // JSON-LD would hand it straight back to the scrapers.
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bogotá D.C.",
+    addressCountry: "CO",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Fundación Universitaria Konrad Lorenz",
+  },
+  knowsLanguage: ["es", "en"],
+  knowsAbout: [
+    "Java",
+    "Spring Boot",
+    "Angular",
+    "TypeScript",
+    "PostgreSQL",
+    "Docker",
+    "REST API Design",
+    "Cybersecurity",
+  ],
+  hasCredential: [
+    {
+      "@type": "EducationalOccupationalCredential",
+      name: "CCST Cybersecurity — Cisco Certified Support Technician",
+      credentialCategory: "certificate",
+      recognizedBy: { "@type": "Organization", name: "Cisco Systems" },
+    },
+  ],
+  sameAs: [
+    "https://github.com/13rianVargas",
+    "https://www.linkedin.com/in/13rian-vargas/",
+  ],
+};
 ---
 
 <!doctype html>
@@ -14,113 +74,138 @@ const { lang, t } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Brian Vargas — Portfolio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={OG_IMAGE} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Brian Vargas — Java Backend Developer | Full Stack" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={OG_IMAGE} />
+
+    <meta name="author" content="Brian Vargas" />
+    <meta name="robots" content="index, follow" />
     <meta id="theme-color" name="theme-color" content="#f5f5f5" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
     <link rel="icon" type="image/svg+xml" href="/icons/deerhead.svg" />
-    <link rel="stylesheet" href="/src/styles/global.css" />
+    <link rel="alternate" hreflang="x-default" href={SITE} />
+    {
+      languages.map((code) => (
+        <link rel="alternate" hreflang={code} href={SITE} />
+      ))
+    }
 
-    <title>{t("head.title")}</title>
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(personSchema)}
+    />
 
     <script is:inline>
-      // Theme Manager - Always follows system, button provides temporary override
+      /* Theme, resolved before first paint so there is no flash.
+       *
+       * Stored value is one of "light" | "dark" | "system". An explicit choice
+       * wins and survives reload — previously the toggle only lived in memory
+       * and every reload snapped back to the OS setting. "system" keeps
+       * following the OS live. */
       (function () {
-        const DARK_CLASS = "dark";
-        const THEME_EVENT = "basecoat:theme";
+        var KEY = "theme";
+        var EVENT = "basecoat:theme";
+        var query = window.matchMedia("(prefers-color-scheme: dark)");
 
-        // Media query for system preference
-        const systemDarkQuery = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        );
-
-        /**
-         * Get current system theme preference
-         */
-        function getSystemTheme() {
-          return systemDarkQuery.matches ? "dark" : "light";
-        }
-
-        /**
-         * Get current applied theme
-         */
-        function getCurrentTheme() {
-          return document.documentElement.classList.contains(DARK_CLASS)
-            ? "dark"
-            : "light";
-        }
-
-        /**
-         * Apply theme and update meta tags
-         */
-        function applyTheme(theme) {
-          const themeColorMeta = document.getElementById("theme-color");
-
-          if (theme === "dark") {
-            document.documentElement.classList.add(DARK_CLASS);
-            if (themeColorMeta)
-              themeColorMeta.setAttribute("content", "#171717");
-          } else {
-            document.documentElement.classList.remove(DARK_CLASS);
-            if (themeColorMeta)
-              themeColorMeta.setAttribute("content", "#f5f5f5");
+        function stored() {
+          try {
+            var v = localStorage.getItem(KEY);
+            return v === "light" || v === "dark" || v === "system" ? v : null;
+          } catch (e) {
+            return null;
           }
         }
 
-        /**
-         * Toggle theme manually
-         */
-        function toggleTheme() {
-          const newTheme = getCurrentTheme() === "dark" ? "light" : "dark";
-          applyTheme(newTheme);
+        function resolve(pref) {
+          return pref === "system" || !pref
+            ? query.matches
+              ? "dark"
+              : "light"
+            : pref;
         }
 
-        /**
-         * Handle system theme change - ALWAYS follow system
-         */
-        function handleSystemThemeChange(event) {
-          const systemTheme = event.matches ? "dark" : "light";
-          applyTheme(systemTheme);
+        function paint(theme) {
+          var meta = document.getElementById("theme-color");
+          document.documentElement.classList.toggle("dark", theme === "dark");
+          if (meta)
+            meta.setAttribute(
+              "content",
+              theme === "dark" ? "#171717" : "#f5f5f5",
+            );
         }
 
-        // Apply initial theme based on system preference
-        applyTheme(getSystemTheme());
+        function apply(pref) {
+          try {
+            localStorage.setItem(KEY, pref);
+          } catch (e) {}
+          paint(resolve(pref));
+        }
 
-        // Listen for system theme changes (e.g., sunset/sunrise auto-switch or manual system change)
-        systemDarkQuery.addEventListener("change", handleSystemThemeChange);
+        paint(resolve(stored()));
 
-        // Listen for manual toggle events from button
-        document.addEventListener(THEME_EVENT, function () {
-          toggleTheme();
+        query.addEventListener("change", function () {
+          if (!stored() || stored() === "system") paint(resolve("system"));
         });
 
-        // Expose theme manager API
+        document.addEventListener(EVENT, function () {
+          apply(
+            document.documentElement.classList.contains("dark")
+              ? "light"
+              : "dark",
+          );
+        });
+
         window.themeManager = {
-          toggle: toggleTheme,
-          set: applyTheme,
-          get: getCurrentTheme,
-          getSystemTheme: getSystemTheme,
-          syncWithSystem: function () {
-            applyTheme(getSystemTheme());
+          get: function () {
+            return document.documentElement.classList.contains("dark")
+              ? "dark"
+              : "light";
+          },
+          getPreference: function () {
+            return stored() || "system";
+          },
+          set: apply,
+          toggle: function () {
+            document.dispatchEvent(new CustomEvent(EVENT));
           },
         };
       })();
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Background />
     <Header t={t} />
-    <main class="main-content">
+    <main id="main" class="main-content">
       <slot />
     </main>
     <Footer t={t} />
+
     <style>
       .main-content {
-        padding: clamp(1rem, 3vw, 2rem);
-        padding-top: clamp(5rem, 12vw, 6rem);
         width: 100%;
         max-width: 100vw;
-        overflow-x: hidden;
+        overflow-x: clip;
       }
     </style>
   </body>

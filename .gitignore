@@ -1,5 +1,6 @@
 # Build output
 dist/
+.vercel/
 
 # Generated types
 .astro/
@@ -27,3 +28,6 @@ pnpm-debug.log*
 *.swo
 
 # Note: bun.lock / bun.lockb should NOT be ignored as they ensure reproducible builds.
+
+# Temp scripts
+tmp/

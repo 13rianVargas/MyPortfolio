@@ -1,1667 +1,1002 @@
 ---
-import profilePhoto from "../../assets/BrianPhoto.png";
-import Logo from "../tools/Logo.astro";
+import { Image } from "astro:assets";
+import profilePhoto from "../../assets/BrianPhoto.webp";
 import portfolioQR from "../../assets/PortfolioQR.svg";
+import Logo from "../tools/Logo.astro";
+
 const { t } = Astro.props;
 ---
 
 <section id="home" class="home-section">
-  <div class="card-container">
-    <div class="business-card">
-      <!-- FRONT SIDE -->
-      <div class="card-front">
-        <!-- Card Header with Company Branding -->
-        <div class="card-header">
-          <div class="company-logo">
-            <Logo />
-          </div>
-          <div
-            class="flip-hint"
-            onclick="this.closest('.business-card').classList.toggle('flipped')"
-          >
-            <span class="flip-text" data-translation-key="home.flipCardButton"
-              >{t("home.flipCardButton")}</span
-            >
-            <div class="flip-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                ><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
-                ></path><path d="M3 3v5h5"></path><path
-                  d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
-                ></path><path d="M16 21h5v-5"></path></svg
-              >
-            </div>
-          </div>
-        </div>
+  <div class="home-grid">
+    <!-- Intro: the value proposition the old hero never stated. -->
+    <div class="intro">
+      <p class="intro-eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span data-translation-key="home.workModeValue">
+          {t("home.workModeValue")}
+        </span>
+      </p>
 
-        <!-- Card Body with Profile -->
-        <div class="card-body">
-          <div class="profile-section">
-            <div class="profile-photo">
-              <img
-                src={profilePhoto.src}
-                alt={`Foto de perfil de Brian Vargas`}
-              />
-            </div>
-            <div class="profile-info">
-              <h1 class="employee-name" data-translation-key="home.name">
-                {t("home.name")}
-              </h1>
-              <h2 class="employee-role" data-translation-key="home.role">
-                {t("home.role")}
-              </h2>
-              <div
-                class="employee-id"
-                title={t("home.tooltipDecoration")}
-                data-translation-key-title="home.tooltipDecoration"
-              >
-                ID: 000-013
-              </div>
-            </div>
-          </div>
-        </div>
+      <h1 class="intro-name" data-translation-key="home.name">
+        {t("home.name")}
+      </h1>
 
-        <!-- Card Footer with Contact Links -->
-        <div class="card-footer">
-          <div class="contact-links">
-            <a
-              class="contact-btn linkedin"
-              href="https://www.linkedin.com/in/13rian-vargas/"
-              target="_blank"
-              aria-label="LinkedIn"
-            >
-              <img src="/icons/linkedin.svg" alt="LinkedIn" />
-              <span>LinkedIn</span>
-            </a>
-            <a
-              class="contact-btn github"
-              href="https://github.com/13rianVargas"
-              target="_blank"
-              aria-label="GitHub"
-            >
-              <img src="/icons/github.svg" alt="GitHub" />
-              <span>GitHub</span>
-            </a>
-          </div>
-          <div class="card-security">
-            <div
-              class="security-chip"
-              title={t("home.tooltipDecoration")}
-              data-translation-key-title="home.tooltipDecoration"
-            >
-            </div>
-            <span class="security-text" data-translation-key="home.securityText"
-              >{t("home.securityText")}</span
-            >
-          </div>
-        </div>
+      <p class="intro-role" data-translation-key="home.role">
+        {t("home.role")}
+      </p>
+
+      <p class="intro-tagline" data-translation-key="home.tagline">
+        {t("home.tagline")}
+      </p>
+
+      <div class="intro-actions">
+        <a href="#projects" class="btn btn-primary">
+          <span data-translation-key="home.ctaProjects">
+            {t("home.ctaProjects")}
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+        <a href="#aboutme" class="btn btn-ghost">
+          <span data-translation-key="home.ctaCV">{t("home.ctaCV")}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </a>
       </div>
 
-      <!-- BACK SIDE -->
-      <div class="card-back">
-        <!-- Back Header -->
-        <div class="card-header back-header">
-          <div class="back-logo">
-            <Logo />
-          </div>
-          <div
-            class="flip-hint"
-            onclick="this.closest('.business-card').classList.toggle('flipped')"
-          >
-            <span class="flip-text" data-translation-key="home.flipCardButton"
-              >{t("home.flipCardButton")}</span
-            >
-            <div class="flip-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                ><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
-                ></path><path d="M3 3v5h5"></path><path
-                  d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
-                ></path><path d="M16 21h5v-5"></path></svg
-              >
-            </div>
-          </div>
-        </div>
+      <ul class="intro-socials">
+        <li>
+          <a href="https://wa.me/573212256970" target="_blank" rel="noopener noreferrer" class="social whatsapp" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.86 9.86 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23z" />
+              <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47 0 1.46 1.06 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35z" />
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/13rian-vargas/" target="_blank" rel="noopener noreferrer" class="social linkedin" aria-label="LinkedIn">
+            <img src="/icons/linkedin.svg" alt="" width="20" height="20" />
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/13rianVargas" target="_blank" rel="noopener noreferrer" class="social github" aria-label="GitHub">
+            <img src="/icons/github.svg" alt="" width="20" height="20" />
+          </a>
+        </li>
+      </ul>
+    </div>
 
-        <!-- Back Body - Content Area -->
-        <div class="card-body">
-          <!-- QR Code Section -->
-          <div class="qr-section">
-            <div class="qr-placeholder">
-              <!-- Portfolio QR Code - Scan to access portfolio -->
-              <img
-                src={portfolioQR.src}
-                alt={t("home.qrInstruction")}
-                class="qr-image"
+    <!-- The 3D ID card: the piece of the original design worth keeping. -->
+    <div class="card-stage">
+      <div class="business-card" id="businessCard">
+        <div class="card-face card-front">
+          <div class="card-header">
+            <Logo size="2.6rem" />
+            <button
+              class="flip-hint"
+              type="button"
+              data-flip
+              aria-controls="businessCard"
+            >
+              <span data-translation-key="home.flipCardButton">
+                {t("home.flipCardButton")}
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true">
+                <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+                <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                <path d="M16 21h5v-5" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="card-body">
+            <div class="photo-ring">
+              <Image
+                src={profilePhoto}
+                alt="Brian Vargas"
+                widths={[180, 360]}
+                sizes="180px"
+                loading="eager"
+                fetchpriority="high"
+                class="photo"
               />
             </div>
-            <p class="qr-instruction" data-translation-key="home.qrInstruction">
-              {t("home.qrInstruction")}
+            <p class="card-name" data-translation-key="home.name">
+              {t("home.name")}
             </p>
+            <p class="card-role" data-translation-key="home.role">
+              {t("home.role")}
+            </p>
+            <p class="card-id">ID: 000-013</p>
           </div>
 
-          <!-- Personal Information -->
-          <div class="personal-info">
-            <div class="info-item">
-              <span class="info-text" data-translation-key="home.passion"
-                >{t("home.passion")}</span
-              >
+          <div class="card-footer">
+            <div class="card-links">
+              <a href="https://www.linkedin.com/in/13rian-vargas/" target="_blank" rel="noopener noreferrer" class="card-link">
+                <img src="/icons/linkedin.svg" alt="" width="16" height="16" />
+                <span>LinkedIn</span>
+              </a>
+              <a href="https://github.com/13rianVargas" target="_blank" rel="noopener noreferrer" class="card-link">
+                <img src="/icons/github.svg" alt="" width="16" height="16" />
+                <span>GitHub</span>
+              </a>
             </div>
-            <div class="info-item">
-              <span class="info-text" data-translation-key="home.education"
-                >{t("home.education")}</span
-              >
-            </div>
-            <div class="info-item">
-              <span class="info-text" data-translation-key="home.leadership"
-                >{t("home.leadership")}</span
-              >
+            <div class="card-strip">
+              <span class="chip" aria-hidden="true"></span>
+              <span class="strip-text" data-translation-key="home.securityText">
+                {t("home.securityText")}
+              </span>
             </div>
           </div>
         </div>
 
-        <!-- Back Footer -->
-        <div class="card-footer">
-          <div class="contact-details">
-            <div class="contact-item">
-              <span class="contact-label" data-translation-key="home.location"
-                >{t("home.location")}</span
-              >
-              <span
-                class="contact-value"
-                data-translation-key="home.locationValue"
-                >{t("home.locationValue")}</span
-              >
-            </div>
-            <div class="contact-item">
-              <span class="contact-label" data-translation-key="home.workMode"
-                >{t("home.workMode")}</span
-              >
-              <span
-                class="contact-value"
-                data-translation-key="home.workModeValue"
-                >{t("home.workModeValue")}</span
-              >
-            </div>
+        <div class="card-face card-back">
+          <div class="card-header">
+            <Logo size="2.6rem" />
+            <button
+              class="flip-hint"
+              type="button"
+              data-flip
+              aria-controls="businessCard"
+            >
+              <span data-translation-key="home.flipCardButton">
+                {t("home.flipCardButton")}
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true">
+                <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+                <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                <path d="M16 21h5v-5" />
+              </svg>
+            </button>
           </div>
-          <div class="card-security">
-            <div
-              class="security-badge"
-              title={t("home.tooltipDecoration")}
-              data-translation-key-title="home.tooltipDecoration"
-            >
-              <span class="badge-text" data-translation-key="home.badgeText"
-                >{t("home.badgeText")}</span
-              >
+
+          <div class="card-body back-body">
+            <div class="qr-block">
+              <button class="qr-frame" type="button" id="qr-open" aria-label={t("home.qrInstruction")}>
+                <img src={portfolioQR.src} alt="" width="96" height="96" />
+              </button>
+              <p class="qr-caption" data-translation-key="home.qrInstruction">
+                {t("home.qrInstruction")}
+              </p>
             </div>
-            <span class="issue-date" data-translation-key="home.issueDate"
-              >{t("home.issueDate")}</span
-            >
+
+            <dl class="facts">
+              <div class="fact">
+                <dt data-translation-key="home.factFocus">{t("home.factFocus")}</dt>
+                <dd data-translation-key="home.factFocusValue">{t("home.factFocusValue")}</dd>
+              </div>
+              <div class="fact">
+                <dt data-translation-key="home.factStudy">{t("home.factStudy")}</dt>
+                <dd data-translation-key="home.factStudyValue">{t("home.factStudyValue")}</dd>
+              </div>
+              <div class="fact">
+                <dt data-translation-key="home.factRole">{t("home.factRole")}</dt>
+                <dd data-translation-key="home.factRoleValue">{t("home.factRoleValue")}</dd>
+              </div>
+              <div class="fact">
+                <dt data-translation-key="home.location">{t("home.location")}</dt>
+                <dd data-translation-key="home.locationValue">{t("home.locationValue")}</dd>
+              </div>
+              <div class="fact">
+                <dt data-translation-key="home.workMode">{t("home.workMode")}</dt>
+                <dd data-translation-key="home.workModeValue">{t("home.workModeValue")}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="card-footer">
+            <div class="card-strip no-border">
+              <span class="verified" data-translation-key="home.badgeText">
+                {t("home.badgeText")}
+              </span>
+              <span class="strip-text" data-translation-key="home.issueDate">
+                {t("home.issueDate")}
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <a href="#aboutme" class="scroll-hint" aria-hidden="true">
+    <span data-translation-key="home.scrollHint">{t("home.scrollHint")}</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </a>
 </section>
 
-<!-- QR Code Modal Preview -->
-<div id="qr-modal" class="qr-modal">
-  <div class="qr-modal-overlay"></div>
-  <div class="qr-modal-content">
-    <button id="close-qr-modal" class="close-modal-btn" aria-label="Close">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
+<div id="qr-modal" class="qr-modal" role="dialog" aria-modal="true" aria-label="QR">
+  <div class="qr-overlay" data-close></div>
+  <div class="qr-content">
+    <button id="qr-close" class="qr-close" type="button" aria-label="Close" data-close>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="22" height="22">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
-    <div class="qr-modal-image-container">
-      <img src={portfolioQR.src} alt="QR Code Preview" class="qr-modal-image" />
+    <div class="qr-big">
+      <img src={portfolioQR.src} alt="QR" id="qr-image" width="400" height="400" />
     </div>
-    <div class="qr-modal-actions">
-      <button id="share-qr-btn" class="modal-action-btn">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-          <polyline points="16 6 12 2 8 6"></polyline>
-          <line x1="12" y1="2" x2="12" y2="15"></line>
-        </svg>
+    <div class="qr-actions">
+      <button id="qr-share" class="qr-action" type="button">
         <span data-translation-key="home.shareQR">{t("home.shareQR")}</span>
       </button>
-      <button id="download-qr-btn" class="modal-action-btn">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span data-translation-key="home.downloadQR"
-          >{t("home.downloadQR")}</span
-        >
+      <button id="qr-download" class="qr-action" type="button">
+        <span data-translation-key="home.downloadQR">{t("home.downloadQR")}</span>
       </button>
     </div>
+    <p class="qr-feedback" id="qr-feedback" role="status" aria-live="polite"></p>
   </div>
 </div>
 
-<script>
-  /**
-   * ========================================
-   * BUSINESS CARD FLIP FUNCTIONALITY
-   * ========================================
-   *
-   * This script handles the dynamic behavior of the business card component:
-   * - Device detection (mobile vs desktop)
-   * - Internationalization support for flip hints
-   * - Adaptive text updates based on user interaction method
-   * - Responsive behavior across different screen sizes
-   *
-   * Features:
-   * - Automatic device type detection using multiple criteria
-   * - Language-aware text switching (ES/EN support)
-   * - Real-time updates on window resize and language changes
-   * - Modular architecture for easy maintenance and extension
-   */
-
-  // ========================================
-  // CONFIGURATION CONSTANTS
-  // Centralized configuration for easy maintenance
-  // ========================================
-  const CONFIG = {
-    // DOM element selectors
-    SELECTORS: {
-      flipText: ".flip-text",
-      documentElement: document.documentElement,
-    },
-  };
-
-  /**
-   * ========================================
-   * FLIP ICON ANIMATION MANAGEMENT
-   * ========================================
-   * Handles dynamic interactions for the flip icon
-   */
-  const FlipIconManager = {
-    /**
-     * Placeholder for any future dynamic icon logic
-     * Currently handled primarily by CSS transitions
-     */
-    initialize() {
-      // Icon rotation on hover is handled by CSS
-    },
-  };
-
-  // ========================================
-  // MODULE INITIALIZATION
-  // ========================================
-  FlipIconManager.initialize();
-
-  /**
-   * ========================================
-   * QR CODE MODAL PREVIEW LOGIC
-   * ========================================
-   */
-  const QRModalManager = {
-    selectors: {
-      qrContainer: ".qr-placeholder",
-      modal: "#qr-modal",
-      overlay: ".qr-modal-overlay",
-      closeBtn: "#close-qr-modal",
-      shareBtn: "#share-qr-btn",
-      downloadBtn: "#download-qr-btn",
-      qrImage: ".qr-modal-image",
-    },
-
-    init() {
-      const qrContainer = document.querySelector(this.selectors.qrContainer);
-      const modal = document.querySelector(this.selectors.modal);
-      const overlay = document.querySelector(this.selectors.overlay);
-      const closeBtn = document.querySelector(this.selectors.closeBtn);
-      const shareBtn = document.querySelector(this.selectors.shareBtn);
-      const downloadBtn = document.querySelector(this.selectors.downloadBtn);
-      const qrImage = document.querySelector(this.selectors.qrImage);
-
-      if (!qrContainer || !modal || !overlay || !closeBtn) return;
-
-      qrContainer.addEventListener("click", (e) => {
-        e.stopPropagation();
-        this.openModal(modal);
-      });
-
-      overlay.addEventListener("click", () => this.closeModal(modal));
-      closeBtn.addEventListener("click", () => this.closeModal(modal));
-
-      // Share functionality
-      if (shareBtn) {
-        shareBtn.addEventListener("click", async () => {
-          const shareData = {
-            title: document.title,
-            text: "Check out my portfolio!",
-            url: window.location.href,
-          };
-
-          try {
-            if (navigator.share) {
-              await navigator.share(shareData);
-            } else {
-              // Fallback: Copy link to clipboard
-              await navigator.clipboard.writeText(window.location.href);
-              alert("Portfolio link copied to clipboard!");
-            }
-          } catch (err) {
-            console.error("Error sharing:", err);
-          }
-        });
-      }
-
-      // Download functionality
-      if (downloadBtn && qrImage) {
-        downloadBtn.addEventListener("click", () => {
-          const originalSrc = (qrImage as HTMLImageElement).src;
-          const img = new Image();
-
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            // Set a high resolution for the QR (1024x1024)
-            const size = 1024;
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext("2d");
-
-            if (ctx) {
-              // Draw white background (important for QR scanners)
-              ctx.fillStyle = "white";
-              ctx.fillRect(0, 0, size, size);
-              // Draw the SVG image onto the canvas
-              ctx.drawImage(img, 0, 0, size, size);
-
-              try {
-                // Convert canvas to PNG Data URL
-                const pngUrl = canvas.toDataURL("image/png");
-                const downloadLink = document.createElement("a");
-                downloadLink.href = pngUrl;
-                downloadLink.download = "BrianVargasPortfolioQR.png";
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-              } catch (e) {
-                console.error("Error generating PNG:", e);
-                // Fallback: download as SVG if PNG conversion fails
-                const link = document.createElement("a");
-                link.href = originalSrc;
-                link.download = "BrianVargasPortfolioQR.svg";
-                link.click();
-              }
-            }
-          };
-
-          img.onerror = () => {
-            console.error("Failed to load QR image for conversion");
-          };
-
-          img.src = originalSrc;
-        });
-      }
-
-      // Close on Escape key
-      document.addEventListener("keydown", (e: KeyboardEvent) => {
-        if (e.key === "Escape" && modal.classList.contains("active")) {
-          this.closeModal(modal);
-        }
-      });
-    },
-
-    openModal(modal: Element) {
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden"; // Prevent scrolling
-    },
-
-    closeModal(modal: Element) {
-      modal.classList.remove("active");
-      document.body.style.overflow = ""; // Restore scrolling
-    },
-  };
-
-  // Initialize on DOM ready
-  document.addEventListener("DOMContentLoaded", () => QRModalManager.init());
-  // Re-initialize for View Transitions
-  document.addEventListener("astro:page-load", () => QRModalManager.init());
-</script>
-
 <script src="../../i18n/translator.ts"></script>
 
-<style>
-  /* ========================================
-   * CSS CUSTOM PROPERTIES
-   * Using fluid responsive values with clamp()
-   * ======================================== */
-  :root {
-    /* ===== FLUID CARD DIMENSIONS ===== */
-    /* Card scales fluidly from mobile (280px) to desktop (420px) */
-    --card-width: clamp(280px, 45vw, 420px);
-    /* Fixed height based on viewport width to prevent ANY movement on mobile scroll */
-    --card-height: clamp(450px, 90vw, 620px);
-    --card-perspective: 1000px;
-    --card-border-radius: clamp(16px, 3vw, 20px);
-
-    /* 3D rotation angles for different interaction states */
-    --card-idle-rotate-y: -5deg;
-    --card-idle-rotate-x: 2deg;
-    --card-hover-rotate-y: -8deg;
-    --card-hover-rotate-x: 3deg;
-    --card-hover-scale: 1.02;
-    --card-flipped-rotate-y: 175deg;
-    --card-flipped-hover-rotate-y: 178deg;
-
-    /* ===== FLUID SPACING SYSTEM ===== */
-    --section-padding: clamp(0.5rem, 3vw, 2rem);
-    --floating-header-offset: clamp(-150px, -15vw, -100px);
-    --header-padding: clamp(0.75rem, 2vw, 1.5rem);
-    --header-min-height: clamp(60px, 12vw, 90px);
-    --body-padding: clamp(0.75rem, 2vw, 1.2rem) clamp(0.75rem, 2.5vw, 1.5rem);
-    --footer-padding: clamp(0.75rem, 2vw, 1rem);
-    --element-gap: clamp(0.5rem, 2vw, 1rem);
-    --element-gap-small: clamp(0.25rem, 1vw, 0.5rem);
-    --element-gap-large: clamp(1rem, 3vw, 1.5rem);
-
-    /* ===== FLUID COMPONENT DIMENSIONS ===== */
-    --logo-size: clamp(40px, 8vw, 60px);
-    --profile-photo-size: clamp(120px, 25vw, 180px);
-    --profile-photo-border-radius: 50%;
-    --security-chip-width: clamp(24px, 4vw, 30px);
-    --security-chip-height: clamp(16px, 3vw, 20px);
-    --contact-btn-padding: clamp(0.5rem, 1.5vw, 0.8rem);
-    --contact-icon-size: clamp(14px, 3vw, 18px);
-
-    /* QR code and related elements */
-    --qr-placeholder-size: clamp(80px, 15vw, 120px);
-    --qr-border-radius: clamp(8px, 1.5vw, 12px);
-
-    /* ===== FLUID TYPOGRAPHY SCALE ===== */
-    --text-company-name: clamp(0.9rem, 2vw, 1.2rem);
-    --text-employee-name: clamp(1.3rem, 3vw, 1.8rem);
-    --text-employee-role: clamp(0.9rem, 2vw, 1.1rem);
-    --text-employee-id: clamp(0.75rem, 1.5vw, 0.9rem);
-    --text-flip-hint: clamp(0.65rem, 1.2vw, 0.85rem);
-    --text-contact-btn: clamp(0.75rem, 1.5vw, 0.9rem);
-    --text-contact-item: clamp(0.75rem, 1.5vw, 0.9rem);
-    --text-security: clamp(0.6rem, 1.2vw, 0.7rem);
-    --text-qr-instruction: clamp(0.7rem, 1.3vw, 0.8rem);
-    --text-info-item: clamp(0.75rem, 1.5vw, 0.9rem);
-
-    /* Icon and symbol sizes */
-    --flip-icon-size: clamp(1.5rem, 3vw, 2rem);
-
-    /* ===== ANIMATION & TRANSITION SYSTEM ===== */
-    --transition-card: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --transition-elements: all 0.3s ease;
-    --transition-hover: all 0.2s ease-out;
-    --animation-duration-pulse: 2s;
-    --animation-duration-rotate: 2s;
-    --animation-duration-shine: 6s;
-
-    /* ===== SHADOW SYSTEM ===== */
-    --shadow-card:
-      0 20px 40px var(--color-shadow), 0 0 0 1px var(--color-border),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    --shadow-element: 0 8px 16px var(--color-shadow);
-    --shadow-hover: 0 4px 8px var(--color-shadow);
-    --shadow-contact-btn: 0 2px 8px var(--color-shadow);
-
-    /* ===== GRADIENT DEFINITIONS ===== */
-    --gradient-header: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      var(--color-accent-hover) 100%
-    );
-    --gradient-back-header: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      var(--color-accent-hover) 100%
-    );
-    --gradient-security-chip: linear-gradient(135deg, #ffd700, #ffed4e);
-    --gradient-security-badge: linear-gradient(135deg, #10b981, #059669);
-    --gradient-shine: linear-gradient(
-      45deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-
-    /* ===== BORDER & OPACITY VALUES ===== */
-    --border-width-thin: 1px;
-    --border-width-medium: 2px;
-    --border-width-thick: 3px;
-    --opacity-overlay: 0.1;
-    --opacity-text-secondary: 0.9;
-    --opacity-disabled: 0.6;
-
-    /* ===== Z-INDEX LAYERS ===== */
-    --z-index-base: 1;
-    --z-index-overlay: 2;
-    --z-index-floating: 3;
+<script>
+  function initCard() {
+    const card = document.getElementById("businessCard");
+    card?.querySelectorAll<HTMLButtonElement>("[data-flip]").forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = "true";
+      btn.addEventListener("click", () => {
+        const flipped = card.classList.toggle("flipped");
+        btn.setAttribute("aria-expanded", String(flipped));
+      });
+    });
   }
 
-  /* ========================================
-   * MAIN LAYOUT COMPONENTS
-   * Core structure and positioning
-   * ======================================== */
+  function initQrModal() {
+    const modal = document.getElementById("qr-modal");
+    const open = document.getElementById("qr-open");
+    if (!modal || !open || modal.dataset.bound) return;
+    modal.dataset.bound = "true";
+
+    const feedback = document.getElementById("qr-feedback") as HTMLElement;
+    const image = document.getElementById("qr-image") as HTMLImageElement;
+
+    const show = () => {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+      (document.getElementById("qr-close") as HTMLElement)?.focus();
+    };
+    const hide = () => {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+      feedback.textContent = "";
+    };
+
+    open.addEventListener("click", show);
+    modal
+      .querySelectorAll("[data-close]")
+      .forEach((el) => el.addEventListener("click", hide));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) hide();
+    });
+
+    document.getElementById("qr-share")?.addEventListener("click", async () => {
+      const url = window.location.href;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: document.title, url });
+        } else {
+          await navigator.clipboard.writeText(url);
+          feedback.textContent =
+            document
+              .querySelector('[data-translation-key="home.qrCopied"]')
+              ?.textContent?.trim() || "Link copied";
+        }
+      } catch {
+        /* user dismissed the share sheet — nothing to report */
+      }
+    });
+
+    document.getElementById("qr-download")?.addEventListener("click", () => {
+      const img = new Image();
+      img.onload = () => {
+        const size = 1024;
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, 0, 0, size, size);
+
+        const link = document.createElement("a");
+        try {
+          link.href = canvas.toDataURL("image/png");
+          link.download = "BrianVargasPortfolioQR.png";
+        } catch {
+          link.href = image.src;
+          link.download = "BrianVargasPortfolioQR.svg";
+        }
+        link.click();
+      };
+      img.src = image.src;
+    });
+  }
+
+  function init() {
+    initCard();
+    initQrModal();
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("astro:page-load", init);
+</script>
+
+<style>
   .home-section {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-height) + var(--space-lg)) var(--space-sm)
+      var(--space-xl);
+  }
+
+  .home-grid {
+    width: 100%;
+    max-width: var(--container-xl);
+    margin-inline: auto;
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .home-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  /* ---------------- Intro ---------------- */
+
+  .intro {
+    order: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  @media (min-width: 1024px) {
+    .intro {
+      order: 1;
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+
+  .intro-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.3rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: var(--glass-bg);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-success);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-success) 25%, transparent);
+  }
+
+  .intro-name {
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  /* Amber as text on a light page: --color-accent-text is 4.9:1.
+   * The raw --color-accent measured 1.33:1 here. */
+  .intro-role {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-accent-text);
+    margin: 0;
+  }
+
+  .intro-tagline {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 46ch;
+    margin: var(--space-3xs) 0 0;
+  }
+
+  .intro-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2xs);
+    margin-top: var(--space-2xs);
+  }
+
+  @media (min-width: 1024px) {
+    .intro-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    border-radius: var(--radius-full);
+    font-size: var(--text-base);
+    font-weight: 700;
+    transition:
+      transform var(--transition-fast),
+      background var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    border: 1px solid transparent;
+    box-shadow: 0 6px 18px
+      color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .intro-socials {
+    display: flex;
+    gap: var(--space-3xs);
+    list-style: none;
+    margin: var(--space-3xs) 0 0;
+    padding: 0;
+  }
+
+  .social {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: var(--glass-bg);
+    color: var(--color-text-primary);
+    transition:
+      transform var(--transition-fast),
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .social:hover {
+    transform: translateY(-3px);
+  }
+
+  .social.whatsapp:hover {
+    background: #25d366;
+    border-color: #25d366;
+    color: #0b2e18;
+  }
+
+  .social.linkedin:hover {
+    background: #0a66c2;
+    border-color: #0a66c2;
+  }
+
+  .social.github:hover {
+    background: #171717;
+    border-color: #171717;
+  }
+
+  :global(.dark) .intro-socials img,
+  :global(.dark) .card-link img {
+    filter: brightness(0) invert(1);
+  }
+
+  .social.linkedin:hover img,
+  .social.github:hover img {
+    filter: brightness(0) invert(1);
+  }
+
+  /* ---------------- 3D card ---------------- */
+
+  .card-stage {
+    order: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-    /* Changed min-height from 100vh to 100svh for better mobile stability */
-    min-height: 100svh;
-    padding: var(--section-padding);
-    background: transparent;
-    perspective: var(--card-perspective);
-    pointer-events: none;
+    perspective: 1400px;
   }
 
-  .card-container {
-    position: relative;
-    /* iOS Safari 3D context fix */
-    -webkit-perspective: var(--card-perspective);
-    perspective: var(--card-perspective);
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    margin-top: var(--floating-header-offset);
-    pointer-events: none;
+  @media (min-width: 1024px) {
+    .card-stage {
+      order: 2;
+    }
   }
 
-  /* ========================================
-   * 3D CARD COMPONENT
-   * Main business card with enhanced flip functionality for Safari/iOS
-   * ======================================== */
+  /* Grid, not absolute positioning: both faces share one cell, so the card is
+   * as tall as the TALLER face. With the back absolutely positioned it
+   * inherited the front's height and its lower rows were clipped. */
   .business-card {
-    width: var(--card-width);
-    /* Auto height based on content instead of fixed */
-    /* height: var(--card-height); */
-    position: relative;
+    display: grid;
+    width: min(100%, 360px);
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
-    transition: var(--transition-card);
-    transform: perspective(var(--card-perspective))
-      rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x));
-    -webkit-transform: perspective(var(--card-perspective))
-      rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x));
-    /* Enhanced hardware acceleration for iOS */
+    transform: rotateY(-6deg) rotateX(2deg);
+    transition: transform 0.85s var(--ease-flip);
     will-change: transform;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /* Ensure proper z-index layering */
-    z-index: 1;
-    pointer-events: auto;
-  }
-
-  .business-card:hover {
-    transform: perspective(var(--card-perspective))
-      rotateY(var(--card-hover-rotate-y)) rotateX(var(--card-hover-rotate-x))
-      scale(var(--card-hover-scale));
-    -webkit-transform: perspective(var(--card-perspective))
-      rotateY(var(--card-hover-rotate-y)) rotateX(var(--card-hover-rotate-x))
-      scale(var(--card-hover-scale));
   }
 
   .business-card.flipped {
-    transform: perspective(var(--card-perspective))
-      rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x));
-    -webkit-transform: perspective(var(--card-perspective))
-      rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x));
+    transform: rotateY(-186deg) rotateX(2deg);
   }
 
-  .business-card.flipped:hover {
-    transform: perspective(var(--card-perspective))
-      rotateY(var(--card-flipped-hover-rotate-y))
-      rotateX(var(--card-hover-rotate-x)) scale(var(--card-hover-scale));
-    -webkit-transform: perspective(var(--card-perspective))
-      rotateY(var(--card-flipped-hover-rotate-y))
-      rotateX(var(--card-hover-rotate-x)) scale(var(--card-hover-scale));
+  @media (hover: hover) and (pointer: fine) {
+    .business-card:hover {
+      transform: rotateY(-9deg) rotateX(3deg) scale(1.02);
+    }
+    .business-card.flipped:hover {
+      transform: rotateY(-189deg) rotateX(3deg) scale(1.02);
+    }
   }
 
-  /* ========================================
-   * CARD SIDES - FRONT & BACK
-   * Common styles for both card faces with enhanced Safari/iOS support
-   * ======================================== */
-  .card-front,
-  .card-back {
-    /* Position removed from shared style to allow different positioning */
-    width: 100%;
-    /* Height removed to allow content to dictate height */
-    /* Critical: backface-visibility for proper 3D flip on Safari/iOS */
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--glass-shadow);
-    /* Liquid Glass Effect */
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    overflow: hidden;
+  /* Flat on touch: the tilt reads as a rendering glitch on small screens. */
+  @media (hover: none) and (pointer: coarse) {
+    .business-card,
+    .business-card:hover {
+      transform: none;
+    }
+    .business-card.flipped {
+      transform: rotateY(-180deg);
+    }
+  }
+
+  .card-face {
     display: flex;
     flex-direction: column;
-    /* Safari/iOS specific 3D rendering fixes */
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    /* Force hardware acceleration */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    /* Improve rendering on iOS */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 24px 60px var(--color-shadow);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  /* Front face - default position */
+  .card-face {
+    grid-area: 1 / 1;
+  }
+
   .card-front {
-    position: relative; /* Driven by content */
     z-index: 2;
   }
 
-  /* Back face - rotated 180 degrees */
   .card-back {
-    position: absolute; /* Overlays front */
-    top: 0;
-    left: 0;
-    height: 100%; /* Matches container height */
-    transform: rotateY(180deg) translateZ(0);
-    -webkit-transform: rotateY(180deg) translateZ(0);
-    /* Glass effect inherited from .card-front, .card-back */
+    transform: rotateY(180deg);
     z-index: 1;
   }
 
-  /* ========================================
-   * CARD HEADER COMPONENT
-   * Top section with branding and flip hint
-   * ======================================== */
+  .business-card.flipped .card-front {
+    z-index: 1;
+  }
+  .business-card.flipped .card-back {
+    z-index: 2;
+  }
+
   .card-header {
-    background: var(--gradient-header);
-    padding: var(--header-padding);
-    min-height: var(--header-min-height);
     display: flex;
     align-items: center;
-    gap: var(--element-gap);
-    position: relative;
-    overflow: hidden;
-    /* Prevent shrinking when viewport changes */
-    flex-shrink: 0;
-  }
-
-  .back-header {
-    background: var(--gradient-back-header);
-  }
-
-  /* Animated shine effect across the entire card */
-  .card-front::before,
-  .card-back::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    bottom: -50%;
-    left: -50%;
+    justify-content: space-between;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-xs);
     background: linear-gradient(
-      to bottom right,
-      transparent 45%,
-      rgba(255, 255, 255, 0.2) 50%,
-      transparent 55%
+      135deg,
+      var(--color-accent),
+      var(--color-accent-hover)
     );
-    transform: rotate(45deg);
-    animation: shine var(--animation-duration-shine) infinite;
-    pointer-events: none;
-    z-index: var(--z-index-overlay);
   }
 
-  /* ========================================
-   * KEYFRAME ANIMATIONS
-   * Reusable animation definitions for visual effects
-   * ======================================== */
+  .flip-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-on-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-on-accent) 22%, transparent);
+    color: var(--color-on-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+  }
 
-  /* Subtle shine effect that moves across elements */
-  @keyframes shine {
-    0% {
-      transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    }
-    50% {
-      transform: translateX(100%) translateY(100%) rotate(45deg);
-    }
-    100% {
-      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  .flip-hint:hover {
+    background: color-mix(in srgb, var(--color-on-accent) 20%, transparent);
+    transform: scale(1.04);
+  }
+
+  .flip-hint svg {
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .flip-hint:hover svg {
+    transform: rotate(180deg);
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.3rem;
+    padding: var(--space-sm) var(--space-xs);
+    flex: 1;
+  }
+
+  .photo-ring {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--color-accent);
+    box-shadow: 0 10px 26px var(--color-shadow);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .photo-ring :global(.photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-name {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .card-role {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-accent-text);
+    margin: 0;
+  }
+
+  .card-id {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-text-primary) 7%, transparent);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 0.2rem 0.75rem;
+    margin: 0.35rem 0 0;
+    user-select: none;
+  }
+
+  .card-footer {
+    padding: var(--space-2xs) var(--space-xs) var(--space-xs);
+    background: color-mix(in srgb, var(--color-text-primary) 5%, transparent);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .card-links {
+    display: flex;
+    gap: var(--space-3xs);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .card-link {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    transition:
+      transform var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .card-link:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+  }
+
+  .card-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3xs);
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .chip {
+    width: 26px;
+    height: 18px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .strip-text {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+  }
+
+  .verified {
+    background: #15803d;
+    color: #fff;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.8rem 0.15rem 0.5rem;
+    clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+    border-radius: 2px 0 0 2px;
+  }
+
+  /* ---------------- Card back ---------------- */
+
+  .back-body {
+    gap: var(--space-2xs);
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .qr-block {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding-bottom: var(--space-2xs);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .qr-frame {
+    width: 84px;
+    height: 84px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    padding: 0.35rem;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    border: 1px solid var(--color-border);
+    transition: transform var(--transition-fast);
+  }
+
+  .qr-frame:hover {
+    transform: scale(1.05);
+  }
+
+  .qr-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .qr-caption {
+    font-size: var(--text-xs);
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Label / value rows — reads like an actual credential instead of a list of
+   * emoji bullets. */
+  .facts {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .fact {
+    display: grid;
+    grid-template-columns: minmax(72px, auto) 1fr;
+    align-items: baseline;
+    gap: var(--space-2xs);
+  }
+
+  .fact dt {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .fact dd {
+    margin: 0;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    text-align: right;
+  }
+
+  .card-strip.no-border {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  /* ---------------- Scroll hint ---------------- */
+
+  .scroll-hint {
+    display: none;
+    margin: var(--space-lg) auto 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 1024px) {
+    .scroll-hint {
+      display: flex;
     }
   }
 
-  /* Breathing pulse effect for attention-drawing elements */
-  @keyframes pulse {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-hint svg {
+      animation: nudge 1.8s var(--ease-out) infinite;
+    }
+  }
+
+  @keyframes nudge {
     0%,
     100% {
-      opacity: 0.8;
+      transform: translateY(0);
+      opacity: 0.55;
     }
     50% {
+      transform: translateY(5px);
       opacity: 1;
     }
   }
 
-  /* Smooth continuous rotation for interactive icons */
-  @keyframes rotate {
-    0%,
-    100% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-  }
+  /* ---------------- QR modal ---------------- */
 
-  /* ========================================
-   * INTERACTIVE FLIP HINT COMPONENT
-   * User guidance for card interaction with adaptive text
-   * ======================================== */
-  .flip-hint {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    color: #fff;
-    cursor: pointer;
-    user-select: none;
-    z-index: 50;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-
-  .flip-hint:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  }
-
-  .flip-hint:active {
-    transform: scale(0.95);
-  }
-
-  .flip-text {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-  }
-
-  .flip-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    transition: transform 0.5s ease;
-  }
-
-  .flip-hint:hover .flip-icon {
-    transform: rotate(180deg);
-  }
-
-  .flip-icon {
-    font-size: var(--flip-icon-size);
-    animation: rotate var(--animation-duration-rotate) ease-in-out infinite;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-  }
-
-  /* ========================================
-   * LOGO AND BRANDING COMPONENTS
-   * Profile photos, company logos, and QR code elements
-   * ======================================== */
-  .company-logo,
-  .back-logo {
-    position: relative;
-    z-index: var(--z-index-base);
-  }
-
-  /* Circular logo container with glassmorphism effect */
-  .logo-circle {
-    width: var(--logo-size);
-    height: var(--logo-size);
-    background: rgba(255, 255, 255, 0.2);
-    border: var(--border-width-medium) solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    font-size: 1.2rem;
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-  }
-
-  .logo-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-
-  /* QR code container - placeholder for future implementation */
-  .qr-code {
-    width: var(--logo-size);
-    height: var(--logo-size);
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Mock QR pattern using CSS gradients */
-  .qr-pattern {
-    position: absolute;
-    inset: 4px;
-    background: #000;
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        transparent 2px,
-        #000 2px,
-        #000 4px
-      ),
-      repeating-linear-gradient(
-        90deg,
-        transparent 0px,
-        transparent 2px,
-        #000 2px,
-        #000 4px
-      );
-    opacity: 0.8;
-  }
-
-  /* ========================================
-   * TYPOGRAPHY COMPONENTS
-   * Consistent text styling for all content sections
-   * ======================================== */
-  .company-info,
-  .back-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: white;
-  }
-
-  .company-name {
-    font-size: var(--text-company-name);
-    font-weight: bold;
-    margin: 0;
-    color: var(--color-text-primary);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-
-  .back-title {
-    font-size: var(--text-company-name);
-    font-weight: bold;
-    margin: 0;
-    color: white;
-  }
-
-  /* ========================================
-   * CARD BODY - MAIN CONTENT AREA
-   * Central content section with profile info
-   * ======================================== */
-  .card-body {
-    padding: var(--body-padding);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* Prevent expansion/shrinking when mobile viewport changes */
-    flex: 0 0 auto;
-  }
-
-  .profile-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    /* Prevent this section from growing excessively */
-    flex-shrink: 0;
-  }
-
-  /* Professional profile photo with enhanced styling */
-  .profile-photo {
-    width: var(--profile-photo-size);
-    height: var(--profile-photo-size);
-    border-radius: var(--profile-photo-border-radius);
-    overflow: hidden;
-    margin-bottom: var(--element-gap);
-    border: var(--border-width-thick) solid var(--color-border);
-    box-shadow: var(--shadow-element);
-    position: relative;
-  }
-
-  /* Subtle highlight overlay for photo */
-  .profile-photo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-shine);
-    pointer-events: none;
-    z-index: var(--z-index-overlay);
-  }
-
-  .profile-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.2) translateY(5%);
-  }
-
-  .profile-info {
-    width: 100%;
-  }
-
-  /* Employee name with enhanced typography */
-  .employee-name {
-    font-size: var(--text-employee-name);
-    font-weight: 700;
-    margin: 0 0 var(--element-gap-small) 0;
-    color: var(--color-text-primary);
-    letter-spacing: -0.02em;
-  }
-
-  /* Employee role with accent styling */
-  .employee-role {
-    font-size: var(--text-employee-role);
-    font-weight: 500;
-    margin: 0 0 var(--element-gap) 0;
-    color: var(--color-accent);
-    letter-spacing: 0.05em;
-  }
-
-  /* Employee ID badge with monospace styling */
-  .employee-id {
-    font-size: var(--text-employee-id);
-    color: var(--color-text-secondary);
-    font-family: "Courier New", monospace;
-    background: var(--color-bg-secondary);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    display: inline-block;
-    border: var(--border-width-thin) solid var(--color-border);
-    cursor: default;
-    user-select: none;
-  }
-
-  /* ========================================
-   * QR CODE SECTION - BACK SIDE
-   * Interactive QR code for portfolio access
-   * ======================================== */
-  .qr-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: var(--element-gap-large);
-  }
-
-  /* QR code container with professional styling */
-  .qr-placeholder {
-    width: var(--qr-placeholder-size);
-    height: var(--qr-placeholder-size);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-primary);
-    border: var(--border-width-medium) solid var(--color-border);
-    border-radius: var(--qr-border-radius);
-    margin-bottom: 0.8rem;
-    position: relative;
-    overflow: hidden;
-    padding: 0.5rem;
-    transition: var(--transition-hover);
-    cursor: pointer;
-  }
-
-  /* QR code image with optimized display */
-  .qr-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-  }
-
-  /* Ensure QR is visible in dark mode by using a softer cream background */
-  :global(.dark) .qr-placeholder {
-    background: #fdf6e3;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  /* Hover effect for QR container */
-  .qr-placeholder:hover {
-    transform: scale(1.15);
-    box-shadow: var(--shadow-hover);
-  }
-
-  /* Instructional text for QR code usage */
-  .qr-instruction {
-    font-size: var(--text-qr-instruction);
-    color: var(--color-text-secondary);
-    text-align: center;
-    font-style: italic;
-    margin: 0;
-    line-height: 1.3;
-  }
-
-  /* ========================================
-   * QR CODE MODAL PREVIEW
-   * Full-screen preview logic for QR code
-   * ======================================== */
   .qr-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    display: none; /* Hidden by default */
+    inset: 0;
+    z-index: var(--z-modal);
+    display: none;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: var(--space-md);
   }
 
   .qr-modal.active {
     display: flex;
   }
 
-  .qr-modal-overlay {
+  .qr-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(8px);
-    cursor: pointer;
   }
 
-  .qr-modal-content {
+  .qr-content {
     position: relative;
-    z-index: 10000;
-    max-width: min(500px, 90vw);
-    width: 100%;
-    transform: scale(0.9);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+    width: min(440px, 100%);
   }
 
-  .qr-modal.active .qr-modal-content {
-    transform: scale(1);
-    opacity: 1;
+  .qr-big {
+    background: #fff;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 
-  .qr-modal-image-container {
-    background: #fdf6e3; /* Light background for QR visibility */
-    padding: 2rem;
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .qr-modal-image {
+  .qr-big img {
     width: 100%;
     height: auto;
-    object-fit: contain;
-    filter: brightness(1.1); /* Slightly increase brightness */
+    display: block;
   }
 
-  .qr-modal-actions {
+  .qr-actions {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-2xs);
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: var(--space-sm);
   }
 
-  .modal-action-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.8rem 1.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  .qr-action {
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 800;
+    font-size: var(--text-sm);
+    transition: background var(--transition-fast), transform var(--transition-fast);
   }
 
-  .modal-action-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+  .qr-action:hover {
+    background: var(--color-accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
   }
 
-  .modal-action-btn:active {
-    transform: translateY(0);
-  }
-
-  .close-modal-btn {
+  .qr-close {
     position: absolute;
-    top: -2.5rem;
-    right: -2.5rem;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    top: -3rem;
+    right: 0;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
     border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
   }
 
-  .close-modal-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.1);
+  .qr-close:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 
-  /* Responsive adjustments for modal */
-  @media (max-width: 480px) {
-    .qr-modal-image-container {
-      padding: 1.5rem;
-    }
-    .close-modal-btn {
-      top: -3.5rem;
-      right: 50%;
-      transform: translateX(50%);
-    }
-    .close-modal-btn:hover {
-      transform: translateX(50%) scale(1.1);
-    }
-  }
-
-  /* ========================================
-   * PERSONAL INFO SECTION - BACK SIDE
-   * Professional highlights and personal details
-   * ======================================== */
-  .personal-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  /* Individual info item with hover effects */
-  .info-item {
-    display: flex;
-    align-items: flex-start;
-    padding: 0.6rem 1rem;
-    background: var(--color-bg-secondary);
-    border-radius: 10px;
-    border-left: var(--border-width-thick) solid var(--color-accent);
-    transition: var(--transition-hover);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Subtle shine overlay for info items */
-  .info-item::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      transparent,
-      rgba(255, 255, 255, var(--opacity-overlay)),
-      transparent
-    );
-    pointer-events: none;
-    z-index: var(--z-index-overlay);
-  }
-
-  /* Hover effect for info items */
-  .info-item:hover {
-    transform: translateX(2px);
-    box-shadow: var(--shadow-contact-btn);
-  }
-
-  /* Text content within info items */
-  .info-text {
-    font-size: var(--text-info-item);
-    color: var(--color-text-primary);
-    font-weight: 500;
-    line-height: 1.4;
-    margin: 0;
-  }
-
-  /* ========================================
-   * CARD FOOTER - CONTACT & SECURITY
-   * Bottom section with contact links and security elements
-   * ======================================== */
-  .card-footer {
-    background: var(--color-bg-secondary);
-    padding: var(--footer-padding);
-    margin-top: auto;
-    /* Prevent shrinking when viewport changes */
-    flex-shrink: 0;
-  }
-
-  /* Contact button container with consistent spacing */
-  .contact-links {
-    display: flex;
-    gap: var(--element-gap);
-    margin-bottom: var(--element-gap-large);
-  }
-
-  /* ========================================
-   * CONTACT BUTTONS COMPONENT
-   * Interactive social media and contact links
-   * ======================================== */
-
-  /* Base contact button styling with glassmorphism effect */
-  .contact-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--element-gap-small);
-    padding: var(--contact-btn-padding);
-    border-radius: 10px;
-    background: var(--color-bg-primary);
-    border: var(--border-width-thin) solid var(--color-border);
-    color: var(--color-text-primary);
-    font-size: var(--text-contact-btn);
-    font-weight: 500;
-    text-decoration: none;
-    transition: var(--transition-hover);
-    position: relative;
-    overflow: hidden;
-    z-index: 50;
-    cursor: pointer;
-  }
-
-  /* Animated shine effect on hover */
-  .contact-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-shine);
-    transform: translateX(-100%);
-    transition: var(--transition-hover);
-    z-index: var(--z-index-overlay);
-  }
-
-  .contact-btn:hover::before {
-    transform: translateX(100%);
-  }
-
-  /* General hover effects for all contact buttons */
-  .contact-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-element);
-    border-color: var(--color-accent);
-  }
-
-  /* Platform-specific branding colors on hover */
-  .contact-btn.linkedin:hover {
-    background: #0077b5;
-    color: white;
-    border-color: #0077b5;
-  }
-
-  .contact-btn.github:hover {
-    background: #333;
-    color: white;
-    border-color: #333;
-  }
-
-  /* Contact button icons with smooth transitions */
-  .contact-btn img {
-    width: var(--contact-icon-size);
-    height: var(--contact-icon-size);
-    filter: var(--icon-filter, none);
-    transition: var(--transition-hover);
-  }
-
-  /* In dark mode, icons should be white by default */
-  :global(.dark) .contact-btn img {
-    filter: brightness(0) invert(1);
-  }
-
-  /* Icon color inversion on hover for better contrast */
-  .contact-btn:hover img {
-    filter: brightness(0) invert(1);
-  }
-
-  /* ========================================
-   * CONTACT DETAILS SECTION - BACK SIDE
-   * Location and work mode information
-   * ======================================== */
-
-  /* Contact details container */
-  .contact-details {
-    margin-bottom: var(--element-gap-large);
-  }
-
-  /* Individual contact detail items */
-  .contact-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--element-gap-small);
-    font-size: var(--text-contact-item);
-  }
-
-  /* Contact item labels */
-  .contact-label {
-    color: var(--color-text-secondary);
-    font-weight: 500;
-  }
-
-  /* Contact item values with emphasis */
-  .contact-value {
-    color: var(--color-text-primary);
+  .qr-feedback {
+    margin: var(--space-2xs) 0 0;
+    text-align: center;
+    color: #fff;
+    font-size: var(--text-sm);
     font-weight: 600;
-  }
-
-  /* ========================================
-   * SECURITY ELEMENTS
-   * Authentication chips, badges, and verification components
-   * ======================================== */
-  .card-security {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.7rem;
-    border-top: var(--border-width-thin) solid var(--color-border);
-  }
-
-  /* Security chip component (front side) - simulates smart card chip */
-  .security-chip {
-    width: var(--security-chip-width);
-    height: var(--security-chip-height);
-    background: var(--gradient-security-chip);
-    border-radius: 4px;
-    position: relative;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
-    cursor: default;
-    user-select: none;
-  }
-
-  /* Inner chip detail for realistic effect */
-  .security-chip::before {
-    content: "";
-    position: absolute;
-    inset: 2px;
-    background: linear-gradient(135deg, #ffed4e, #ffd700);
-    border-radius: 2px;
-  }
-
-  /* Security text styling */
-  .security-text {
-    font-size: var(--text-security);
-    color: var(--color-text-secondary);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-  }
-
-  /* Security badge component (back side) - verification status */
-  .security-badge {
-    background: var(--gradient-security-badge);
-    color: white;
-    padding: 0.2rem 1rem 0.2rem 0.6rem;
-    font-size: var(--text-security);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    cursor: default;
-    user-select: none;
-    /* Non-button shape: a pointed tag/badge */
-    clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
-    border-radius: 2px 0 0 2px;
-  }
-
-  /* Badge text with enhanced readability */
-  .badge-text {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Issue date styling */
-  .issue-date {
-    font-size: var(--text-security);
-    color: var(--color-text-secondary);
-    font-weight: 600;
-  }
-
-  /* ========================================
-   * RESPONSIVE DESIGN - Simplified
-   * Using fluid values, only disable 3D effects on touch devices
-   * ======================================== */
-
-  /* Disable 3D effects on touch devices for better performance */
-  @media (hover: none) and (pointer: coarse) {
-    :root {
-      --card-idle-rotate-y: 0deg;
-      --card-idle-rotate-x: 0deg;
-      --card-hover-rotate-y: 0deg;
-      --card-hover-rotate-x: 0deg;
-      --card-hover-scale: 1.01;
-    }
-  }
-
-  /* Small screens - ensure flip hint is accessible */
-  @media (max-width: 480px) {
-    .flip-hint {
-      right: var(--element-gap-small);
-      padding: 4px 8px;
-    }
-
-    .contact-links {
-      flex-direction: row;
-      gap: 0.5rem;
-    }
-
-    .contact-btn {
-      padding: 0.5rem 0.2rem;
-      gap: 0.3rem;
-      flex-wrap: wrap;
-      text-align: center;
-      min-height: 44px;
-    }
-
-    .contact-btn span {
-      display: inline-block;
-      font-size: 0.75rem;
-      line-height: 1;
-    }
-  }
-
-  /* ========================================
-   * DARK MODE ENHANCEMENTS
-   * Theme-specific visual adjustments
-   * ======================================== */
-  :global(.dark) .card-front,
-  :global(.dark) .card-back {
-    box-shadow:
-      0 20px 40px rgba(0, 0, 0, 0.4),
-      0 0 0 1px var(--color-border),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  }
-
-  /* ========================================
-   * WEBKIT/SAFARI iOS SPECIFIC FIXES
-   * Fixes for 3D transform bugs on mobile Safari
-   * ======================================== */
-
-  /* Force proper layering and backface visibility on WebKit */
-  @supports (-webkit-transform-style: preserve-3d) {
-    .business-card .card-front {
-      z-index: 2;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-
-    .business-card .card-back {
-      z-index: 1;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-
-    .business-card.flipped .card-front {
-      z-index: 1;
-    }
-
-    .business-card.flipped .card-back {
-      z-index: 2;
-    }
-  }
-
-  /* ========================================
-   * SAFARI/IOS SPECIFIC FIXES
-   * Critical 3D flip bug fixes for WebKit browsers
-   * ======================================== */
-
-  /* Safari-specific 3D transform fixes */
-  @supports (-webkit-appearance: none) {
-    .business-card {
-      /* Force proper 3D context on Safari */
-      -webkit-transform-style: preserve-3d !important;
-      transform-style: preserve-3d !important;
-      /* Ensure hardware acceleration */
-      -webkit-transform: perspective(var(--card-perspective))
-        rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x))
-        translateZ(0);
-    }
-
-    .business-card.flipped {
-      /* Explicit 3D transform for flipped state on Safari */
-      -webkit-transform: perspective(var(--card-perspective))
-        rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x))
-        translateZ(0);
-    }
-
-    .card-front,
-    .card-back {
-      /* Force backface-visibility on Safari */
-      -webkit-backface-visibility: hidden !important;
-      backface-visibility: hidden !important;
-      /* Ensure proper layer compositing */
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      /* Prevent Safari from hiding elements during flip */
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .card-back {
-      /* Explicit back face transform for Safari */
-      -webkit-transform: rotateY(180deg) translateZ(0) !important;
-      transform: rotateY(180deg) translateZ(0) !important;
-    }
-  }
-
-  /* iOS specific fixes for touch devices */
-  @media screen and (-webkit-min-device-pixel-ratio: 2) {
-    .business-card {
-      /* Enhanced GPU acceleration on iOS */
-      -webkit-transform: perspective(var(--card-perspective))
-        rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x))
-        translate3d(0, 0, 0);
-      /* Prevent iOS from auto-hiding elements */
-      -webkit-backface-visibility: visible;
-    }
-
-    .business-card.flipped {
-      -webkit-transform: perspective(var(--card-perspective))
-        rotateY(var(--card-flipped-rotate-y)) rotateX(var(--card-idle-rotate-x))
-        translate3d(0, 0, 0);
-    }
-
-    .card-front,
-    .card-back {
-      /* Force visibility on iOS during transitions */
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-      /* Prevent iOS rendering bugs */
-      isolation: isolate;
-      contain: layout style paint;
-    }
-
-    .card-back {
-      /* iOS-specific back face positioning */
-      -webkit-transform: rotateY(180deg) translate3d(0, 0, 0);
-      transform: rotateY(180deg) translate3d(0, 0, 0);
-    }
-  }
-
-  /* ========================================
-   * MOBILE LANDSCAPE FIX
-   * Prevent header from covering content on landscape mobile
-   * ======================================== */
-  @media (max-height: 500px) and (orientation: landscape) {
-    .home-section {
-      padding-top: 5rem; /* Space for header */
-      align-items: flex-start; /* Align top to respect padding */
-      min-height: 130vh; /* Ensure scrollability */
-      padding-bottom: 2rem;
-    }
-
-    .business-card {
-      margin-top: 1rem;
-      /* Scale down slightly if needed to fit better */
-      transform: scale(0.85) perspective(var(--card-perspective))
-        rotateY(var(--card-idle-rotate-y)) rotateX(var(--card-idle-rotate-x));
-    }
+    min-height: 1.4em;
   }
 </style>
