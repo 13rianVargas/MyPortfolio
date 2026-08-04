@@ -15,12 +15,12 @@ export const ui = {
             "Java Backend Developer and Full Stack, Systems Engineering undergraduate in Bogotá. Spring Boot microservices, Angular, PostgreSQL and Docker, with CCST Cybersecurity and CCNA foundations.",
 
         "layout.home": "Home",
-        "layout.about": "About",
+        "layout.about": "About Me",
         "layout.projects": "Projects",
         "layout.technologies": "Technologies",
         "layout.credentials": "Education",
         "layout.awards": "Awards",
-        "layout.contact": "Contact",
+        "layout.contact": "Contact Me",
         "layout.footer": "Made by 13rian Vargas",
         "layout.scrollTop": "Back to top",
 
@@ -48,7 +48,7 @@ export const ui = {
         "home.factRoleValue": "Founder & Lead, K-Forge",
 
         "aboutme.eyebrow": "Profile",
-        "aboutme.title": "About",
+        "aboutme.title": "About Me",
         "aboutme.description":
             "I'm a software developer with 3+ years building applications, focused on Java and Spring Boot on the backend and full stack capable with Angular and TypeScript. I design REST APIs, model relational databases and deploy with Docker. My profile is hybrid: I bring networking (CCNA) and cybersecurity (CCST) foundations alongside cloud (Google Cloud).",
         "aboutme.downloadCV": "Download CV",
@@ -167,7 +167,7 @@ export const ui = {
             "The Scout Movement's highest youth recognition (BP) for exceptional leadership and commitment, and the Daniel Isaza Isaza decoration for distinguished service in the movement's development in Colombia.",
 
         "contactme.eyebrow": "Get in touch",
-        "contactme.title": "Contact",
+        "contactme.title": "Contact Me",
         "contactme.description":
             "Open to backend, full stack, DevOps and cybersecurity roles — and to any project with something new to learn. Write to me and I'll reply.",
         "contactme.name": "Name",
@@ -199,7 +199,7 @@ export const ui = {
         "layout.technologies": "Tecnologías",
         "layout.credentials": "Formación",
         "layout.awards": "Reconocimientos",
-        "layout.contact": "Contacto",
+        "layout.contact": "Contáctame",
         "layout.footer": "Hecho por 13rian Vargas",
         "layout.scrollTop": "Volver arriba",
 
@@ -346,7 +346,7 @@ export const ui = {
             "El máximo reconocimiento juvenil del Movimiento Scout (BP) por liderazgo y compromiso excepcionales, y la condecoración Daniel Isaza Isaza por servicio distinguido en el desarrollo del movimiento en Colombia.",
 
         "contactme.eyebrow": "Hablemos",
-        "contactme.title": "Contacto",
+        "contactme.title": "Contáctame",
         "contactme.description":
             "Abierto a roles de backend, full stack, DevOps y ciberseguridad — y a proyectos donde haya algo nuevo que aprender. Escríbeme y te respondo.",
         "contactme.name": "Nombre",
@@ -373,12 +373,12 @@ export const ui = {
             "Développeur Java Backend et Full Stack, étudiant en Ingénierie des Systèmes à Bogotá. Microservices Spring Boot, Angular, PostgreSQL et Docker, avec des bases en CCST Cybersecurity et CCNA.",
 
         "layout.home": "Accueil",
-        "layout.about": "À propos",
+        "layout.about": "À propos de moi",
         "layout.projects": "Projets",
         "layout.technologies": "Technologies",
         "layout.credentials": "Formation",
         "layout.awards": "Distinctions",
-        "layout.contact": "Contact",
+        "layout.contact": "Contactez-moi",
         "layout.footer": "Réalisé par 13rian Vargas",
         "layout.scrollTop": "Haut de page",
 
@@ -406,7 +406,7 @@ export const ui = {
         "home.factRoleValue": "Fondateur et responsable, K-Forge",
 
         "aboutme.eyebrow": "Profil",
-        "aboutme.title": "À propos",
+        "aboutme.title": "À propos de moi",
         "aboutme.description":
             "Je suis développeur logiciel avec plus de 3 ans à construire des applications, axé sur Java et Spring Boot côté backend et capable en full stack avec Angular et TypeScript. Je conçois des API REST, modélise des bases de données relationnelles et déploie avec Docker. Mon profil est hybride : j'apporte des bases en réseaux (CCNA) et cybersécurité (CCST) ainsi qu'en cloud (Google Cloud).",
         "aboutme.downloadCV": "Télécharger le CV",
@@ -525,7 +525,7 @@ export const ui = {
             "La plus haute distinction jeunesse du Mouvement Scout (BP) pour un leadership et un engagement exceptionnels, et la décoration Daniel Isaza Isaza pour services distingués au développement du mouvement en Colombie.",
 
         "contactme.eyebrow": "Parlons-en",
-        "contactme.title": "Contact",
+        "contactme.title": "Contactez-moi",
         "contactme.description":
             "Ouvert aux postes backend, full stack, DevOps et cybersécurité — et à tout projet avec quelque chose de nouveau à apprendre. Écrivez-moi et je vous réponds.",
         "contactme.name": "Nom",
@@ -557,7 +557,7 @@ export const ui = {
         "layout.technologies": "Tecnologias",
         "layout.credentials": "Formação",
         "layout.awards": "Reconhecimentos",
-        "layout.contact": "Contato",
+        "layout.contact": "Fale comigo",
         "layout.footer": "Feito por 13rian Vargas",
         "layout.scrollTop": "Voltar ao topo",
 
@@ -704,7 +704,7 @@ export const ui = {
             "O mais alto reconhecimento juvenil do Movimento Escoteiro (BP) por liderança e comprometimento excepcionais, e a condecoração Daniel Isaza Isaza por serviço distinto no desenvolvimento do movimento na Colômbia.",
 
         "contactme.eyebrow": "Vamos conversar",
-        "contactme.title": "Contato",
+        "contactme.title": "Fale comigo",
         "contactme.description":
             "Aberto a vagas de backend, full stack, DevOps e cibersegurança — e a projetos com algo novo para aprender. Escreva e eu respondo.",
         "contactme.name": "Nome",
