@@ -262,6 +262,13 @@ function iconFor(tech: string): string | null {
                   </a>
                 ) : project.video ? (
                   <button class="btn btn-primary js-scroll-video" type="button">
+                    <img
+                      src="/icons/youtube.svg"
+                      alt=""
+                      width="16"
+                      height="16"
+                      class="yt-icon"
+                    />
                     <span data-translation-key="projects.watchDemo">
                       {t("projects.watchDemo")}
                     </span>
@@ -534,6 +541,10 @@ function iconFor(tech: string): string | null {
   .yt-icon {
     flex-shrink: 0;
     opacity: 0.85;
+  }
+
+  .btn-primary .yt-icon {
+    opacity: 1;
   }
 
   /* Buttons may shrink but must never squeeze a sibling out of the row —
