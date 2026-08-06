@@ -7,29 +7,34 @@
 
 <div class="background-gradient"></div>
 <div class="noise-overlay"></div>
+<div class="chrome-tint chrome-tint-top" aria-hidden="true"></div>
+<div class="chrome-tint chrome-tint-bottom" aria-hidden="true"></div>
 <div class="ripples-container" id="ripples-container"></div>
 
 <style is:global>
-  /* Two things keep this layer under Safari's floating address bar.
+  /* The bands behind Safari 26+'s floating toolbars are NOT part of the page.
+   * Measured in the iOS 27 simulator: the screen is 874pt tall and the page
+   * viewport only 714pt, with viewport-fit=cover honoured but both
+   * safe-area insets reporting 0. Nothing the page paints reaches there —
+   * fixed, absolute and the root background were all tried and all stop at
+   * the same line.
    *
-   * The bleed, because a fixed layer is pinned to the layout viewport and the
-   * bar hovers outside it — at inset: 0 there is simply nothing to paint down
-   * there, and the strip falls through to the canvas.
+   * What Safari does instead is TINT those bands from the CSS. The order it
+   * settles on, confirmed by experiment:
    *
-   * And the opacity, which is the strange one. Safari 26 clips a *fully
-   * opaque* fixed layer at the toolbar edge; below 1 the layer goes through
-   * the compositor instead and paints the whole way down. 0.99 is visually
-   * identical — it blends 1% of the body colour sitting right behind it — and
-   * it is the difference between the gradient reaching the bar or not. The
-   * dots next door were never affected: opacity 0.3 already composites them.
-   * See https://www.edoardolunardi.dev/blog/safari-26-and-the-strange-case-of-fixed-overlays
+   *   1. the background-color of a fixed element that is flush with that
+   *      edge, spans the full width, is tall enough (24px qualified, 1px did
+   *      not) and is not painted over by an opaque layer
+   *   2. otherwise body's background-color
+   *   3. otherwise the root's
+   *
+   * Hence these two strips. Each one carries the slice of the gradient that
+   * belongs at its edge — background-size is a full viewport and the position
+   * pins it top or bottom — so it disappears into the layer behind it, while
+   * its background-color is the flat value Safari reads for the band.
    */
-  .background-gradient {
-    position: fixed;
-    inset: -10rem;
-    z-index: -10;
-    opacity: 0.99;
-    background-color: var(--bg-gradient-2);
+  .background-gradient,
+  .chrome-tint {
     background-image: linear-gradient(
       135deg,
       var(--bg-gradient-1) 0%,
@@ -38,9 +43,53 @@
     );
   }
 
+  .background-gradient {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+  }
+
+  .chrome-tint {
+    position: fixed;
+    left: 0;
+    right: 0;
+    /* comfortably over the 1px that failed to qualify */
+    height: 32px;
+    /* above the gradient so nothing paints over it, below the dots */
+    z-index: -10;
+    pointer-events: none;
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+  }
+
+  .chrome-tint-top {
+    top: 0;
+    background-position: left top;
+    /* The gradient's value at the top edge, mid-width. Measured in the iOS 27
+       simulator, this one does NOT win: .site-header is fixed and flush with
+       the top edge too, and having no background-color of its own it drops
+       Safari to its default light chrome in both themes. Kept because it
+       costs nothing and takes over wherever the header is not in the way. */
+    background-color: color-mix(
+      in srgb,
+      var(--bg-gradient-2) 36%,
+      var(--bg-gradient-1)
+    );
+  }
+
+  .chrome-tint-bottom {
+    bottom: 0;
+    background-position: left bottom;
+    background-color: color-mix(
+      in srgb,
+      var(--bg-gradient-3) 64%,
+      var(--bg-gradient-2)
+    );
+  }
+
   .noise-overlay {
     position: fixed;
-    inset: -10rem;
+    inset: 0;
     z-index: -9;
     opacity: 0.3;
     pointer-events: none;
