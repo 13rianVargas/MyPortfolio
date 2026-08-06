@@ -65,16 +65,12 @@
   .chrome-tint-top {
     top: 0;
     background-position: left top;
-    /* The gradient's value at the top edge, mid-width. Measured in the iOS 27
-       simulator, this one does NOT win: .site-header is fixed and flush with
-       the top edge too, and having no background-color of its own it drops
-       Safari to its default light chrome in both themes. Kept because it
-       costs nothing and takes over wherever the header is not in the way. */
-    background-color: color-mix(
-      in srgb,
-      var(--bg-gradient-2) 36%,
-      var(--bg-gradient-1)
-    );
+    /* Black in both themes, on purpose. Following the page would be nicer,
+       but Safari only re-samples on navigation, so a theme toggle left the
+       status-bar band showing the previous theme's colour until the next
+       load. A fixed colour can never be out of step with anything, and the
+       gradient slice above still hides this from the page itself. */
+    background-color: #000000;
   }
 
   .chrome-tint-bottom {
