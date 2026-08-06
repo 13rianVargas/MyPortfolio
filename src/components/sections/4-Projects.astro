@@ -169,6 +169,7 @@ function iconFor(tech: string): string | null {
     <div
       class="projects-grid"
       data-cancel-egg={t("projects.cancelEgg")}
+      data-unmute={t("projects.unmute")}
     >
       {
         PROJECTS.map((project) => (
@@ -298,6 +299,12 @@ function iconFor(tech: string): string | null {
   const RICKROLL = "dQw4w9WgXcQ";
   const CLICKS_TO_ARM = 13;
 
+  // Safari — on the desktop and underneath every iOS browser — pauses a clip
+  // the moment it is unmuted without a fresh tap of its own, so there the
+  // volume stays down until the viewer asks for it. Everywhere else the player
+  // API can raise it as soon as playback starts.
+  const KEEPS_MUTED = /apple/i.test(navigator.vendor);
+
   interface CardState {
     card: HTMLElement;
     media: HTMLElement;
@@ -306,21 +313,64 @@ function iconFor(tech: string): string | null {
     buttonHTML: string;
     realVideo: string | null;
     cancelLabel: string;
+    unmuteLabel: string;
     onMessage: ((e: MessageEvent) => void) | null;
     blockHomeJump: ((e: MouseEvent) => void) | null;
     clicks: number;
   }
 
+  function command(frame: HTMLIFrameElement, func: string, args: unknown[] = []) {
+    frame.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func, args }),
+      YT_ORIGIN,
+    );
+  }
+
+  function soundButton(state: CardState) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "sound-on";
+    // The global `svg { height: auto }` reset collapses an unsized icon to
+    // 0x0, so this one carries its box inline.
+    button.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ' +
+      'style="width:16px;height:16px;flex-shrink:0">' +
+      '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>' +
+      '<path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>' +
+      `<span>${state.unmuteLabel}</span>`;
+    return button;
+  }
+
   function mountPlayer(state: CardState, videoId: string, onEnded: () => void) {
     const frame = document.createElement("iframe");
-    frame.src =
-      `${YT_ORIGIN}/embed/${videoId}` +
-      `?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+    // Muted playback is the only kind every browser will start on its own, and
+    // iOS hands an un-flagged clip to the fullscreen native player instead of
+    // running it inside the card — both flags are load-bearing on mobile.
+    // Sound comes back on right below, once the player is actually rolling.
+    const params = new URLSearchParams({
+      autoplay: "1",
+      mute: "1",
+      playsinline: "1",
+      rel: "0",
+      enablejsapi: "1",
+      origin: location.origin,
+    });
+    frame.src = `${YT_ORIGIN}/embed/${videoId}?${params}`;
     frame.title = "Video";
     frame.allow =
       "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture";
     frame.allowFullscreen = true;
-    state.media.replaceChildren(frame);
+
+    const sound = soundButton(state);
+    const enableSound = () => {
+      if (!sound.isConnected) return;
+      command(frame, "unMute");
+      command(frame, "setVolume", [100]);
+      sound.remove();
+    };
+    sound.addEventListener("click", enableSound);
+    state.media.replaceChildren(frame, sound);
 
     // Subscribing over the player's own postMessage channel avoids loading the
     // YouTube iframe API just to learn when playback finished.
@@ -335,12 +385,35 @@ function iconFor(tech: string): string | null {
       if (event.origin !== YT_ORIGIN) return; // only trust the player itself
       try {
         const data = JSON.parse(event.data);
-        if (data?.info?.playerState === 0) onEnded(); // 0 === ENDED
+        const playerState = data?.info?.playerState;
+        if (playerState === 0) onEnded(); // 0 === ENDED
+        // 1 === PLAYING. Waiting for it rather than for onReady means the
+        // volume only goes up on a clip that really did start.
+        if (!KEEPS_MUTED && playerState === 1) enableSound();
       } catch {
         /* the player also emits non-JSON chatter */
       }
     };
     window.addEventListener("message", state.onMessage);
+  }
+
+  /**
+   * `scrollIntoView({ block: "center" })` degrades badly on the WebKit builds
+   * that predate the options dictionary: the object reads as a truthy
+   * `alignToTop`, so the card lands under the fixed header instead of mid
+   * screen. Doing the arithmetic here keeps every engine on the same path.
+   */
+  function scrollToCard(card: HTMLElement) {
+    const header = document.querySelector<HTMLElement>(".site-header");
+    const clearance = (header?.offsetHeight ?? 0) + 16;
+    const gap = Math.max((window.innerHeight - card.offsetHeight) / 2, clearance);
+    const top = Math.max(window.scrollY + card.getBoundingClientRect().top - gap, 0);
+
+    if ("scrollBehavior" in document.documentElement.style) {
+      window.scrollTo({ top, behavior: "smooth" });
+    } else {
+      window.scrollTo(0, top);
+    }
   }
 
   function showCover(state: CardState) {
@@ -367,12 +440,18 @@ function iconFor(tech: string): string | null {
     );
   }
 
-  function armEasterEgg(state: CardState) {
+  function armEasterEgg(state: CardState, trigger: MouseEvent) {
     state.card.classList.add("egg-active");
 
-    // The header logo sits inside <a href="#home">; without this the click
-    // would jump to the top and cancel the scroll below. Capture phase, so it
-    // runs before the header's own handler. Released again in showCover().
+    // The header logo sits inside <a href="#home">. That fragment navigation
+    // is queued once this click finishes dispatching — i.e. *after* the scroll
+    // below is asked for — so the browser ends up at the top of the page with
+    // the smooth scroll cancelled. Registering the capture listener here is
+    // too late for the click already in flight, hence killing it by hand.
+    trigger.preventDefault();
+
+    // The listener covers every later click while the egg runs. Capture phase,
+    // so it beats the header's own handler. Released again in showCover().
     state.blockHomeJump = (event: MouseEvent) => {
       const link = (event.target as HTMLElement)?.closest?.('a[href="#home"]');
       if (link?.querySelector("[data-egg-trigger]")) {
@@ -382,7 +461,6 @@ function iconFor(tech: string): string | null {
     };
     document.addEventListener("click", state.blockHomeJump, true);
 
-    state.card.scrollIntoView({ behavior: "smooth", block: "center" });
     mountPlayer(state, RICKROLL, () => showCover(state));
 
     const previous = state.actions.lastElementChild!;
@@ -404,6 +482,11 @@ function iconFor(tech: string): string | null {
       `<span>${state.cancelLabel}</span>`;
     stop.addEventListener("click", () => showCover(state));
     previous.replaceWith(stop);
+
+    // Last, and a frame late: swapping the cover for a 16:9 iframe and the
+    // button for a wider one resizes the card, so scrolling any earlier aims
+    // at an offset that no longer exists by the time the scroll lands.
+    requestAnimationFrame(() => scrollToCard(state.card));
   }
 
   function initProjects() {
@@ -424,6 +507,7 @@ function iconFor(tech: string): string | null {
         buttonHTML: actions.lastElementChild!.outerHTML,
         realVideo: media.dataset.videoId || null,
         cancelLabel: grid.dataset.cancelEgg ?? "STOP Rickroll",
+        unmuteLabel: grid.dataset.unmute ?? "Sound on",
         onMessage: null,
         blockHomeJump: null,
         clicks: 0,
@@ -431,27 +515,42 @@ function iconFor(tech: string): string | null {
 
       bindVideoButton(state);
 
+      // Both labels belong to nodes built in JS, so they miss the translator's
+      // [data-translation-key] sweep and are retitled by hand. Registered for
+      // every card: the sound button rides along with any video, not just the
+      // egg.
+      document.addEventListener("language-change", (event) => {
+        const translations = (event as CustomEvent).detail?.translations ?? {};
+        const relabel = (key: string, selector: string, current: string) => {
+          const next = translations[key];
+          if (!next) return current;
+          const live = card.querySelector<HTMLElement>(selector);
+          if (live) live.textContent = next;
+          return next;
+        };
+        state.cancelLabel = relabel(
+          "projects.cancelEgg",
+          ".btn-danger span",
+          state.cancelLabel,
+        );
+        state.unmuteLabel = relabel(
+          "projects.unmute",
+          ".sound-on span",
+          state.unmuteLabel,
+        );
+      });
+
       // Only AMODEL carries the egg.
       if (card.dataset.project !== "amodel") return;
 
       document
         .querySelectorAll<HTMLElement>("[data-egg-trigger]")
         .forEach((logo) =>
-          logo.addEventListener("click", () => {
+          logo.addEventListener("click", (event) => {
             if (card.classList.contains("egg-active")) return;
-            if (++state.clicks >= CLICKS_TO_ARM) armEasterEgg(state);
+            if (++state.clicks >= CLICKS_TO_ARM) armEasterEgg(state, event);
           }),
         );
-
-      document.addEventListener("language-change", (event) => {
-        const label = (event as CustomEvent).detail?.translations?.[
-          "projects.cancelEgg"
-        ];
-        if (!label) return;
-        state.cancelLabel = label;
-        const live = card.querySelector<HTMLElement>(".btn-danger span");
-        if (live) live.textContent = label;
-      });
     });
   }
 
@@ -514,6 +613,37 @@ function iconFor(tech: string): string | null {
     width: 100%;
     aspect-ratio: 16 / 9;
     border: 0;
+  }
+
+  /* Built in JS, so it needs :global() to survive Astro's style scoping. */
+  .card-media :global(.sound-on) {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: pointer;
+    /* The YouTube chrome fades its own controls in around here; sitting above
+       them at full opacity would bury the title bar. */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  @media (hover: hover) {
+    .card-media :global(.sound-on:hover) {
+      background: rgba(0, 0, 0, 0.85);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
   }
 
   .card-media :global(.cover),
