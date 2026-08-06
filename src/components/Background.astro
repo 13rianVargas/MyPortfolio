@@ -10,22 +10,27 @@
 <div class="ripples-container" id="ripples-container"></div>
 
 <style is:global>
-  /* Bleeding past the viewport on every side, because a fixed layer is pinned
-     to the *layout* viewport and Safari's floating address bar hovers outside
-     it. At inset: 0 the strip behind the glass fell through to the canvas —
-     bare white at first, then a flat shade with no dots once the root took a
-     colour. Either way a seam. Overshooting puts the gradient and the dots
-     back there, and under the notch and the rubber band while it is at it.
-
-     This only paints if nothing clips it: body used to carry overflow-x,
-     which propagates to the viewport and cuts every fixed layer off at
-     exactly that edge. It is gone — see global.css. Fixed elements add no
-     scrollable overflow of their own, so the extra size costs nothing. */
+  /* Two things keep this layer under Safari's floating address bar.
+   *
+   * The bleed, because a fixed layer is pinned to the layout viewport and the
+   * bar hovers outside it — at inset: 0 there is simply nothing to paint down
+   * there, and the strip falls through to the canvas.
+   *
+   * And the opacity, which is the strange one. Safari 26 clips a *fully
+   * opaque* fixed layer at the toolbar edge; below 1 the layer goes through
+   * the compositor instead and paints the whole way down. 0.99 is visually
+   * identical — it blends 1% of the body colour sitting right behind it — and
+   * it is the difference between the gradient reaching the bar or not. The
+   * dots next door were never affected: opacity 0.3 already composites them.
+   * See https://www.edoardolunardi.dev/blog/safari-26-and-the-strange-case-of-fixed-overlays
+   */
   .background-gradient {
     position: fixed;
     inset: -10rem;
     z-index: -10;
-    background: linear-gradient(
+    opacity: 0.99;
+    background-color: var(--bg-gradient-2);
+    background-image: linear-gradient(
       135deg,
       var(--bg-gradient-1) 0%,
       var(--bg-gradient-2) 50%,

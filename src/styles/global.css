@@ -170,6 +170,12 @@ body {
      come out clean down the whole page. */
   line-height: 1.6;
   font-size: var(--text-base);
+  /* Stays transparent, and html carries the colour instead. The background
+     layers sit at negative z-index, which paints them below every in-flow
+     block background — including this one. A colour here does not tint the
+     page, it *hides* the gradient and the dots outright. The root's
+     background is the canvas, painted before all of it, so that is the one
+     Safari can fall back on. */
   background-color: transparent;
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
