@@ -245,6 +245,13 @@ const NAV_SECTIONS = [
 
 <style>
   .site-header {
+    /* Deliberately no background-color. Safari 26+ tints the band above the
+       page from whichever fixed element is flush with the top edge, and this
+       is that element — but giving it a colour made Safari switch the whole
+       top band to dark chrome in BOTH themes, which is worse in light than
+       the pale default it falls back to. Measured in the iOS 27 simulator,
+       including with a plain #ff0000, so it is not the color-mix. Left bare
+       until the rule behind that is understood. */
     position: fixed;
     top: 0;
     left: 0;
