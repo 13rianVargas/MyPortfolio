@@ -315,7 +315,6 @@ function iconFor(tech: string): string | null {
     cancelLabel: string;
     unmuteLabel: string;
     onMessage: ((e: MessageEvent) => void) | null;
-    blockHomeJump: ((e: MouseEvent) => void) | null;
     clicks: number;
   }
 
@@ -421,10 +420,6 @@ function iconFor(tech: string): string | null {
       window.removeEventListener("message", state.onMessage);
       state.onMessage = null;
     }
-    if (state.blockHomeJump) {
-      document.removeEventListener("click", state.blockHomeJump, true);
-      state.blockHomeJump = null;
-    }
     state.media.innerHTML = state.coverHTML;
     state.actions.lastElementChild!.outerHTML = state.buttonHTML;
     state.card.classList.remove("egg-active");
@@ -440,26 +435,8 @@ function iconFor(tech: string): string | null {
     );
   }
 
-  function armEasterEgg(state: CardState, trigger: MouseEvent) {
+  function armEasterEgg(state: CardState) {
     state.card.classList.add("egg-active");
-
-    // The header logo sits inside <a href="#home">. That fragment navigation
-    // is queued once this click finishes dispatching — i.e. *after* the scroll
-    // below is asked for — so the browser ends up at the top of the page with
-    // the smooth scroll cancelled. Registering the capture listener here is
-    // too late for the click already in flight, hence killing it by hand.
-    trigger.preventDefault();
-
-    // The listener covers every later click while the egg runs. Capture phase,
-    // so it beats the header's own handler. Released again in showCover().
-    state.blockHomeJump = (event: MouseEvent) => {
-      const link = (event.target as HTMLElement)?.closest?.('a[href="#home"]');
-      if (link?.querySelector("[data-egg-trigger]")) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    };
-    document.addEventListener("click", state.blockHomeJump, true);
 
     mountPlayer(state, RICKROLL, () => showCover(state));
 
@@ -509,7 +486,6 @@ function iconFor(tech: string): string | null {
         cancelLabel: grid.dataset.cancelEgg ?? "STOP Rickroll",
         unmuteLabel: grid.dataset.unmute ?? "Sound on",
         onMessage: null,
-        blockHomeJump: null,
         clicks: 0,
       };
 
@@ -547,8 +523,18 @@ function iconFor(tech: string): string | null {
         .querySelectorAll<HTMLElement>("[data-egg-trigger]")
         .forEach((logo) =>
           logo.addEventListener("click", (event) => {
-            if (card.classList.contains("egg-active")) return;
-            if (++state.clicks >= CLICKS_TO_ARM) armEasterEgg(state, event);
+            // The logo sits inside <a href="#home">, and that jump is queued
+            // once this click finishes dispatching — i.e. after the scroll
+            // below is asked for — so it lands last and wins, leaving the page
+            // at the top. Every click that owes a scroll has to cancel it.
+            if (state.card.classList.contains("egg-active")) {
+              event.preventDefault();
+              scrollToCard(state.card); // the logo is the way back to the egg
+              return;
+            }
+            if (++state.clicks < CLICKS_TO_ARM) return;
+            event.preventDefault();
+            armEasterEgg(state);
           }),
         );
     });
