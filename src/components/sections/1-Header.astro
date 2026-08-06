@@ -256,7 +256,10 @@ const NAV_SECTIONS = [
      * status-bar band. The bar itself does not move: the margin below moved
      * up here. */
     position: fixed;
-    top: clamp(0.25rem, 1vw, 0.5rem);
+    /* Clear of the 8px tint line pinned to the very top, with room to spare —
+       at the old 4px the line painted over the bar, and on a wide screen the
+       bar read as glued to the edge. */
+    top: clamp(0.75rem, 1.5vw, 1.25rem);
     left: 0;
     width: 100%;
     z-index: var(--z-header);

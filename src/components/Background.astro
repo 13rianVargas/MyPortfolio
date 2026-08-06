@@ -53,10 +53,10 @@
     position: fixed;
     left: 0;
     right: 0;
-    /* comfortably over the 1px that failed to qualify */
+    /* comfortably over the 6px floor measured in the iOS 27 simulator */
     height: 32px;
-    /* above the gradient so nothing paints over it, below the dots */
-    z-index: -10;
+    /* TEST: above every other fixed layer, including .site-header at 50 */
+    z-index: 100;
     pointer-events: none;
     background-size: 100vw 100vh;
     background-repeat: no-repeat;
@@ -64,13 +64,16 @@
 
   .chrome-tint-top {
     top: 0;
-    background-position: left top;
+    height: 8px;
+    /* no gradient slice: the line is the same black as the band it produces,
+       so it reads as part of that band rather than as page content */
+    background-image: none;
     /* Black in both themes, on purpose. Following the page would be nicer,
        but Safari only re-samples on navigation, so a theme toggle left the
        status-bar band showing the previous theme's colour until the next
        load. A fixed colour can never be out of step with anything, and the
        gradient slice above still hides this from the page itself. */
-    background-color: #000000;
+    background-color: rgba(30, 30, 30, 1);
   }
 
   .chrome-tint-bottom {
