@@ -245,15 +245,18 @@ const NAV_SECTIONS = [
 
 <style>
   .site-header {
-    /* Deliberately no background-color. Safari 26+ tints the band above the
-       page from whichever fixed element is flush with the top edge, and this
-       is that element — but giving it a colour made Safari switch the whole
-       top band to dark chrome in BOTH themes, which is worse in light than
-       the pale default it falls back to. Measured in the iOS 27 simulator,
-       including with a plain #ff0000, so it is not the color-mix. Left bare
-       until the rule behind that is understood. */
+    /* No background here on purpose — the bar has to stay glass, and any
+       colour on this element both makes it opaque and flips Safari's top
+       band to dark chrome in either theme (reproduced with a plain hex, so
+       it is not the color-mix).
+     *
+     * Instead it steps off the top edge by the gap the bar used to carry as
+     * its own margin, so it no longer counts as the element flush with that
+     * edge. That leaves .chrome-tint-top as the one Safari samples for the
+     * status-bar band. The bar itself does not move: the margin below moved
+     * up here. */
     position: fixed;
-    top: 0;
+    top: clamp(0.25rem, 1vw, 0.5rem);
     left: 0;
     width: 100%;
     z-index: var(--z-header);
@@ -272,7 +275,7 @@ const NAV_SECTIONS = [
     /* 100% of the padded header, not 100vw: the viewport unit ignores both the
        safe-area padding above and the desktop scrollbar. */
     width: min(100% - clamp(0.5rem, 2vw, 2rem), 1400px);
-    margin-top: clamp(0.25rem, 1vw, 0.5rem);
+    /* the gap moved to .site-header's top offset — see the note there */
     padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(0.75rem, 2vw, 1.5rem);
     border-radius: clamp(20px, 5vw, 50px);
     background: var(--glass-bg);
