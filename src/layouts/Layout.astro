@@ -161,13 +161,17 @@ const personSchema = {
               theme === "dark" ? "#171717" : "#f5f5f5",
             );
 
-          /* The bands around Safari 26+'s toolbars are not updated here, and
-             cannot be: it samples the strips in Background.astro once per
-             navigation and keeps that colour for the tab. Toggling the theme
-             leaves the previous one up there until the next load. Measured in
-             the iOS 27 simulator — a forced reflow, removing and reinserting
-             the strips, and scrolling to collapse the bar all left it stale.
-             Only a fresh load re-samples. */
+          /* Nothing here updates the bands around Safari 26+'s toolbars, and
+             nothing can. It samples the strips in Background.astro once per
+             navigation, so a theme change leaves the previous colour up
+             there. Five ways of provoking a re-read were measured in the iOS
+             27 simulator and all left it stale: a forced reflow on the
+             strips, removing and reinserting them, scrolling far enough to
+             collapse the toolbar, and rewriting the viewport meta both by
+             appending user-scalable and by dropping viewport-fit for a frame.
+             Rotating the device does update it, but that is the system
+             reconfiguring the viewport — a page cannot ask for it. Only a
+             fresh navigation re-samples. */
         }
 
         function apply(pref) {
