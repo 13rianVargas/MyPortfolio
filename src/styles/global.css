@@ -144,6 +144,12 @@ html {
   color-scheme: light;
   min-width: 320px;
   -webkit-text-size-adjust: 100%;
+  /* The visible backdrop is .background-gradient, a fixed layer — it cannot
+     paint outside the viewport. The canvas can, and the root element's colour
+     is what propagates to it, so this is the strip that ends up behind
+     Safari's translucent address bar and under a notch. Left transparent it
+     was bare white there, which is the seam that made the bar look cut. */
+  background-color: var(--bg-gradient-2);
 }
 
 html.dark {
@@ -257,7 +263,10 @@ select {
  * bottom of the viewport. */
 .section-shell {
   padding-block: var(--space-md) var(--space-xl);
-  padding-inline: var(--space-sm);
+  /* Landscape on a notched phone puts the cutout inside the page now that the
+     viewport covers it, so the gutters absorb it. */
+  padding-inline: calc(var(--space-sm) + env(safe-area-inset-left))
+    calc(var(--space-sm) + env(safe-area-inset-right));
   position: relative;
   z-index: 1;
 }

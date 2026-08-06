@@ -72,7 +72,15 @@ const personSchema = {
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover: recent Safari floats a translucent address bar over
+         the page. Without it the layout viewport stops short of that bar, the
+         fixed background layer stops with it, and the strip showing through the
+         glass is the bare canvas — the bar reads as sliced off. It is also what
+         turns the env(safe-area-inset-*) values used in global.css non-zero. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>

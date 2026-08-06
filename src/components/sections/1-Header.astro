@@ -253,12 +253,18 @@ const NAV_SECTIONS = [
     display: flex;
     justify-content: center;
     pointer-events: none;
+    /* The page now runs edge to edge (viewport-fit=cover), so the bar has to
+       step around the notch itself — in landscape that lands on its side. */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0
+      env(safe-area-inset-left);
   }
 
   .header-bar {
     pointer-events: auto;
     position: relative;
-    width: min(100vw - clamp(0.5rem, 2vw, 2rem), 1400px);
+    /* 100% of the padded header, not 100vw: the viewport unit ignores both the
+       safe-area padding above and the desktop scrollbar. */
+    width: min(100% - clamp(0.5rem, 2vw, 2rem), 1400px);
     margin-top: clamp(0.25rem, 1vw, 0.5rem);
     padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(0.75rem, 2vw, 1.5rem);
     border-radius: clamp(20px, 5vw, 50px);
@@ -445,9 +451,18 @@ const NAV_SECTIONS = [
 
   .mobile-menu {
     position: fixed;
-    top: calc(clamp(0.25rem, 1vw, 0.5rem) + var(--header-height));
+    top: calc(
+      clamp(0.25rem, 1vw, 0.5rem) + var(--header-height) +
+        env(safe-area-inset-top)
+    );
     left: 50%;
-    width: min(100vw - clamp(0.5rem, 2vw, 2rem), 1400px);
+    /* Hangs off the header, so it repeats the bar's width — minus the notch,
+       which this one has to subtract by hand: it is positioned, not padded. */
+    width: min(
+      100vw - clamp(0.5rem, 2vw, 2rem) - env(safe-area-inset-left) -
+        env(safe-area-inset-right),
+      1400px
+    );
     z-index: var(--z-mobile-menu);
     padding: var(--space-sm) var(--space-xs) var(--space-xs);
     border-radius: 0 0 clamp(20px, 5vw, 40px) clamp(20px, 5vw, 40px);

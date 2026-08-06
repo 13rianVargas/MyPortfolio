@@ -33,7 +33,11 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer-section {
-    padding: var(--space-sm);
+    /* Last thing on the page, so it is what Safari's floating address bar
+       lands on. The inset keeps the bar from sitting on top of the credit. */
+    padding: var(--space-sm) calc(var(--space-sm) + env(safe-area-inset-right))
+      calc(var(--space-sm) + env(safe-area-inset-bottom))
+      calc(var(--space-sm) + env(safe-area-inset-left));
     position: relative;
     z-index: 2;
   }
