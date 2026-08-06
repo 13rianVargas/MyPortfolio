@@ -162,7 +162,12 @@ body {
   min-height: 100vh;
   min-width: 320px;
   position: relative;
-  overflow-x: hidden;
+  /* No overflow-x here on purpose. Setting it on body propagates the clip to
+     the viewport, which cuts the fixed background layers off at the layout
+     viewport — the edge Safari's floating address bar sits past, leaving a
+     dot-less strip behind the glass. What used to overflow sideways was the
+     header measuring itself in vw; that is fixed, and 320 through 1440 now
+     come out clean down the whole page. */
   line-height: 1.6;
   font-size: var(--text-base);
   background-color: transparent;

@@ -13,14 +13,17 @@
   /* Bleeding past the viewport on every side, because a fixed layer is pinned
      to the *layout* viewport and Safari's floating address bar hovers outside
      it. At inset: 0 the strip behind the glass fell through to the canvas —
-     first as bare white, then, once the root took a colour, as a flat shade
-     the diagonal gradient never actually reaches at that edge. Either way a
-     visible seam. Overshooting puts the gradient itself back there, and under
-     the notch and the rubber band while it is at it. Fixed elements add no
-     scrollable overflow, so the extra width costs nothing. */
+     bare white at first, then a flat shade with no dots once the root took a
+     colour. Either way a seam. Overshooting puts the gradient and the dots
+     back there, and under the notch and the rubber band while it is at it.
+
+     This only paints if nothing clips it: body used to carry overflow-x,
+     which propagates to the viewport and cuts every fixed layer off at
+     exactly that edge. It is gone — see global.css. Fixed elements add no
+     scrollable overflow of their own, so the extra size costs nothing. */
   .background-gradient {
     position: fixed;
-    inset: -6rem;
+    inset: -10rem;
     z-index: -10;
     background: linear-gradient(
       135deg,
@@ -32,7 +35,7 @@
 
   .noise-overlay {
     position: fixed;
-    inset: -6rem;
+    inset: -10rem;
     z-index: -9;
     opacity: 0.3;
     pointer-events: none;
