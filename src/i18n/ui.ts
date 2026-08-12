@@ -10,9 +10,9 @@ export const showDefaultLang = false;
 
 export const ui = {
     en: {
-        "head.title": "Brian Vargas — Java Backend Developer | Full Stack",
+        "head.title": "Brian Vargas — Java Backend Developer",
         "head.description":
-            "Java Backend Developer and Full Stack, Systems Engineering undergraduate in Bogotá. Spring Boot microservices, Angular, PostgreSQL and Docker, with CCST Cybersecurity and CCNA foundations.",
+            "Java Backend Developer, Systems Engineering undergraduate in Bogotá. Spring Boot microservices, Angular, PostgreSQL and Docker, with CCST Cybersecurity and CCNA foundations.",
 
         "layout.home": "Home",
         "layout.about": "About Me",
@@ -26,7 +26,7 @@ export const ui = {
         "layout.scrollTop": "Back to top",
 
         "home.name": "Brian Vargas",
-        "home.role": "Java Backend Developer | Full Stack",
+        "home.role": "Java Backend Developer",
         "home.tagline":
             "Hi, I'm Brian. I got hooked on figuring out how things work underneath, which is how I ended up in backend — building systems that still stand up when real people use them. Lately I've been going deep on cybersecurity and cloud. I'm looking for a team where there's always something left to learn.",
         "home.ctaProjects": "View projects",
@@ -206,9 +206,9 @@ export const ui = {
     },
 
     es: {
-        "head.title": "Brian Vargas — Desarrollador Java Backend | Full Stack",
+        "head.title": "Brian Vargas — Desarrollador Java Backend",
         "head.description":
-            "Desarrollador Java Backend y Full Stack, Ingeniería de Sistemas en formación en Bogotá. Microservicios con Spring Boot, Angular, PostgreSQL y Docker, con bases en CCST Cybersecurity y CCNA.",
+            "Desarrollador Java Backend, Ingeniería de Sistemas en formación en Bogotá. Microservicios con Spring Boot, Angular, PostgreSQL y Docker, con bases en CCST Cybersecurity y CCNA.",
 
         "layout.home": "Inicio",
         "layout.about": "Sobre mí",
@@ -222,7 +222,7 @@ export const ui = {
         "layout.scrollTop": "Volver arriba",
 
         "home.name": "Brian Vargas",
-        "home.role": "Desarrollador Java Backend | Full Stack",
+        "home.role": "Desarrollador Java Backend",
         "home.tagline":
             "Hola, soy Brian. Me picó la curiosidad de entender cómo funcionan las cosas por dentro y terminé en el backend — armando sistemas que siguen en pie cuando la gente de verdad los usa. Últimamente me metí de lleno en ciberseguridad y cloud. Busco un equipo donde siempre quede algo por aprender.",
         "home.ctaProjects": "Ver proyectos",
@@ -402,9 +402,9 @@ export const ui = {
     },
 
     fr: {
-        "head.title": "Brian Vargas — Développeur Java Backend | Full Stack",
+        "head.title": "Brian Vargas — Développeur Java Backend",
         "head.description":
-            "Développeur Java Backend et Full Stack, étudiant en Ingénierie des Systèmes à Bogotá. Microservices Spring Boot, Angular, PostgreSQL et Docker, avec des bases en CCST Cybersecurity et CCNA.",
+            "Développeur Java Backend, étudiant en Ingénierie des Systèmes à Bogotá. Microservices Spring Boot, Angular, PostgreSQL et Docker, avec des bases en CCST Cybersecurity et CCNA.",
 
         "layout.home": "Accueil",
         "layout.about": "À propos de moi",
@@ -418,7 +418,7 @@ export const ui = {
         "layout.scrollTop": "Haut de page",
 
         "home.name": "Brian Vargas",
-        "home.role": "Développeur Java Backend | Full Stack",
+        "home.role": "Développeur Java Backend",
         "home.tagline":
             "Bonjour, je suis Brian. J'ai attrapé le virus de comprendre comment les choses fonctionnent en dessous, et j'ai fini dans le backend — à construire des systèmes qui tiennent quand de vraies personnes s'en servent. Depuis peu je creuse la cybersécurité et le cloud. Je cherche une équipe où il reste toujours quelque chose à apprendre.",
         "home.ctaProjects": "Voir les projets",
@@ -598,9 +598,9 @@ export const ui = {
     },
 
     pt: {
-        "head.title": "Brian Vargas — Desenvolvedor Java Backend | Full Stack",
+        "head.title": "Brian Vargas — Desenvolvedor Java Backend",
         "head.description":
-            "Desenvolvedor Java Backend e Full Stack, estudante de Engenharia de Sistemas em Bogotá. Microsserviços com Spring Boot, Angular, PostgreSQL e Docker, com base em CCST Cybersecurity e CCNA.",
+            "Desenvolvedor Java Backend, estudante de Engenharia de Sistemas em Bogotá. Microsserviços com Spring Boot, Angular, PostgreSQL e Docker, com base em CCST Cybersecurity e CCNA.",
 
         "layout.home": "Início",
         "layout.about": "Sobre mim",
@@ -614,7 +614,7 @@ export const ui = {
         "layout.scrollTop": "Voltar ao topo",
 
         "home.name": "Brian Vargas",
-        "home.role": "Desenvolvedor Java Backend | Full Stack",
+        "home.role": "Desenvolvedor Java Backend",
         "home.tagline":
             "Oi, sou o Brian. Peguei o vício de entender como as coisas funcionam por dentro e acabei no backend — construindo sistemas que continuam de pé quando as pessoas de verdade usam. Ultimamente mergulhei em cibersegurança e cloud. Procuro um time onde sempre sobre algo para aprender.",
         "home.ctaProjects": "Ver projetos",

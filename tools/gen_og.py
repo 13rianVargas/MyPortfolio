@@ -109,7 +109,7 @@ CARD_X, CARD_W, CARD_Y, CARD_H = 786, 352, 74, 482
 body = [
     text_path("ON-SITE / REMOTE", 104, 144, 14, 700, INK, tracking=1.6),
     text_path("Brian Vargas", 64, 248, 72, 700, "#ffffff", tracking=-1.2),
-    text_path("Java Backend Developer | Full Stack", 64, 298, 29, 700, AMBER),
+    text_path("Java Backend Developer", 64, 298, 29, 700, AMBER),
     text_path("Spring Boot microservices, REST APIs and relational", 64, 360, 21, 400, MUTED),
     text_path("data — with CCST cybersecurity and Google Cloud", 64, 392, 21, 400, MUTED),
     text_path("alongside. Founder of K-Forge.", 64, 424, 21, 400, MUTED),
@@ -118,7 +118,7 @@ body = [
     text_path("ID CARD", CARD_X + CARD_W - 28, CARD_Y + 45, 15, 700, "#1c1917",
               anchor="end", tracking=1.4),
     text_path("Brian Vargas", CX, 452, 27, 700, "#ffffff", anchor="middle"),
-    text_path("Java Backend Developer | Full Stack", CX, 482, 16, 700, AMBER, anchor="middle"),
+    text_path("Java Backend Developer", CX, 482, 16, 700, AMBER, anchor="middle"),
     text_path("ID: 000-013", CX, 520, 14, 400, MUTED, anchor="middle", tracking=1.0),
 ]
 
