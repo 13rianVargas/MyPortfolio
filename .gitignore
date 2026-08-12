@@ -35,3 +35,4 @@ bun.lockb
 
 # Temp scripts
 tmp/
+.og-build/
