@@ -58,13 +58,24 @@
   /* Amber is a SURFACE color, never a text color on light backgrounds.
    * --color-accent      : fills, bars, chips
    * --color-on-accent   : text drawn ON those fills  (10.4:1)
-   * --color-accent-text : amber-as-text on page bg   (4.9:1) */
+   * --color-accent-text : gold that survives as text on a light page */
   --color-accent: #fbbf24;
   /* Hover LIGHTENS. Going darker (#f59e0b) read as the button dimming, and it
      also lowered contrast against the dark label sitting on top. */
   --color-accent-hover: #fcd34d;
   --color-on-accent: #1c1917; /* on --color-accent: 10.5:1 */
-  --color-accent-text: #92400e; /* on the page background: 5.7:1 */
+  /* Gold that survives as text on a light page (4.9:1 on white). The brand
+     amber itself is 1.9:1 as text on a light page and cannot be used raw.
+
+     Two other routes were tried and dropped: outlining the letterforms, which
+     at 14px closes up the counters and reads as mud, and putting the amber
+     behind dark ink as a chip, which works but turns every metadata line into
+     a pill. This is a mustard that stays legible while still reading gold.
+
+     It clears AA on white and the section background. Over the two darkest
+     stops of the fixed page gradient it lands at 3.98 and 3.39 — chosen with
+     that known, in exchange for the hue. */
+  --color-accent-text: #a16207;
   --color-accent-rgb: 251, 191, 36;
 
   --color-success: #15803d;
