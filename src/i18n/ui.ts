@@ -16,9 +16,10 @@ export const ui = {
 
         "layout.home": "Home",
         "layout.about": "About Me",
+        "layout.experience": "Experience",
         "layout.projects": "Projects",
         "layout.technologies": "Technologies",
-        "layout.credentials": "Education",
+        "layout.education": "Education",
         "layout.awards": "Awards",
         "layout.contact": "Contact Me",
         "layout.footer": "Made by 13rian Vargas",
@@ -50,7 +51,7 @@ export const ui = {
         "aboutme.eyebrow": "Profile",
         "aboutme.title": "About Me",
         "aboutme.description":
-            "I'm a software developer with 3+ years building applications, focused on Java and Spring Boot on the backend and full stack capable with Angular and TypeScript. I design REST APIs, model relational databases and deploy with Docker. My profile is hybrid: I bring networking (CCNA) and cybersecurity (CCST) foundations alongside cloud (Google Cloud).",
+            "I'm a software developer with 3+ years building applications, focused on Java and Spring Boot on the backend and full stack capable with Angular and TypeScript. I design REST APIs, model relational databases and deploy with Docker. My profile is hybrid: I bring Cisco Networking Academy coursework (CCNA track) and CCST cybersecurity certification alongside cloud (Google Cloud).",
         "aboutme.downloadCV": "Download CV",
         "aboutme.cvEs": "Spanish",
         "aboutme.cvEn": "English",
@@ -64,6 +65,20 @@ export const ui = {
         "aboutme.skill.proactivity": "Proactivity",
         "aboutme.skill.responsibility": "Responsibility & integrity",
         "aboutme.skill.learning": "Continuous learning",
+        "experience.eyebrow": "Where I have worked",
+        "experience.title": "Experience",
+        "experience.description":
+            "The roles I have held, with dates. The projects they produced have their own section.",
+        "experience.kforge.title": "Founder & Backend Developer — Software Development Club",
+        "experience.kforge.org": "K-Forge · Fundación Universitaria Konrad Lorenz",
+        "experience.kforge.date": "2025 — Present",
+        "experience.kforge.desc":
+            "University software development club I founded and lead: I coordinate the technical team, planning and architecture guidelines. Since 02/2026 I have been building its institutional website, now in production.",
+        "experience.assistant.title": "Teaching Assistant — three subjects",
+        "experience.assistant.org": "Konrad Lorenz University Foundation · Part-time",
+        "experience.assistant.date": "07/2024 — 06/2025",
+        "experience.assistant.desc":
+            "Selected on academic merit for three consecutive assistantships: Linear Algebra, Programming Techniques I and Programming Techniques II. I ran support sessions on object-oriented programming with Java, algorithmic optimization and debugging, and reviewed student code with a focus on clean-code practice.",
 
         "projects.eyebrow": "Selected work",
         "projects.title": "Projects",
@@ -82,7 +97,7 @@ export const ui = {
             "Institutional site for the university software development club I founded and lead. Built with Angular and Tailwind, it pulls member projects live from the GitHub API.",
         "projects.repo.kapp.title": "KApp — University mobile app",
         "projects.repo.kapp":
-            "My thesis project, still in progress: six Java 21 microservices behind an API Gateway that centralizes routing and JWT validation, with Eureka discovery, OpenFeign inter-service calls and PostgreSQL auditing. Native Kotlin and Swift clients are in development — the deployed demo is a front-end prototype with sample data, not yet wired to the backend.",
+            "My thesis project, in the pre-proposal phase: six Java 21 microservices behind an API Gateway that centralizes routing and JWT validation, with Eureka discovery, OpenFeign inter-service calls, Resilience4j circuit breakers and PostgreSQL auditing. It runs on Docker Compose with CI on JDK 21. Native Kotlin and Swift clients are in development — the deployed demo is a front-end prototype with sample data, not yet wired to the backend.",
         "projects.repo.amodel.title": "AMODEL — Differential equations lab",
         "projects.repo.amodel":
             "A Minecraft server instrumented as an ecology lab: 27,648 measurements calibrate a logistic ODE with harvesting. The experiment falsified the classical model — a Holling Type II response cuts error by 81–91% in the supercritical regime, where the original predicted a collapse that never happened.",
@@ -102,45 +117,45 @@ export const ui = {
         "technologies.databases": "Databases",
         "technologies.tools": "Tools & DevOps",
 
-        "credentials.eyebrow": "Verified",
-        "credentials.title": "Education",
-        "credentials.description":
+        "education.eyebrow": "Verified",
+        "education.title": "Education",
+        "education.description":
             "Formal training and certifications, with the exams and scores behind them.",
-        "credentials.highlight": "Highlight",
-        "credentials.degree.title": "Systems Engineering",
-        "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
-        "credentials.degree.date": "2023 — 2027",
-        "credentials.degree.desc":
+        "education.highlight": "Highlight",
+        "education.degree.title": "Systems Engineering",
+        "education.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
+        "education.degree.date": "2023 — 2027",
+        "education.degree.desc":
             "Training across the full Software Development Life Cycle, scalable solution architecture, databases, and network and infrastructure administration.",
-        "credentials.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
-        "credentials.ccst.org": "Cisco Systems · Official proctored exam (Certiport)",
-        "credentials.ccst.date": "05/2026",
-        "credentials.ccst.desc":
+        "education.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
+        "education.ccst.org": "Cisco Systems · Official proctored exam (Certiport)",
+        "education.ccst.date": "05/2026",
+        "education.ccst.desc":
             "Passed the official 100-160 exam with 974/1000 (700 minimum): 100% in network security, vulnerability assessment and incident handling.",
-        "credentials.cisco.title": "Cisco Networking Academy — 4 courses",
-        "credentials.cisco.org": "Cisco · 4 digital badges and 5 certificates",
-        "credentials.cisco.date": "09/2024 — 05/2026",
-        "credentials.cisco.desc":
+        "education.cisco.title": "Cisco Networking Academy — 4 courses",
+        "education.cisco.org": "Cisco · 4 digital badges and 4 certificates",
+        "education.cisco.date": "09/2024 — 05/2026",
+        "education.cisco.desc":
             "Ethical Hacker (05/2026): vulnerability recognition, penetration testing and security reporting. CCNA: Switching, Routing & Wireless Essentials (11/2025). Introduction to Cybersecurity (02/2026) and NDG Linux Unhatched (09/2024).",
-        "credentials.gcp.title": "Google Cloud — 16 courses and digital badges",
-        "credentials.gcp.org": "Google Cloud Skills Boost",
-        "credentials.gcp.date": "02/2026 — 05/2026",
-        "credentials.gcp.desc":
+        "education.gcp.title": "Google Cloud — 16 courses and digital badges",
+        "education.gcp.org": "Google Cloud Skills Boost",
+        "education.gcp.date": "02/2026 — 05/2026",
+        "education.gcp.desc":
             "Generative AI (6): concepts, ecosystem, agents and apps. Data & Analytics (5): data engineering, data lakes, warehouses, batch pipelines and ML. Infrastructure & Operations (5): core infrastructure, scaling, security and modernization.",
-        "credentials.platzi.title": "Platzi — Java & Spring",
-        "credentials.platzi.org": "Platzi · 2 certificates · 32 hours",
-        "credentials.platzi.date": "02/2026",
-        "credentials.platzi.desc":
+        "education.platzi.title": "Platzi — Java & Spring",
+        "education.platzi.org": "Platzi · 2 certificates · 32 hours",
+        "education.platzi.date": "02/2026",
+        "education.platzi.desc":
             "Java Spring and Java Spring Data JPA: direct reinforcement of my core stack in dependency injection, persistence layer and object-relational mapping.",
-        "credentials.ilt.title": "Interamerican Leadership Training",
-        "credentials.ilt.org": "World Organization of the Scout Movement · Santo Domingo",
-        "credentials.ilt.date": "12/2023 — 01/2024",
-        "credentials.ilt.desc":
+        "education.ilt.title": "Interamerican Leadership Training",
+        "education.ilt.org": "World Organization of the Scout Movement · Santo Domingo",
+        "education.ilt.date": "12/2023 — 01/2024",
+        "education.ilt.desc":
             "International training in advanced leadership, assertive communication and social-impact project management.",
-        "credentials.one.title": "Web Programming",
-        "credentials.one.org": "Oracle Next Education (ONE)",
-        "credentials.one.date": "04/2023 — 05/2023",
-        "credentials.one.desc":
+        "education.one.title": "Web Programming",
+        "education.one.org": "Oracle Next Education (ONE)",
+        "education.one.date": "04/2023 — 05/2023",
+        "education.one.desc":
             "Programming and logic fundamentals with a focus on JavaScript and web development. This is where my path began.",
 
         "awards.eyebrow": "Along the way",
@@ -152,9 +167,9 @@ export const ui = {
         "awards.cyber.date": "04/2026",
         "awards.cyber.desc":
             "Regional cybersecurity competition with a learning-first focus, held at Cisco Systems' Bogotá offices. I earned the voucher with which I sat and passed the CCST Cybersecurity exam.",
-        "awards.honor.title": "Honorable Mention (awarded twice)",
+        "awards.honor.title": "Honorable Mention",
         "awards.honor.org": "Fundación Universitaria Konrad Lorenz",
-        "awards.honor.date": "02/2024 · 07/2026",
+        "awards.honor.date": "02/2024",
         "awards.honor.desc":
             "Awarded for completing the full semester course load with a minimum 43/50 average, without failing any subject and with no disciplinary sanctions.",
         "awards.marathon.title": "University Representative — National Programming Marathon",
@@ -197,9 +212,10 @@ export const ui = {
 
         "layout.home": "Inicio",
         "layout.about": "Sobre mí",
+        "layout.experience": "Experiencia",
         "layout.projects": "Proyectos",
         "layout.technologies": "Tecnologías",
-        "layout.credentials": "Formación",
+        "layout.education": "Formación",
         "layout.awards": "Reconocimientos",
         "layout.contact": "Contáctame",
         "layout.footer": "Hecho por 13rian Vargas",
@@ -231,7 +247,7 @@ export const ui = {
         "aboutme.eyebrow": "Perfil",
         "aboutme.title": "Sobre mí",
         "aboutme.description":
-            "Soy desarrollador de software con más de 3 años construyendo aplicaciones, enfocado en Java y Spring Boot en el backend y con capacidad full stack en Angular y TypeScript. Diseño APIs REST, modelo bases de datos relacionales y despliego con Docker. Mi perfil es híbrido: sumo fundamentos de redes (CCNA) y ciberseguridad (CCST) junto a cloud (Google Cloud).",
+            "Soy desarrollador de software con más de 3 años construyendo aplicaciones, enfocado en Java y Spring Boot en el backend y con capacidad full stack en Angular y TypeScript. Diseño APIs REST, modelo bases de datos relacionales y despliego con Docker. Mi perfil es híbrido: sumo formación en Cisco Networking Academy (ruta CCNA) y certificación en ciberseguridad (CCST) a la nube (Google Cloud).",
         "aboutme.downloadCV": "Descargar CV",
         "aboutme.cvEs": "Español",
         "aboutme.cvEn": "English",
@@ -245,6 +261,20 @@ export const ui = {
         "aboutme.skill.proactivity": "Proactividad",
         "aboutme.skill.responsibility": "Responsabilidad e integridad",
         "aboutme.skill.learning": "Aprendizaje continuo",
+        "experience.eyebrow": "Dónde he trabajado",
+        "experience.title": "Experiencia",
+        "experience.description":
+            "Los roles que he ocupado, con fechas. Los proyectos que salieron de ellos tienen su propia sección.",
+        "experience.kforge.title": "Fundador y Desarrollador Backend — Club de Desarrollo de Software",
+        "experience.kforge.org": "K-Forge · Fundación Universitaria Konrad Lorenz",
+        "experience.kforge.date": "2025 — Presente",
+        "experience.kforge.desc":
+            "Club universitario que fundé y dirijo: coordino el equipo técnico, la planificación y los lineamientos de arquitectura. Desde 02/2026 desarrollo su sitio institucional, ya en producción.",
+        "experience.assistant.title": "Monitor académico — tres asignaturas",
+        "experience.assistant.org": "Fundación Universitaria Konrad Lorenz · Medio tiempo",
+        "experience.assistant.date": "07/2024 — 06/2025",
+        "experience.assistant.desc":
+            "Seleccionado por mérito académico para tres monitorías consecutivas: Álgebra Lineal y Técnicas de Programación I y II. Dirigí sesiones de apoyo en programación orientada a objetos con Java, optimización de algoritmos y depuración, y revisé código con énfasis en buenas prácticas.",
 
         "projects.eyebrow": "Trabajo seleccionado",
         "projects.title": "Proyectos",
@@ -263,7 +293,7 @@ export const ui = {
             "Sitio institucional del club universitario de desarrollo que fundé y lidero. Hecho con Angular y Tailwind, trae los proyectos de los miembros en vivo desde la API de GitHub.",
         "projects.repo.kapp.title": "KApp — App móvil universitaria",
         "projects.repo.kapp":
-            "Mi proyecto de grado, aún en construcción: seis microservicios en Java 21 tras un API Gateway que centraliza el enrutamiento y la validación JWT, con descubrimiento Eureka, llamadas entre servicios con OpenFeign y auditoría en PostgreSQL. Los clientes nativos en Kotlin y Swift están en desarrollo — la demo desplegada es un prototipo del front con datos de ejemplo, todavía sin backend conectado.",
+            "Mi trabajo de grado, en fase de prepropuesta: seis microservicios en Java 21 tras un API Gateway que centraliza el enrutamiento y la validación JWT, con descubrimiento Eureka, llamadas entre servicios con OpenFeign, circuit breakers con Resilience4j y auditoría en PostgreSQL. Corre sobre Docker Compose con CI en JDK 21. Los clientes nativos en Kotlin y Swift están en desarrollo — la demo desplegada es un prototipo del front con datos de ejemplo, todavía sin backend conectado.",
         "projects.repo.amodel.title": "AMODEL — Lab de ecuaciones diferenciales",
         "projects.repo.amodel":
             "Un servidor de Minecraft instrumentado como laboratorio de ecología: 27.648 mediciones calibran una EDO logística con cosecha. El experimento falsó el modelo clásico — una respuesta Holling Tipo II reduce el error entre 81% y 91% en el régimen supercrítico, donde el original predecía un colapso que nunca ocurrió.",
@@ -283,45 +313,45 @@ export const ui = {
         "technologies.databases": "Bases de Datos",
         "technologies.tools": "Herramientas y DevOps",
 
-        "credentials.eyebrow": "Verificado",
-        "credentials.title": "Formación",
-        "credentials.description":
+        "education.eyebrow": "Verificado",
+        "education.title": "Formación",
+        "education.description":
             "Formación formal y certificaciones, con los exámenes y puntajes que las respaldan.",
-        "credentials.highlight": "Destacado",
-        "credentials.degree.title": "Ingeniería de Sistemas",
-        "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
-        "credentials.degree.date": "2023 — 2027",
-        "credentials.degree.desc":
+        "education.highlight": "Destacado",
+        "education.degree.title": "Ingeniería de Sistemas",
+        "education.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
+        "education.degree.date": "2023 — 2027",
+        "education.degree.desc":
             "Formación en todo el Ciclo de Vida del Desarrollo de Software, arquitectura de soluciones escalables, bases de datos y administración de redes e infraestructura.",
-        "credentials.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
-        "credentials.ccst.org": "Cisco Systems · Examen oficial proctorizado (Certiport)",
-        "credentials.ccst.date": "05/2026",
-        "credentials.ccst.desc":
+        "education.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
+        "education.ccst.org": "Cisco Systems · Examen oficial proctorizado (Certiport)",
+        "education.ccst.date": "05/2026",
+        "education.ccst.desc":
             "Aprobé el examen oficial 100-160 con 974/1000 (mínimo 700): 100% en seguridad de red, evaluación de vulnerabilidades y manejo de incidentes.",
-        "credentials.cisco.title": "Cisco Networking Academy — 4 cursos",
-        "credentials.cisco.org": "Cisco · 4 insignias digitales y 5 certificados",
-        "credentials.cisco.date": "09/2024 — 05/2026",
-        "credentials.cisco.desc":
+        "education.cisco.title": "Cisco Networking Academy — 4 cursos",
+        "education.cisco.org": "Cisco · 4 insignias digitales y 4 certificados",
+        "education.cisco.date": "09/2024 — 05/2026",
+        "education.cisco.desc":
             "Ethical Hacker (05/2026): reconocimiento de vulnerabilidades, pruebas de penetración y reportes de seguridad. CCNA: Switching, Routing & Wireless Essentials (11/2025). Introduction to Cybersecurity (02/2026) y NDG Linux Unhatched (09/2024).",
-        "credentials.gcp.title": "Google Cloud — 16 cursos e insignias digitales",
-        "credentials.gcp.org": "Google Cloud Skills Boost",
-        "credentials.gcp.date": "02/2026 — 05/2026",
-        "credentials.gcp.desc":
+        "education.gcp.title": "Google Cloud — 16 cursos e insignias digitales",
+        "education.gcp.org": "Google Cloud Skills Boost",
+        "education.gcp.date": "02/2026 — 05/2026",
+        "education.gcp.desc":
             "IA Generativa (6): conceptos, ecosistema, agentes y aplicaciones. Datos y analítica (5): ingeniería de datos, data lakes, warehouses, pipelines batch y ML. Infraestructura y operaciones (5): infraestructura base, escalado, seguridad y modernización.",
-        "credentials.platzi.title": "Platzi — Java y Spring",
-        "credentials.platzi.org": "Platzi · 2 certificados · 32 horas",
-        "credentials.platzi.date": "02/2026",
-        "credentials.platzi.desc":
+        "education.platzi.title": "Platzi — Java y Spring",
+        "education.platzi.org": "Platzi · 2 certificados · 32 horas",
+        "education.platzi.date": "02/2026",
+        "education.platzi.desc":
             "Java Spring y Java Spring Data JPA: refuerzo directo de mi stack principal en inyección de dependencias, capa de persistencia y mapeo objeto-relacional.",
-        "credentials.ilt.title": "Interamerican Leadership Training",
-        "credentials.ilt.org": "Organización Mundial del Movimiento Scout · Santo Domingo",
-        "credentials.ilt.date": "12/2023 — 01/2024",
-        "credentials.ilt.desc":
+        "education.ilt.title": "Interamerican Leadership Training",
+        "education.ilt.org": "Organización Mundial del Movimiento Scout · Santo Domingo",
+        "education.ilt.date": "12/2023 — 01/2024",
+        "education.ilt.desc":
             "Formación internacional en liderazgo avanzado, comunicación asertiva y gestión de proyectos de impacto social.",
-        "credentials.one.title": "Programación Web",
-        "credentials.one.org": "Oracle Next Education (ONE)",
-        "credentials.one.date": "04/2023 — 05/2023",
-        "credentials.one.desc":
+        "education.one.title": "Programación Web",
+        "education.one.org": "Oracle Next Education (ONE)",
+        "education.one.date": "04/2023 — 05/2023",
+        "education.one.desc":
             "Fundamentos de programación y lógica con enfoque en JavaScript y desarrollo web. Aquí empezó mi camino.",
 
         "awards.eyebrow": "En el camino",
@@ -333,9 +363,9 @@ export const ui = {
         "awards.cyber.date": "04/2026",
         "awards.cyber.desc":
             "Competencia regional de ciberseguridad con enfoque en aprendizaje, realizada en las oficinas de Cisco Systems en Bogotá. Gané el voucher con el que presenté y aprobé el examen CCST Cybersecurity.",
-        "awards.honor.title": "Mención de Honor (otorgada dos veces)",
+        "awards.honor.title": "Mención de Honor",
         "awards.honor.org": "Fundación Universitaria Konrad Lorenz",
-        "awards.honor.date": "02/2024 · 07/2026",
+        "awards.honor.date": "02/2024",
         "awards.honor.desc":
             "Otorgada por completar la carga académica completa del semestre con un promedio mínimo de 43/50, sin perder ninguna materia y sin sanciones disciplinarias.",
         "awards.marathon.title": "Representante universitario — Maratón Nacional de Programación",
@@ -378,9 +408,10 @@ export const ui = {
 
         "layout.home": "Accueil",
         "layout.about": "À propos de moi",
+        "layout.experience": "Expérience",
         "layout.projects": "Projets",
         "layout.technologies": "Technologies",
-        "layout.credentials": "Formation",
+        "layout.education": "Formation",
         "layout.awards": "Distinctions",
         "layout.contact": "Contactez-moi",
         "layout.footer": "Réalisé par 13rian Vargas",
@@ -412,7 +443,7 @@ export const ui = {
         "aboutme.eyebrow": "Profil",
         "aboutme.title": "À propos de moi",
         "aboutme.description":
-            "Je suis développeur logiciel avec plus de 3 ans à construire des applications, axé sur Java et Spring Boot côté backend et capable en full stack avec Angular et TypeScript. Je conçois des API REST, modélise des bases de données relationnelles et déploie avec Docker. Mon profil est hybride : j'apporte des bases en réseaux (CCNA) et cybersécurité (CCST) ainsi qu'en cloud (Google Cloud).",
+            "Je suis développeur logiciel avec plus de 3 ans à construire des applications, axé sur Java et Spring Boot côté backend et capable en full stack avec Angular et TypeScript. Je conçois des API REST, modélise des bases de données relationnelles et déploie avec Docker. Mon profil est hybride : j'apporte une formation Cisco Networking Academy (parcours CCNA) et la certification en cybersécurité (CCST), en plus du cloud (Google Cloud).",
         "aboutme.downloadCV": "Télécharger le CV",
         "aboutme.cvEs": "Espagnol",
         "aboutme.cvEn": "Anglais",
@@ -426,6 +457,20 @@ export const ui = {
         "aboutme.skill.proactivity": "Proactivité",
         "aboutme.skill.responsibility": "Responsabilité et intégrité",
         "aboutme.skill.learning": "Apprentissage continu",
+        "experience.eyebrow": "Où j'ai travaillé",
+        "experience.title": "Expérience",
+        "experience.description":
+            "Les rôles que j'ai occupés, avec les dates. Les projets qui en sont issus ont leur propre section.",
+        "experience.kforge.title": "Fondateur et Développeur Backend — Club de Développement Logiciel",
+        "experience.kforge.org": "K-Forge · Fundación Universitaria Konrad Lorenz",
+        "experience.kforge.date": "2025 — Présent",
+        "experience.kforge.desc":
+            "Club universitaire que j'ai fondé et que je dirige : je coordonne l'équipe technique, la planification et les lignes directrices d'architecture. Depuis 02/2026 je développe son site institutionnel, désormais en production.",
+        "experience.assistant.title": "Assistant d'enseignement — trois matières",
+        "experience.assistant.org": "Fundación Universitaria Konrad Lorenz · Temps partiel",
+        "experience.assistant.date": "07/2024 — 06/2025",
+        "experience.assistant.desc":
+            "Sélectionné au mérite académique pour trois assistanats consécutifs : Algèbre linéaire et Techniques de Programmation I et II. J'ai animé des séances de soutien en programmation orientée objet avec Java, optimisation d'algorithmes et débogage, et relu le code des étudiants en insistant sur les bonnes pratiques.",
 
         "projects.eyebrow": "Travaux sélectionnés",
         "projects.title": "Projets",
@@ -444,7 +489,7 @@ export const ui = {
             "Site institutionnel du club universitaire de développement que j'ai fondé et que je dirige. Réalisé avec Angular et Tailwind, il récupère les projets des membres en direct via l'API GitHub.",
         "projects.repo.kapp.title": "KApp — Application mobile universitaire",
         "projects.repo.kapp":
-            "Mon projet de fin d'études, encore en construction : six microservices en Java 21 derrière une API Gateway qui centralise le routage et la validation JWT, avec découverte Eureka, appels inter-services OpenFeign et audit PostgreSQL. Les clients natifs Kotlin et Swift sont en développement — la démo déployée est un prototype front avec des données d'exemple, pas encore relié au backend.",
+            "Mon projet de fin d'études, en phase de pré-proposition : six microservices en Java 21 derrière une API Gateway qui centralise le routage et la validation JWT, avec découverte Eureka, appels inter-services OpenFeign, disjoncteurs Resilience4j et audit PostgreSQL. Il tourne sur Docker Compose avec CI sur JDK 21. Les clients natifs Kotlin et Swift sont en développement — la démo déployée est un prototype front avec des données d'exemple, pas encore relié au backend.",
         "projects.repo.amodel.title": "AMODEL — Labo d'équations différentielles",
         "projects.repo.amodel":
             "Un serveur Minecraft instrumenté comme laboratoire d'écologie : 27 648 mesures calibrent une EDO logistique avec récolte. L'expérience a falsifié le modèle classique — une réponse Holling de type II réduit l'erreur de 81 à 91 % dans le régime supercritique, où l'original prédisait un effondrement qui n'a jamais eu lieu.",
@@ -464,45 +509,45 @@ export const ui = {
         "technologies.databases": "Bases de données",
         "technologies.tools": "Outils et DevOps",
 
-        "credentials.eyebrow": "Vérifié",
-        "credentials.title": "Formation",
-        "credentials.description":
+        "education.eyebrow": "Vérifié",
+        "education.title": "Formation",
+        "education.description":
             "Formation académique et certifications, avec les examens et les scores qui les appuient.",
-        "credentials.highlight": "À souligner",
-        "credentials.degree.title": "Ingénierie des Systèmes",
-        "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
-        "credentials.degree.date": "2023 — 2027",
-        "credentials.degree.desc":
+        "education.highlight": "À souligner",
+        "education.degree.title": "Ingénierie des Systèmes",
+        "education.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
+        "education.degree.date": "2023 — 2027",
+        "education.degree.desc":
             "Formation sur tout le Cycle de Vie du Développement Logiciel, architecture de solutions évolutives, bases de données et administration réseau et infrastructure.",
-        "credentials.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
-        "credentials.ccst.org": "Cisco Systems · Examen officiel surveillé (Certiport)",
-        "credentials.ccst.date": "05/2026",
-        "credentials.ccst.desc":
+        "education.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
+        "education.ccst.org": "Cisco Systems · Examen officiel surveillé (Certiport)",
+        "education.ccst.date": "05/2026",
+        "education.ccst.desc":
             "Examen officiel 100-160 réussi avec 974/1000 (minimum 700) : 100 % en sécurité réseau, évaluation des vulnérabilités et gestion des incidents.",
-        "credentials.cisco.title": "Cisco Networking Academy — 4 cours",
-        "credentials.cisco.org": "Cisco · 4 badges numériques et 5 certificats",
-        "credentials.cisco.date": "09/2024 — 05/2026",
-        "credentials.cisco.desc":
+        "education.cisco.title": "Cisco Networking Academy — 4 cours",
+        "education.cisco.org": "Cisco · 4 badges numériques et 4 certificats",
+        "education.cisco.date": "09/2024 — 05/2026",
+        "education.cisco.desc":
             "Ethical Hacker (05/2026) : identification de vulnérabilités, tests d'intrusion et rapports de sécurité. CCNA : Switching, Routing & Wireless Essentials (11/2025). Introduction to Cybersecurity (02/2026) et NDG Linux Unhatched (09/2024).",
-        "credentials.gcp.title": "Google Cloud — 16 cours et badges numériques",
-        "credentials.gcp.org": "Google Cloud Skills Boost",
-        "credentials.gcp.date": "02/2026 — 05/2026",
-        "credentials.gcp.desc":
+        "education.gcp.title": "Google Cloud — 16 cours et badges numériques",
+        "education.gcp.org": "Google Cloud Skills Boost",
+        "education.gcp.date": "02/2026 — 05/2026",
+        "education.gcp.desc":
             "IA générative (6) : concepts, écosystème, agents et applications. Données et analytique (5) : ingénierie des données, data lakes, entrepôts, pipelines batch et ML. Infrastructure et opérations (5) : infrastructure de base, mise à l'échelle, sécurité et modernisation.",
-        "credentials.platzi.title": "Platzi — Java et Spring",
-        "credentials.platzi.org": "Platzi · 2 certificats · 32 heures",
-        "credentials.platzi.date": "02/2026",
-        "credentials.platzi.desc":
+        "education.platzi.title": "Platzi — Java et Spring",
+        "education.platzi.org": "Platzi · 2 certificats · 32 heures",
+        "education.platzi.date": "02/2026",
+        "education.platzi.desc":
             "Java Spring et Java Spring Data JPA : renforcement direct de ma stack principale en injection de dépendances, couche de persistance et mapping objet-relationnel.",
-        "credentials.ilt.title": "Interamerican Leadership Training",
-        "credentials.ilt.org": "Organisation Mondiale du Mouvement Scout · Saint-Domingue",
-        "credentials.ilt.date": "12/2023 — 01/2024",
-        "credentials.ilt.desc":
+        "education.ilt.title": "Interamerican Leadership Training",
+        "education.ilt.org": "Organisation Mondiale du Mouvement Scout · Saint-Domingue",
+        "education.ilt.date": "12/2023 — 01/2024",
+        "education.ilt.desc":
             "Formation internationale en leadership avancé, communication assertive et gestion de projets à impact social.",
-        "credentials.one.title": "Programmation Web",
-        "credentials.one.org": "Oracle Next Education (ONE)",
-        "credentials.one.date": "04/2023 — 05/2023",
-        "credentials.one.desc":
+        "education.one.title": "Programmation Web",
+        "education.one.org": "Oracle Next Education (ONE)",
+        "education.one.date": "04/2023 — 05/2023",
+        "education.one.desc":
             "Fondamentaux de programmation et de logique axés sur JavaScript et le développement web. C'est là que mon parcours a commencé.",
 
         "awards.eyebrow": "En chemin",
@@ -514,9 +559,9 @@ export const ui = {
         "awards.cyber.date": "04/2026",
         "awards.cyber.desc":
             "Compétition régionale de cybersécurité axée sur l'apprentissage, organisée dans les bureaux de Cisco Systems à Bogotá. J'y ai gagné le voucher avec lequel j'ai passé et réussi l'examen CCST Cybersecurity.",
-        "awards.honor.title": "Mention Honorable (décernée deux fois)",
+        "awards.honor.title": "Mention Honorable",
         "awards.honor.org": "Fundación Universitaria Konrad Lorenz",
-        "awards.honor.date": "02/2024 · 07/2026",
+        "awards.honor.date": "02/2024",
         "awards.honor.desc":
             "Décernée pour avoir suivi la charge complète du semestre avec une moyenne minimale de 43/50, sans échec à aucune matière et sans sanction disciplinaire.",
         "awards.marathon.title": "Représentant universitaire — Marathon National de Programmation",
@@ -559,9 +604,10 @@ export const ui = {
 
         "layout.home": "Início",
         "layout.about": "Sobre mim",
+        "layout.experience": "Experiência",
         "layout.projects": "Projetos",
         "layout.technologies": "Tecnologias",
-        "layout.credentials": "Formação",
+        "layout.education": "Formação",
         "layout.awards": "Reconhecimentos",
         "layout.contact": "Fale comigo",
         "layout.footer": "Feito por 13rian Vargas",
@@ -593,7 +639,7 @@ export const ui = {
         "aboutme.eyebrow": "Perfil",
         "aboutme.title": "Sobre mim",
         "aboutme.description":
-            "Sou desenvolvedor de software com mais de 3 anos construindo aplicações, focado em Java e Spring Boot no backend e com capacidade full stack em Angular e TypeScript. Projeto APIs REST, modelo bancos de dados relacionais e faço deploy com Docker. Meu perfil é híbrido: somo fundamentos de redes (CCNA) e cibersegurança (CCST) junto a cloud (Google Cloud).",
+            "Sou desenvolvedor de software com mais de 3 anos construindo aplicações, focado em Java e Spring Boot no backend e com capacidade full stack em Angular e TypeScript. Projeto APIs REST, modelo bancos de dados relacionais e faço deploy com Docker. Meu perfil é híbrido: somo formação na Cisco Networking Academy (trilha CCNA) e certificação em cibersegurança (CCST) à nuvem (Google Cloud).",
         "aboutme.downloadCV": "Baixar CV",
         "aboutme.cvEs": "Espanhol",
         "aboutme.cvEn": "Inglês",
@@ -607,6 +653,20 @@ export const ui = {
         "aboutme.skill.proactivity": "Proatividade",
         "aboutme.skill.responsibility": "Responsabilidade e integridade",
         "aboutme.skill.learning": "Aprendizado contínuo",
+        "experience.eyebrow": "Onde trabalhei",
+        "experience.title": "Experiência",
+        "experience.description":
+            "As funções que ocupei, com datas. Os projetos que saíram delas têm a sua própria seção.",
+        "experience.kforge.title": "Fundador e Desenvolvedor Backend — Clube de Desenvolvimento de Software",
+        "experience.kforge.org": "K-Forge · Fundación Universitaria Konrad Lorenz",
+        "experience.kforge.date": "2025 — Presente",
+        "experience.kforge.desc":
+            "Clube universitário que fundei e lidero: coordeno a equipe técnica, o planejamento e as diretrizes de arquitetura. Desde 02/2026 desenvolvo seu site institucional, já em produção.",
+        "experience.assistant.title": "Monitor acadêmico — três disciplinas",
+        "experience.assistant.org": "Fundación Universitaria Konrad Lorenz · Meio período",
+        "experience.assistant.date": "07/2024 — 06/2025",
+        "experience.assistant.desc":
+            "Selecionado por mérito acadêmico para três monitorias consecutivas: Álgebra Linear e Técnicas de Programação I e II. Conduzi sessões de apoio em programação orientada a objetos com Java, otimização de algoritmos e depuração, e revisei código com ênfase em boas práticas.",
 
         "projects.eyebrow": "Trabalhos selecionados",
         "projects.title": "Projetos",
@@ -625,7 +685,7 @@ export const ui = {
             "Site institucional do clube universitário de desenvolvimento que fundei e lidero. Feito com Angular e Tailwind, traz os projetos dos membros ao vivo pela API do GitHub.",
         "projects.repo.kapp.title": "KApp — App móvel universitário",
         "projects.repo.kapp":
-            "Meu trabalho de conclusão, ainda em construção: seis microsserviços em Java 21 atrás de um API Gateway que centraliza o roteamento e a validação JWT, com descoberta Eureka, chamadas entre serviços com OpenFeign e auditoria no PostgreSQL. Os clientes nativos em Kotlin e Swift estão em desenvolvimento — a demo publicada é um protótipo do front com dados de exemplo, ainda sem backend conectado.",
+            "Meu trabalho de conclusão, em fase de pré-proposta: seis microsserviços em Java 21 atrás de um API Gateway que centraliza o roteamento e a validação JWT, com descoberta Eureka, chamadas entre serviços com OpenFeign, circuit breakers com Resilience4j e auditoria no PostgreSQL. Roda em Docker Compose com CI no JDK 21. Os clientes nativos em Kotlin e Swift estão em desenvolvimento — a demo publicada é um protótipo do front com dados de exemplo, ainda sem backend conectado.",
         "projects.repo.amodel.title": "AMODEL — Lab de equações diferenciais",
         "projects.repo.amodel":
             "Um servidor de Minecraft instrumentado como laboratório de ecologia: 27.648 medições calibram uma EDO logística com colheita. O experimento falseou o modelo clássico — uma resposta Holling Tipo II reduz o erro entre 81% e 91% no regime supercrítico, onde o original previa um colapso que nunca aconteceu.",
@@ -645,45 +705,45 @@ export const ui = {
         "technologies.databases": "Bancos de Dados",
         "technologies.tools": "Ferramentas e DevOps",
 
-        "credentials.eyebrow": "Verificado",
-        "credentials.title": "Formação",
-        "credentials.description":
+        "education.eyebrow": "Verificado",
+        "education.title": "Formação",
+        "education.description":
             "Formação acadêmica e certificações, com os exames e notas que as respaldam.",
-        "credentials.highlight": "Destaque",
-        "credentials.degree.title": "Engenharia de Sistemas",
-        "credentials.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
-        "credentials.degree.date": "2023 — 2027",
-        "credentials.degree.desc":
+        "education.highlight": "Destaque",
+        "education.degree.title": "Engenharia de Sistemas",
+        "education.degree.org": "Fundación Universitaria Konrad Lorenz · Bogotá D.C.",
+        "education.degree.date": "2023 — 2027",
+        "education.degree.desc":
             "Formação em todo o Ciclo de Vida do Desenvolvimento de Software, arquitetura de soluções escaláveis, bancos de dados e administração de redes e infraestrutura.",
-        "credentials.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
-        "credentials.ccst.org": "Cisco Systems · Exame oficial proctorado (Certiport)",
-        "credentials.ccst.date": "05/2026",
-        "credentials.ccst.desc":
+        "education.ccst.title": "CCST Cybersecurity — Cisco Certified Support Technician",
+        "education.ccst.org": "Cisco Systems · Exame oficial proctorado (Certiport)",
+        "education.ccst.date": "05/2026",
+        "education.ccst.desc":
             "Aprovado no exame oficial 100-160 com 974/1000 (mínimo 700): 100% em segurança de rede, avaliação de vulnerabilidades e tratamento de incidentes.",
-        "credentials.cisco.title": "Cisco Networking Academy — 4 cursos",
-        "credentials.cisco.org": "Cisco · 4 insígnias digitais e 5 certificados",
-        "credentials.cisco.date": "09/2024 — 05/2026",
-        "credentials.cisco.desc":
+        "education.cisco.title": "Cisco Networking Academy — 4 cursos",
+        "education.cisco.org": "Cisco · 4 insígnias digitais e 4 certificados",
+        "education.cisco.date": "09/2024 — 05/2026",
+        "education.cisco.desc":
             "Ethical Hacker (05/2026): reconhecimento de vulnerabilidades, testes de invasão e relatórios de segurança. CCNA: Switching, Routing & Wireless Essentials (11/2025). Introduction to Cybersecurity (02/2026) e NDG Linux Unhatched (09/2024).",
-        "credentials.gcp.title": "Google Cloud — 16 cursos e insígnias digitais",
-        "credentials.gcp.org": "Google Cloud Skills Boost",
-        "credentials.gcp.date": "02/2026 — 05/2026",
-        "credentials.gcp.desc":
+        "education.gcp.title": "Google Cloud — 16 cursos e insígnias digitais",
+        "education.gcp.org": "Google Cloud Skills Boost",
+        "education.gcp.date": "02/2026 — 05/2026",
+        "education.gcp.desc":
             "IA Generativa (6): conceitos, ecossistema, agentes e aplicações. Dados e analytics (5): engenharia de dados, data lakes, warehouses, pipelines batch e ML. Infraestrutura e operações (5): infraestrutura base, escalabilidade, segurança e modernização.",
-        "credentials.platzi.title": "Platzi — Java e Spring",
-        "credentials.platzi.org": "Platzi · 2 certificados · 32 horas",
-        "credentials.platzi.date": "02/2026",
-        "credentials.platzi.desc":
+        "education.platzi.title": "Platzi — Java e Spring",
+        "education.platzi.org": "Platzi · 2 certificados · 32 horas",
+        "education.platzi.date": "02/2026",
+        "education.platzi.desc":
             "Java Spring e Java Spring Data JPA: reforço direto do meu stack principal em injeção de dependências, camada de persistência e mapeamento objeto-relacional.",
-        "credentials.ilt.title": "Interamerican Leadership Training",
-        "credentials.ilt.org": "Organização Mundial do Movimento Escoteiro · Santo Domingo",
-        "credentials.ilt.date": "12/2023 — 01/2024",
-        "credentials.ilt.desc":
+        "education.ilt.title": "Interamerican Leadership Training",
+        "education.ilt.org": "Organização Mundial do Movimento Escoteiro · Santo Domingo",
+        "education.ilt.date": "12/2023 — 01/2024",
+        "education.ilt.desc":
             "Formação internacional em liderança avançada, comunicação assertiva e gestão de projetos de impacto social.",
-        "credentials.one.title": "Programação Web",
-        "credentials.one.org": "Oracle Next Education (ONE)",
-        "credentials.one.date": "04/2023 — 05/2023",
-        "credentials.one.desc":
+        "education.one.title": "Programação Web",
+        "education.one.org": "Oracle Next Education (ONE)",
+        "education.one.date": "04/2023 — 05/2023",
+        "education.one.desc":
             "Fundamentos de programação e lógica com foco em JavaScript e desenvolvimento web. Foi aqui que meu caminho começou.",
 
         "awards.eyebrow": "No caminho",
@@ -695,9 +755,9 @@ export const ui = {
         "awards.cyber.date": "04/2026",
         "awards.cyber.desc":
             "Competição regional de cibersegurança com foco em aprendizado, realizada nos escritórios da Cisco Systems em Bogotá. Ganhei o voucher com o qual prestei e fui aprovado no exame CCST Cybersecurity.",
-        "awards.honor.title": "Menção Honrosa (concedida duas vezes)",
+        "awards.honor.title": "Menção Honrosa",
         "awards.honor.org": "Fundación Universitaria Konrad Lorenz",
-        "awards.honor.date": "02/2024 · 07/2026",
+        "awards.honor.date": "02/2024",
         "awards.honor.desc":
             "Concedida por cumprir a carga acadêmica completa do semestre com média mínima de 43/50, sem reprovar nenhuma disciplina e sem sanções disciplinares.",
         "awards.marathon.title": "Representante universitário — Maratona Nacional de Programação",

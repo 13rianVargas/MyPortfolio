@@ -1,0 +1,409 @@
+---
+const { t } = Astro.props;
+
+/**
+ * Everything here is on the CV with a verifiable issuer. `highlight` is
+ * reserved for the CCST: an official proctored Cisco exam passed with
+ * 974/1000, which is the strongest single credential on the list.
+ */
+const ITEMS = [
+  { key: "ccst", icon: "/icons/orgs/ccst.png", highlight: true, badge: true },
+  { key: "cisco", icon: "/icons/tech/cisco.svg", highlight: false },
+  { key: "gcp", icon: "/icons/tech/google-cloud.svg", highlight: false },
+  { key: "platzi", icon: "/icons/tech/platzi.svg", highlight: false },
+  { key: "degree", icon: "/icons/orgs/konrad-lorenz.png", highlight: false, inset: true },
+  { key: "ilt", icon: "/icons/orgs/scouts.svg", highlight: false, pad: true },
+  { key: "one", icon: "/icons/tech/oracle.svg", highlight: false },
+] as const;
+
+/**
+ * Verification links, one per issued badge or diploma. Every URL here was opened
+ * and confirmed to resolve to a credential in Brian's name — a verification link
+ * that 404s or points at a stranger is worse than no link at all.
+ *
+ * Google Cloud has no working public profile page: both
+ * partner.skills.google/public_profiles/<id> and cloudskillsboost.google/public_profiles/<id>
+ * redirect to the marketing home page. Only the per-badge URLs resolve, so all
+ * sixteen are listed individually.
+ *
+ * NDG Linux Unhatched is deliberately absent: it is a certificate, not a Credly
+ * badge, so there is nothing to link.
+ */
+const CREDLY = "https://www.credly.com/badges";
+const GSKILLS =
+  "https://partner.skills.google/public_profiles/bb219ae8-51bb-4f7a-aa82-b115d535bf54/badges";
+
+const VERIFY: Record<string, { label: string; url: string; icon: string }[]> = {
+  ccst: [
+    { label: "CCST Cybersecurity", url: `${CREDLY}/0d9e809d-f820-4e52-9811-c1b602d9e458`, icon: "/icons/tech/cisco.svg" },
+  ],
+  cisco: [
+    { label: "Ethical Hacker", url: `${CREDLY}/7d981309-c4c2-410f-9ceb-ff3399e9bdf8`, icon: "/icons/tech/cisco.svg" },
+    { label: "CCNA: Switching, Routing & Wireless Essentials", url: `${CREDLY}/3e246ed6-822d-402e-b161-a9d583854d26`, icon: "/icons/tech/cisco.svg" },
+    { label: "Introduction to Cybersecurity", url: `${CREDLY}/47f35096-ceec-46bb-adb5-fb4677569ff7`, icon: "/icons/tech/cisco.svg" },
+  ],
+  gcp: [
+    // Generative AI (6)
+    { label: "Gen AI: Unlock Foundational Concepts", url: `${GSKILLS}/23151956`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Gen AI: Navigate the Landscape", url: `${GSKILLS}/23152000`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Gen AI: Beyond the Chatbot", url: `${GSKILLS}/23133946`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Gen AI Apps: Transform Your Work", url: `${GSKILLS}/23152026`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Gen AI Agents: Transform Your Organization", url: `${GSKILLS}/23152053`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Innovating with Google Cloud Artificial Intelligence", url: `${GSKILLS}/22976189`, icon: "/icons/tech/google-cloud.svg" },
+    // Data & analytics (5)
+    { label: "Introduction to Data Engineering on Google Cloud", url: `${GSKILLS}/23111632`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Build Data Lakes and Data Warehouses on Google Cloud", url: `${GSKILLS}/23730946`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Build Batch Data Pipelines on Google Cloud", url: `${GSKILLS}/23863608`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Smart Analytics, Machine Learning, and AI on Google Cloud", url: `${GSKILLS}/24148858`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Exploring Data Transformation with Google Cloud", url: `${GSKILLS}/22971377`, icon: "/icons/tech/google-cloud.svg" },
+    // Infrastructure & operations (5)
+    { label: "Google Cloud Fundamentals: Core Infrastructure", url: `${GSKILLS}/23134142`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Modernize Infrastructure and Applications with Google Cloud", url: `${GSKILLS}/22998677`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Scaling with Google Cloud Operations", url: `${GSKILLS}/23000122`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Trust and Security with Google Cloud", url: `${GSKILLS}/22999680`, icon: "/icons/tech/google-cloud.svg" },
+    { label: "Digital Transformation with Google Cloud", url: `${GSKILLS}/22947778`, icon: "/icons/tech/google-cloud.svg" },
+  ],
+  platzi: [
+    { label: "Java Spring", url: "https://platzi.com/p/bsvargasc13/curso/1996-java-spring/diploma/detalle/", icon: "/icons/tech/platzi.svg" },
+    { label: "Java Spring Data JPA: Databases", url: "https://platzi.com/p/bsvargasc13/curso/7825-java-spring-data/diploma/detalle/", icon: "/icons/tech/platzi.svg" },
+  ],
+};
+---
+
+<section id="education" class="section-shell">
+  <div class="section-container">
+    <header class="section-header">
+      <p class="section-eyebrow" data-translation-key="education.eyebrow">
+        {t("education.eyebrow")}
+      </p>
+      <h2 class="section-title" data-translation-key="education.title">
+        {t("education.title")}
+      </h2>
+      <p class="section-lead" data-translation-key="education.description">
+        {t("education.description")}
+      </p>
+    </header>
+
+    <ol class="timeline">
+      {
+        ITEMS.map((item) => (
+          <li class:list={["entry", { highlight: item.highlight }]}>
+            <div class:list={["marker", { fill: (item as any).fill, pad: (item as any).pad, badge: (item as any).badge, inset: (item as any).inset }]} aria-hidden="true">
+              {item.icon ? (
+                <img src={item.icon} alt="" width="22" height="22" loading="lazy" />
+              ) : (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                </svg>
+              )}
+            </div>
+
+            <div class="content">
+              <div class="head">
+                <h3
+                  class="entry-title"
+                  data-translation-key={`education.${item.key}.title`}
+                >
+                  {t(`education.${item.key}.title`)}
+                </h3>
+                <span
+                  class="date"
+                  data-translation-key={`education.${item.key}.date`}
+                >
+                  {t(`education.${item.key}.date`)}
+                </span>
+              </div>
+
+              <p class="org" data-translation-key={`education.${item.key}.org`}>
+                {t(`education.${item.key}.org`)}
+              </p>
+
+              {item.highlight && (
+                <span class="badge" data-translation-key="education.highlight">
+                  {t("education.highlight")}
+                </span>
+              )}
+
+              <p class="desc" data-translation-key={`education.${item.key}.desc`}>
+                {t(`education.${item.key}.desc`)}
+              </p>
+
+              {VERIFY[item.key] && (
+                <ul class="verify">
+                  {VERIFY[item.key].map((c) => (
+                    <li>
+                      <a href={c.url} target="_blank" rel="noopener noreferrer">
+                        <img src={c.icon} alt="" width="14" height="14" loading="lazy" />
+                        <span>{c.label}</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="10" height="10" aria-hidden="true">
+                          <path d="M7 17 17 7M9 7h8v8" />
+                        </svg>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script src="../../i18n/translator.ts"></script>
+
+<style>
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 860px;
+    position: relative;
+  }
+
+  /* The rail sits behind the markers and stops at the last one. */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 23px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent),
+      var(--color-border)
+    );
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-md);
+  }
+
+  .entry:last-child {
+    padding-bottom: 0;
+  }
+
+  .marker {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border);
+    color: var(--color-text-secondary);
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  .entry.highlight .marker {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+
+  .marker img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+  }
+
+  /* Full-bleed artwork (badges, org logos) fills the disc instead of floating
+     as a small square inside it. */
+  .marker.fill {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .marker.fill img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-full);
+  }
+
+  /* Transparent artwork sits inside the ring with room to breathe. */
+  .marker.pad img {
+    width: 74%;
+    height: 74%;
+    object-fit: contain;
+  }
+
+  /* A letterform runs to the edge of its own box, unlike an emblem that carries
+     its own margin, so the K needs the extra inset to stop looking like it is
+     escaping the ring. */
+  .marker.inset img {
+    width: 62%;
+    height: 62%;
+    object-fit: contain;
+  }
+
+  /* The CCST badge fills the disc, scaled just past it and centred. It is not
+     nudged: any offset uncovers the highlight border at the opposite edge, which
+     reads as a gold patch rather than a ring.
+
+     102% is the ceiling. Above it the disc starts eating the teal arcs down the
+     badge's sides; below it the marker background shows through as a rim. */
+  .marker.badge {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .marker.badge img {
+    width: 102%;
+    height: 102%;
+    object-fit: contain;
+    border-radius: var(--radius-full);
+  }
+
+  .content {
+    padding-top: 0.35rem;
+    min-width: 0;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3xs);
+  }
+
+  .entry-title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .date {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-text-primary) 7%, transparent);
+    border-radius: var(--radius-full);
+    padding: 0.2rem 0.65rem;
+    white-space: nowrap;
+  }
+
+  .org {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent-text);
+    margin: 0.2rem 0 0;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-top: var(--space-3xs);
+    padding: 0.15rem 0.6rem;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    border-radius: var(--radius-full);
+  }
+
+  .desc {
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: var(--space-3xs) 0 0;
+  }
+
+  /* Verification chips: issuer mark + credential name, nothing heavier. */
+  .verify {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: var(--space-2xs) 0 0;
+    padding: 0;
+  }
+
+  .verify a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition:
+      border-color 0.18s ease,
+      color 0.18s ease,
+      background 0.18s ease;
+  }
+
+  .verify a:hover,
+  .verify a:focus-visible {
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+
+  .verify img {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  /* The arrow only earns its space on hover; it is decorative. */
+  .verify svg {
+    opacity: 0.45;
+    flex-shrink: 0;
+  }
+
+  .verify a:hover svg,
+  .verify a:focus-visible svg {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .verify a {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .timeline::before {
+      left: 17px;
+    }
+    .entry {
+      grid-template-columns: 36px 1fr;
+      gap: var(--space-2xs);
+    }
+    .marker {
+      width: 36px;
+      height: 36px;
+    }
+    .marker img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+</style>

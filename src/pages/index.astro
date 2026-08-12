@@ -2,9 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import Home from "../components/sections/2-Home.astro";
 import AboutMe from "../components/sections/3-AboutMe.astro";
+import Experience from "../components/sections/3b-Experience.astro";
 import Projects from "../components/sections/4-Projects.astro";
 import Technologies from "../components/sections/5-Technologies.astro";
-import Credentials from "../components/sections/6-Credentials.astro";
+import Education from "../components/sections/6-Education.astro";
 import Awards from "../components/sections/7-Awards.astro";
 import ContactMe from "../components/sections/8-ContactMe.astro";
 
@@ -17,9 +18,10 @@ const t = useTranslations(lang);
 <Layout lang={lang} t={t}>
   <Home t={t} />
   <AboutMe t={t} />
+  <Experience t={t} />
   <Projects t={t} />
   <Technologies t={t} />
-  <Credentials t={t} />
+  <Education t={t} />
   <Awards t={t} />
   <ContactMe t={t} />
 </Layout>
